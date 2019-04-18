@@ -10,30 +10,40 @@ rm(list = ls())
 
 library(mosaic)
 library(tidyr)
-library(rvest)
+library(readr)
 library(tidyverse)
+library(rvest)
 ```
 
 
+
+
+//*[@id="layout"]/div[3]/div[2]/div/div/div/div/table
+
+//*[@id="layout"]/div[3]/div[2]/div/div/div/div/table/tbody
+
+http://edgar.jrc.ec.europa.eu/overview.php?v=CO2ts_pc1990-2013
+
 ```{r}
-page <- "https://en.wikipedia.org/wiki/List_of_countries_by_past_and_future_population"
-XPATH <- '//*[@id="mw-content-text"]/div/table[2]' 
-table_list <- 
-  page %>%
+page_url <- "http://edgar.jrc.ec.europa.eu/overview.php?v=CO2ts_pc1990-2013"
+XPATH <- '//*[@id="layout"]/div[3]/div[2]/div/div/div/div/table'
+
+table_list <-
+  page_url %>%
   read_html() %>%
   html_nodes(xpath = XPATH) %>%
   html_table(fill = TRUE)
-Pop_Country <- table_list[[1]]
-head(Pop_Country)
+
+CarbonRaw <-
+  table_list[[1]]
+
+head(CarbonRaw)
 ```
 
-
-
-
-
-
-
-
+```{r}
+CarbonRaw %>%
+  
+```
 
 
 
