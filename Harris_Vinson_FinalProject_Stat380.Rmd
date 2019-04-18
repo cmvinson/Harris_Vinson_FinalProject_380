@@ -77,6 +77,25 @@ CarbonRaw4 <-
          `2013` = `2013TonsCO2/cap4.936`)
 ```
 
+```{r}
+head(CarbonRaw4)
+```
+
+```{r}
+CarbonCleaned <-
+  CarbonRaw4 %>%
+  mutate(`1990` = as.numeric(CarbonRaw4$`1990`),
+         `1995` = as.numeric(CarbonRaw4$`1995`),
+         `2000` = as.numeric(CarbonRaw4$`2000`),
+         `2005` = as.numeric(CarbonRaw4$`2005`),
+         `2010` = as.numeric(CarbonRaw4$`2010`),
+         `2011` = as.numeric(CarbonRaw4$`2011`),
+         `2012` = as.numeric(CarbonRaw4$`2012`),
+         `2013` = as.numeric(CarbonRaw4$`2013`)
+         )
+
+head(CarbonCleaned)
+```
 
 
 
