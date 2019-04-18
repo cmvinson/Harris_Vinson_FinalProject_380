@@ -15,8 +15,17 @@ library(tidyverse)
 library(rvest)
 ```
 
-
-
+```{r}
+page <- "https://en.wikipedia.org/wiki/List_of_countries_by_past_and_future_population"
+XPATH <- '//*[@id="mw-content-text"]/div/table[2]' 
+table_list <- 
+  page %>%
+  read_html() %>%
+  html_nodes(xpath = XPATH) %>%
+  html_table(fill = TRUE)
+Pop_Country <- table_list[[1]]
+head(Pop_Country)
+```
 
 //*[@id="layout"]/div[3]/div[2]/div/div/div/div/table
 
