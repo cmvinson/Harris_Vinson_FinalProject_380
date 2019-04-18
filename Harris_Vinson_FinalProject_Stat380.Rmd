@@ -31,11 +31,22 @@ head(Pop_Country)
 ```
 
 ```{r}
+index <- as.character(c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15))
 
+colnames(Pop_Country) <- index
 
-Pop_Country <- 
+Pop_Country <-
   Pop_Country %>%
-  colnames(make.unique(names = Pop_Country$`%`))
+  rename(
+    Country = `1`,
+    `1985` = `2`,
+    `1990` = `4`,
+    `1995` = `6`,
+    `2000` = `8`,
+    `2005` = `10`,
+    `2010` = `12`,
+    `2015` = `14`) %>%
+  select(Country, `1985`, `1990`, `1995`, `2000`, `2005`, `2010`, `2015`)
 ```
 
 
