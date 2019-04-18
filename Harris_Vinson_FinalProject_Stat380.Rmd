@@ -31,6 +31,15 @@ head(Pop_Country)
 ```
 
 ```{r}
+
+
+Pop_Country <- 
+  Pop_Country %>%
+  colnames(make.unique(names = Pop_Country$`%`))
+```
+
+
+```{r}
 page_url <- "http://edgar.jrc.ec.europa.eu/overview.php?v=CO2ts_pc1990-2013"
 XPATH <- '//*[@id="layout"]/div[3]/div[2]/div/div/div/div/table'
 
