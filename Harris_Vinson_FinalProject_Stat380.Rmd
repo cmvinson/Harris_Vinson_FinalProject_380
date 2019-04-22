@@ -39,14 +39,16 @@ Pop_Country <-
   Pop_Country %>%
   rename(
     Country = `1`,
-    `1985` = `2`,
-    `1990` = `4`,
-    `1995` = `6`,
-    `2000` = `8`,
-    `2005` = `10`,
-    `2010` = `12`,
-    `2015` = `14`) %>%
-  select(Country, `1985`, `1990`, `1995`, `2000`, `2005`, `2010`, `2015`)
+    `1985 Pop` = `2`,
+    `1990 Pop` = `4`,
+    `1995 Pop` = `6`,
+    `2000 Pop` = `8`,
+    `2005 Pop` = `10`,
+    `2010 Pop` = `12`,
+    `2015 Pop` = `14`) %>%
+  select(Country, `1985 Pop`, `1990 Pop`, `1995 Pop`, `2000 Pop`, `2005 Pop`, `2010 Pop`, `2015 Pop`)
+
+head(Pop_Country)
 ```
 
 
@@ -95,14 +97,11 @@ head(CarbonRaw4)
 ```{r}
 CarbonCleaned <-
   CarbonRaw4 %>%
-  mutate(`1990` = as.numeric(CarbonRaw4$`1990`),
-         `1995` = as.numeric(CarbonRaw4$`1995`),
-         `2000` = as.numeric(CarbonRaw4$`2000`),
-         `2005` = as.numeric(CarbonRaw4$`2005`),
-         `2010` = as.numeric(CarbonRaw4$`2010`),
-         `2011` = as.numeric(CarbonRaw4$`2011`),
-         `2012` = as.numeric(CarbonRaw4$`2012`),
-         `2013` = as.numeric(CarbonRaw4$`2013`)
+  transmute(`1990 Emissions` = as.numeric(CarbonRaw4$`1990`),
+         `1995 Emissions` = as.numeric(CarbonRaw4$`1995`),
+         `2000 Emissions` = as.numeric(CarbonRaw4$`2000`),
+         `2005 Emissions` = as.numeric(CarbonRaw4$`2005`),
+         `2010 Emissions` = as.numeric(CarbonRaw4$`2010`)
          )
 
 head(CarbonCleaned)
