@@ -5,8 +5,16 @@ date: "May 1st 2019"
 output: html_notebook
 ---
 
-```{r}
+## Front Matter
+
+
+```{r include=FALSE}
+
+# Clean workspace
+
 rm(list = ls())
+
+# Packages used
 
 library(mosaic)
 library(tidyr)
@@ -14,22 +22,48 @@ library(readr)
 library(tidyverse)
 library(rvest)
 library(regexPipes)
+
+# Inputs & source data
+
+PopURL <-
+  "https://en.wikipedia.org/wiki/List_of_countries_by_past_and_future_population"
+
+PopXPATH<-
+  '//*[@id="mw-content-text"]/div/table[2]'
+
+
+EmissionsURL <-
+  "http://edgar.jrc.ec.europa.eu/overview.php?v=CO2ts_pc1990-2013"
+
+EmissionsXPATH <-
+  '//*[@id="layout"]/div[3]/div[2]/div/div/div/div/table'
+
+# User defined Functions
+
 ```
 
-```{r}
-page <- "https://en.wikipedia.org/wiki/List_of_countries_by_past_and_future_population"
-XPATH <- '//*[@id="mw-content-text"]/div/table[2]' 
 
+## Data Wrangling
+
+
+### Loading Population Data Table
+
+
+```{r}
 table_list <- 
-  page %>%
+  PopURL %>%
   read_html() %>%
-  html_nodes(xpath = XPATH) %>%
+  html_nodes(xpath = PopXPATH) %>%
   html_table(fill = TRUE)
 
 Pop_Country <- table_list[[1]] 
 
 head(Pop_Country)
 ```
+
+
+### Cleaning Population Data Table
+
 
 ```{r}
 index <- as.character(c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15))
@@ -89,20 +123,20 @@ Pop_Country_Cleaned <-
          `2000 Pop` = as.numeric(Pop_Country$`2000 Pop`),
          `2005 Pop` = as.numeric(Pop_Country$`2005 Pop`),
          `2010 Pop` = as.numeric(Pop_Country$`2010 Pop`),
-         `2015 Pop` = as.numeric(Pop_Country$`2015 Pop`)
-         )
+         `2015 Pop` = as.numeric(Pop_Country$`2015 Pop`))
 
 head(Pop_Country_Cleaned)
 ```
 
-```{r}
-page_url <- "http://edgar.jrc.ec.europa.eu/overview.php?v=CO2ts_pc1990-2013"
-XPATH <- '//*[@id="layout"]/div[3]/div[2]/div/div/div/div/table'
 
+### Loading Emissions Data
+
+
+```{r}
 table_list <-
-  page_url %>%
+  EmissionsURL %>%
   read_html() %>%
-  html_nodes(xpath = XPATH) %>%
+  html_nodes(xpath = EmissionsXPATH) %>%
   html_table(fill = TRUE)
 
 CarbonRaw <-
@@ -110,6 +144,10 @@ CarbonRaw <-
 
 head(CarbonRaw)
 ```
+
+
+### Cleaning Emissions Data
+
 
 ```{r}
 colnames(CarbonRaw) <-
@@ -123,6 +161,7 @@ CarbonRaw3 <-
 
 CarbonRaw4 <-
   CarbonRaw3 %>%
+  #Making names more easy to wrangle
   rename(`1990` = `1990TonsCO2/cap4.267`,
          `1995` = `1995TonsCO2/cap4.120`,
          `2000` = `2000TonsCO2/cap4.146`,
@@ -131,22 +170,20 @@ CarbonRaw4 <-
          `2011` = `2011TonsCO2/cap4.870`,
          `2012` = `2012TonsCO2/cap4.894`,
          `2013` = `2013TonsCO2/cap4.936`)
-```
 
-```{r}
 head(CarbonRaw4)
 ```
 
 ```{r}
 CarbonCleaned <-
   CarbonRaw4 %>%
+  # Making Emissions a dbl variable
   transmute(`Country` = `CountryWorld Total`,
-         `1990 Emissions` = as.numeric(CarbonRaw4$`1990`),
-         `1995 Emissions` = as.numeric(CarbonRaw4$`1995`),
-         `2000 Emissions` = as.numeric(CarbonRaw4$`2000`),
-         `2005 Emissions` = as.numeric(CarbonRaw4$`2005`),
-         `2010 Emissions` = as.numeric(CarbonRaw4$`2010`)
-         ) 
+         `1990EmissionsPerCap` = as.numeric(CarbonRaw4$`1990`),
+         `1995EmissionsPerCap` = as.numeric(CarbonRaw4$`1995`),
+         `2000EmissionsPerCap` = as.numeric(CarbonRaw4$`2000`),
+         `2005EmissionsPerCap` = as.numeric(CarbonRaw4$`2005`),
+         `2010EmissionsPerCap` = as.numeric(CarbonRaw4$`2010`)) 
 
 head(CarbonCleaned)
 ```
@@ -154,6 +191,7 @@ head(CarbonCleaned)
 ```{r}
 CarbonCleaned$Country <-
   CarbonCleaned$Country %>%
+  # Replacing country names that are in a different form in the Emissions data than the Pop Data
   regexPipes::sub("Korea, Democratic People's Republic of", "South Korea") %>%
   regexPipes::sub("Korea, Republic of", "North Korea") %>%
   regexPipes::sub("Lao People's Democratic Republic", "Laos") %>%
@@ -178,7 +216,11 @@ CarbonCleaned$Country <-
 
 
 ```
-  
+
+
+### Joining Data
+
+
 ```{r}
 JoinedTable<-
   CarbonCleaned %>%
@@ -192,48 +234,79 @@ glimpse(JoinedTable)
 ```{r}
 JoinedTable2 <-
   JoinedTable %>%
-  mutate(JoinedTable$`1985 Pop` * 1000,
-         JoinedTable$`1990 Pop` * 1000,
-         JoinedTable$`1995 Pop` * 1000,
-         JoinedTable$`2000 Pop` * 1000,
-         JoinedTable$`2005 Pop` * 1000,
-         JoinedTable$`2010 Pop` * 1000,
-         JoinedTable$`2015 Pop` * 1000) %>%
+  # Renaming variable and making numbers true
+  mutate(`1985Pop` = JoinedTable$`1985 Pop` * 1000,
+         `1990Pop` = JoinedTable$`1990 Pop` * 1000,
+         `1995Pop` = JoinedTable$`1995 Pop` * 1000,
+         `2000Pop` = JoinedTable$`2000 Pop` * 1000,
+         `2005Pop` = JoinedTable$`2005 Pop` * 1000,
+         `2010Pop` = JoinedTable$`2010 Pop` * 1000,
+         `2015Pop` = JoinedTable$`2015 Pop` * 1000) %>%
   select(-`1985 Pop`, -`1990 Pop`, -`1995 Pop`, -`2000 Pop`, -`2005 Pop`, -`2010 Pop`, -`2015 Pop`)
 
 head(JoinedTable2)
 ```
 
 ```{r}
-JoinedTable3 <- 
+GlobalNumbers <-
   JoinedTable2 %>%
-  rename(`1985 Pop` = JoinedTable$`1985 Pop` * 1000)
+  mutate( # finding total emmisons since previous was per cap
+    `1990TotalEmissions` = `1990EmissionsPerCap` * `1990Pop`,
+    `1995TotalEmissions` = `1995EmissionsPerCap` * `1995Pop`,
+    `2000TotalEmissions` = `2000EmissionsPerCap` * `2000Pop`,
+    `2005TotalEmissions` = `2005EmissionsPerCap` * `2005Pop`,
+    `2010TotalEmissions` = `2010EmissionsPerCap` * `2010Pop`)
+
+head(GlobalNumbers)
 ```
 
 
+## Data Analysis and Narrative
+
+
+### Building a model for Population
 
 
 
+### Building a model for Emissions
 
 
 
+### Simulating Future Emissions
 
 
 
+## Data Visualizations
+
+
+### Similar Countries; Unsupervised Learning -- Dendrogram
+
+```{r}
+Similarity2010 <-
+  GlobalNumbers %>%
+  select(`2010EmissionsPerCap`, `2010Pop`) %>%
+  scale() %>%
+  as.data.frame()
+
+head(Similarity2010)
+```
+
+```{r}
+
+```
+
+
+### Heat map of Emissions
+
+Maybe normalize each emission type and then add them together for a compound score?
 
 
 
+### How Population Grows
 
 
 
-
-
-
-
-
-
-
-
+### 
 
 
 

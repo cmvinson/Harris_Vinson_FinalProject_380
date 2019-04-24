@@ -179,45 +179,43 @@ $(document).ready(function () {
 
 
 <!-- rnb-text-begin -->
+<div id="front-matter" class="section level2">
+<h2>Front Matter</h2>
 <!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucm0obGlzdCA9IGxzKCkpXG5cbmxpYnJhcnkobW9zYWljKVxubGlicmFyeSh0aWR5cilcbmxpYnJhcnkocmVhZHIpXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbmxpYnJhcnkocnZlc3QpXG5saWJyYXJ5KHJlZ2V4UGlwZXMpXG5gYGAifQ== -->
-<pre class="r"><code>rm(list = ls())
-
-library(mosaic)
-library(tidyr)
-library(readr)
-library(tidyverse)
-library(rvest)
-library(regexPipes)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+</div>
+<div id="data-wrangling" class="section level2">
+<h2>Data Wrangling</h2>
+<div id="loading-population-data-table" class="section level3">
+<h3>Loading Population Data Table</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGFnZSA8LSBcImh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL0xpc3Rfb2ZfY291bnRyaWVzX2J5X3Bhc3RfYW5kX2Z1dHVyZV9wb3B1bGF0aW9uXCJcblhQQVRIIDwtICcvLypbQGlkPVwibXctY29udGVudC10ZXh0XCJdL2Rpdi90YWJsZVsyXScgXG5cbnRhYmxlX2xpc3QgPC0gXG4gIHBhZ2UgJT4lXG4gIHJlYWRfaHRtbCgpICU+JVxuICBodG1sX25vZGVzKHhwYXRoID0gWFBBVEgpICU+JVxuICBodG1sX3RhYmxlKGZpbGwgPSBUUlVFKVxuXG5Qb3BfQ291bnRyeSA8LSB0YWJsZV9saXN0W1sxXV0gXG5cbmhlYWQoUG9wX0NvdW50cnkpXG5gYGAifQ== -->
-<pre class="r"><code>page &lt;- &quot;https://en.wikipedia.org/wiki/List_of_countries_by_past_and_future_population&quot;
-XPATH &lt;- '//*[@id=&quot;mw-content-text&quot;]/div/table[2]' 
-
-table_list &lt;- 
-  page %&gt;%
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGVfbGlzdCA8LSBcbiAgUG9wVVJMICU+JVxuICByZWFkX2h0bWwoKSAlPiVcbiAgaHRtbF9ub2Rlcyh4cGF0aCA9IFBvcFhQQVRIKSAlPiVcbiAgaHRtbF90YWJsZShmaWxsID0gVFJVRSlcblBvcF9Db3VudHJ5IDwtIHRhYmxlX2xpc3RbWzFdXSBcbmhlYWQoUG9wX0NvdW50cnkpXG5gYGAifQ== -->
+<pre class="r"><code>table_list &lt;- 
+  PopURL %&gt;%
   read_html() %&gt;%
-  html_nodes(xpath = XPATH) %&gt;%
+  html_nodes(xpath = PopXPATH) %&gt;%
   html_table(fill = TRUE)
-
 Pop_Country &lt;- table_list[[1]] 
-
 head(Pop_Country)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTUsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBM1dVdjIvVFFCVEhMMDdzTkNtbGxhakVSTW1DRkNRMzh0M1pqajFVZGdRU3JJV2xReGMzY2RPSTVCd2NWOUN5c0hUdURDczdjN2NnL2dLWWtKZ29FbE5aS1VKQ2diUHZoNE1iVHJMdjd0MDd2OC83dmljL3VyK0Q2anQxQUlBQ3ltb0pLR1c2ckNqMFZRSVZVRXZuNXdDVWI5REZLbjNXNktQeGcrWE9mdjhnSUlOSkVoQnVxbmFHZTlRUzVOdCtHTXZ0OWM2STdyb0JhVHdPUmxIdVJIcFJISXV0MWlIOWFCZ1VZbWtRNnhBWmZLY2kzYlhhNGdnaDNUQmN2bE93WEptV2NIZDA3Qm9wUU9yK1RuMlZqdGMrMk0rR1h6dlpPTnUrT1BHdm5lNDJmN3cvOVc5bTA2Ni9sRm8zemhhUVdMWUlvbUlkeVRnYXNuVG9RaG5mRVNzTEMzZFhOeDFia0hqZnhtOCsxYmVlZXJQMTQvTUhiOWQ5TlkyMy9kMWY0d1RMMUhoOC90QXZVeS9xZW9XRWZzMjBjeEpvdVpLRXBveVFqRytLbFczS3k1Q3FKa1h4YjdFUTAzTWVVa2tCbXBlK3lzVlo0YUl0TWRRaUNxMkJhYU9GS05qUTdid29saFRGdGlVSzBtMEhTNVFxVXdYdzRmMWlTTjdsVm5iZ2ZlVjFxbVprdDYrZzJEckdWbzVpSUZrZlRQc0c1bFVSSGFTMFpTOUJVMiszYzFWcVhKVUxwb0wzRTJkaitwRVhxc1pRLzljcXlLVk5DK2VhMXBHQnNFVmIySkFvUWd2RmtiQ3dyUnRtcmdwZzJVOC9jRlYrWjNWNE1mM0NDd1g0WEdXSVJSU2F1bVhQcTRJTmVlVHFsb2tsaWlWUjdMbEdzNUZzVzE5aFBlQnhGYndaeTM3Nm1SZUlJL29hYTZiQy8wUWx3U2ljY0w1VmJtemNpdzVKRWg4MW1sSGM2SVhqa1BSQ2tqU1NNSTRIU1JRZjNlVitGZWhLaFVwM2NxTnJMREplOVVScHp5OHdMdktFaXp6aG5PZS9lZFhpNkZsTDVMYVNDdmlTNmFBVkJlZ09nNGtRUUJqcnZTQUpXdnN4dlU5M3M4S1ZhalJPQmhHaGw1VDBUNndXTHBmaWdtSHRrS1FrdmMzdXdTRjVzdW5BTkVKMnpwNFZQbXR6NjFVV1UvbkR2NldLNm9la1B5Q2hnQjhHZStGUS9OQnB5bG5HclhFOElJbEloVm9uclNSS0F1Rlg3MFpEWWNtU0E3Ty9jMGxmYjNnR0FBQT0ifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Country (or dependent territory)"],"name":[1],"type":["chr"],"align":["left"]},{"label":["1985"],"name":[2],"type":["chr"],"align":["left"]},{"label":["%"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["1990"],"name":[4],"type":["chr"],"align":["left"]},{"label":["%"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["1995"],"name":[6],"type":["chr"],"align":["left"]},{"label":["%"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["2000"],"name":[8],"type":["chr"],"align":["left"]},{"label":["%"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["2005"],"name":[10],"type":["chr"],"align":["left"]},{"label":["%"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["2010"],"name":[12],"type":["chr"],"align":["left"]},{"label":["%"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["2015"],"name":[14],"type":["chr"],"align":["left"]},{"label":["%"],"name":[15],"type":["dbl"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"13,120","3":"-2.70","4":"13,569","5":"0.67","6":"19,446","7":"7.46","8":"22,462","9":"2.93","10":"26,335","11":"3.23","12":"29,121","13":"2.03","14":"32,565","15":"2.26","_rn_":"1"},{"1":"Albania","2":"2,957","3":"2.05","4":"3,245","5":"1.88","6":"3,159","7":"-0.54","8":"3,159","9":"0.00","10":"3,025","11":"-0.86","12":"2,987","13":"-0.25","14":"3,030","15":"0.28","_rn_":"2"},{"1":"Algeria","2":"22,009","3":"3.19","4":"25,191","5":"2.74","6":"28,322","7":"2.37","8":"30,639","9":"1.58","10":"32,918","11":"1.45","12":"35,950","13":"1.78","14":"39,543","15":"1.92","_rn_":"3"},{"1":"American Samoa","2":"39","3":"3.57","4":"48","5":"4.09","6":"54","7":"2.69","8":"58","9":"1.39","10":"57","11":"-0.28","12":"56","13":"-0.53","14":"55","15":"-0.41","_rn_":"4"},{"1":"Andorra","2":"45","3":"5.84","4":"53","5":"3.41","6":"64","7":"3.70","8":"66","9":"0.58","10":"77","11":"3.18","12":"85","13":"2.12","14":"86","15":"0.25","_rn_":"5"},{"1":"Angola","2":"8,390","3":"3.09","4":"9,486","5":"2.48","6":"11,000","7":"3.01","8":"12,683","9":"2.89","10":"14,770","11":"3.09","12":"17,043","13":"2.90","14":"19,626","15":"2.86","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[15]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+</div>
+<div id="cleaning-population-data-table" class="section level3">
+<h3>Cleaning Population Data Table</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5kZXggPC0gYXMuY2hhcmFjdGVyKGMoMSwyLDMsNCw1LDYsNyw4LDksMTAsMTEsMTIsMTMsMTQsMTUpKVxuXG5jb2xuYW1lcyhQb3BfQ291bnRyeSkgPC0gaW5kZXhcblxuUG9wX0NvdW50cnkgPC1cbiAgUG9wX0NvdW50cnkgJT4lXG4gIHJlbmFtZShcbiAgICBDb3VudHJ5ID0gYDFgLFxuICAgIGAxOTg1IFBvcGAgPSBgMmAsXG4gICAgYDE5OTAgUG9wYCA9IGA0YCxcbiAgICBgMTk5NSBQb3BgID0gYDZgLFxuICAgIGAyMDAwIFBvcGAgPSBgOGAsXG4gICAgYDIwMDUgUG9wYCA9IGAxMGAsXG4gICAgYDIwMTAgUG9wYCA9IGAxMmAsXG4gICAgYDIwMTUgUG9wYCA9IGAxNGApICU+JVxuICBzZWxlY3QoQ291bnRyeSwgYDE5ODUgUG9wYCwgYDE5OTAgUG9wYCwgYDE5OTUgUG9wYCwgYDIwMDAgUG9wYCwgYDIwMDUgUG9wYCwgYDIwMTAgUG9wYCwgYDIwMTUgUG9wYClcblxuaGVhZChQb3BfQ291bnRyeSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5kZXggPC0gYXMuY2hhcmFjdGVyKGMoMSwyLDMsNCw1LDYsNyw4LDksMTAsMTEsMTIsMTMsMTQsMTUpKVxuY29sbmFtZXMoUG9wX0NvdW50cnkpIDwtIGluZGV4XG5Qb3BfQ291bnRyeSA8LVxuICBQb3BfQ291bnRyeSAlPiVcbiAgcmVuYW1lKFxuICAgIENvdW50cnkgPSBgMWAsXG4gICAgYDE5ODUgUG9wYCA9IGAyYCxcbiAgICBgMTk5MCBQb3BgID0gYDRgLFxuICAgIGAxOTk1IFBvcGAgPSBgNmAsXG4gICAgYDIwMDAgUG9wYCA9IGA4YCxcbiAgICBgMjAwNSBQb3BgID0gYDEwYCxcbiAgICBgMjAxMCBQb3BgID0gYDEyYCxcbiAgICBgMjAxNSBQb3BgID0gYDE0YCkgJT4lXG4gIHNlbGVjdChDb3VudHJ5LCBgMTk4NSBQb3BgLCBgMTk5MCBQb3BgLCBgMTk5NSBQb3BgLCBgMjAwMCBQb3BgLCBgMjAwNSBQb3BgLCBgMjAxMCBQb3BgLCBgMjAxNSBQb3BgKVxuaGVhZChQb3BfQ291bnRyeSlcbmBgYCJ9 -->
 <pre class="r"><code>index &lt;- as.character(c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15))
-
 colnames(Pop_Country) &lt;- index
-
 Pop_Country &lt;-
   Pop_Country %&gt;%
   rename(
@@ -230,14 +228,20 @@ Pop_Country &lt;-
     `2010 Pop` = `12`,
     `2015 Pop` = `14`) %&gt;%
   select(Country, `1985 Pop`, `1990 Pop`, `1995 Pop`, `2000 Pop`, `2005 Pop`, `2010 Pop`, `2015 Pop`)
-
 head(Pop_Country)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6OCwibnJvdyI6Nn0sInJkZiI6Ikg0c0lBQUFBQUFBQUEyMVUzVzdhTUJRMm9Va3BVNmRLZTRFK2dJdjhFenZ4SmVvZVlOcHVldXRDU3RHQ2pVTFF0cnM5ZWJjVHlIR29VeVNUOC91ZDcvTUpmUC82Sk9aUGMwSklRcWJwaENSVE1LOFMrSnFRSzNMVFBYOFRNdjBDeGd6T0haeXNUM3hhdm14ZXJkc2VXdXY2MFBXeWZvYUlIZHhOMVFUMzgzSUgzc3E2K3g5MjU0Y2l0L1pOZzI2MmRCdGYyMmhXeGlYbGd2VmVLcWhSQmFhRW9JeVoza3Rrc0hLRjVTV1ZobjJBcURRV3A1S0tVSjhKUmJuaEFhZEVTMGtzTnpRdjlRZ1JvcmtlRUxreUFSRW9DQkZ3Y3JSMEhwbzVxQmlSQkcyNUZoOUNTa2IxSUZZRmtsb0hTRUYxS1VlUW1rcXBCa2dtZ200Sjk4b0h0WGpEU1JIdW11ZTBLTVlzRFN5SFh5eW5EQTFTd2FwWWdFUnVTUm1HOG9LeWZNUVNxQ2g5eVZLeWtESlU1VEpBcWdDcEx4YWhoWTdlNDlUWlhYWG81OHp3NVh2MFI5YzJmM3AzeGsycDdyLzUvZUFiRnZudjhnSjJGdmxSbmtkNWZzNi81M2JUK0Y4TDVIZmJpZmxMVHA4c0ZyR3E3UUZGWUhDK3RxMWR2RFRRRDk1YjFITHQ5KzNXTzJoS3VsOXhHalZQbWlod2QzUWRrL1hENnZYb2ZqNlVvcHR3eXAvUGJmL01MdXpaZVdieXI4ZEtjUk9WMjJ4ZGhlUnIrMXpWK0djQWtrK0tGL3RtNjFxVUF0SERvdld0eGJyNXl0Y1lPWWtqYi84Qk5ScC8yTFFFQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["1985 Pop"],"name":[2],"type":["chr"],"align":["left"]},{"label":["1990 Pop"],"name":[3],"type":["chr"],"align":["left"]},{"label":["1995 Pop"],"name":[4],"type":["chr"],"align":["left"]},{"label":["2000 Pop"],"name":[5],"type":["chr"],"align":["left"]},{"label":["2005 Pop"],"name":[6],"type":["chr"],"align":["left"]},{"label":["2010 Pop"],"name":[7],"type":["chr"],"align":["left"]},{"label":["2015 Pop"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"Afghanistan","2":"13,120","3":"13,569","4":"19,446","5":"22,462","6":"26,335","7":"29,121","8":"32,565","_rn_":"1"},{"1":"Albania","2":"2,957","3":"3,245","4":"3,159","5":"3,159","6":"3,025","7":"2,987","8":"3,030","_rn_":"2"},{"1":"Algeria","2":"22,009","3":"25,191","4":"28,322","5":"30,639","6":"32,918","7":"35,950","8":"39,543","_rn_":"3"},{"1":"American Samoa","2":"39","3":"48","4":"54","5":"58","6":"57","7":"56","8":"55","_rn_":"4"},{"1":"Andorra","2":"45","3":"53","4":"64","5":"66","6":"77","7":"85","8":"86","_rn_":"5"},{"1":"Angola","2":"8,390","3":"9,486","4":"11,000","5":"12,683","6":"14,770","7":"17,043","8":"19,626","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[8]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuUG9wX0NvdW50cnkkYDE5ODUgUG9wYCA8LVxuICBQb3BfQ291bnRyeSRgMTk4NSBQb3BgICU+JVxuICByZWdleFBpcGVzOjpnc3ViKHBhdHRlcm4gPSBcIixcIiwgcmVwbGFjZW1lbnQgPSBcIlwiKVxuICBcblBvcF9Db3VudHJ5JGAxOTkwIFBvcGAgPC1cbiAgUG9wX0NvdW50cnkkYDE5OTAgUG9wYCAlPiVcbiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gXCIsXCIsIHJlcGxhY2VtZW50ID0gXCJcIilcblxuUG9wX0NvdW50cnkkYDE5OTUgUG9wYCA8LVxuICBQb3BfQ291bnRyeSRgMTk5NSBQb3BgICU+JVxuICByZWdleFBpcGVzOjpnc3ViKHBhdHRlcm4gPSBcIixcIiwgcmVwbGFjZW1lbnQgPSBcIlwiKVxuXG5Qb3BfQ291bnRyeSRgMjAwMCBQb3BgIDwtXG4gIFBvcF9Db3VudHJ5JGAyMDAwIFBvcGAgJT4lXG4gIHJlZ2V4UGlwZXM6OmdzdWIocGF0dGVybiA9IFwiLFwiLCByZXBsYWNlbWVudCA9IFwiXCIpXG5cblBvcF9Db3VudHJ5JGAyMDA1IFBvcGAgPC1cbiAgUG9wX0NvdW50cnkkYDIwMDUgUG9wYCAlPiVcbiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gXCIsXCIsIHJlcGxhY2VtZW50ID0gXCJcIilcblxuUG9wX0NvdW50cnkkYDIwMTAgUG9wYCA8LVxuICBQb3BfQ291bnRyeSRgMjAxMCBQb3BgICU+JVxuICByZWdleFBpcGVzOjpnc3ViKHBhdHRlcm4gPSBcIixcIiwgcmVwbGFjZW1lbnQgPSBcIlwiKVxuXG5Qb3BfQ291bnRyeSRgMjAxNSBQb3BgIDwtXG4gIFBvcF9Db3VudHJ5JGAyMDE1IFBvcGAgJT4lXG4gIHJlZ2V4UGlwZXM6OmdzdWIocGF0dGVybiA9IFwiLFwiLCByZXBsYWNlbWVudCA9IFwiXCIpXG5cblBvcF9Db3VudHJ5X0NsZWFuZWQgPC1cbiAgUG9wX0NvdW50cnkgJT4lXG4gIG11dGF0ZShgMTk4NSBQb3BgID0gYXMubnVtZXJpYyhQb3BfQ291bnRyeSRgMTk4NSBQb3BgKSxcbiAgICAgICAgIGAxOTkwIFBvcGAgPSBhcy5udW1lcmljKFBvcF9Db3VudHJ5JGAxOTkwIFBvcGApLFxuICAgICAgICAgYDE5OTUgUG9wYCA9IGFzLm51bWVyaWMoUG9wX0NvdW50cnkkYDE5OTUgUG9wYCksXG4gICAgICAgICBgMjAwMCBQb3BgID0gYXMubnVtZXJpYyhQb3BfQ291bnRyeSRgMjAwMCBQb3BgKSxcbiAgICAgICAgIGAyMDA1IFBvcGAgPSBhcy5udW1lcmljKFBvcF9Db3VudHJ5JGAyMDA1IFBvcGApLFxuICAgICAgICAgYDIwMTAgUG9wYCA9IGFzLm51bWVyaWMoUG9wX0NvdW50cnkkYDIwMTAgUG9wYCksXG4gICAgICAgICBgMjAxNSBQb3BgID0gYXMubnVtZXJpYyhQb3BfQ291bnRyeSRgMjAxNSBQb3BgKVxuICAgICAgICAgKVxuXG5oZWFkKFBvcF9Db3VudHJ5X0NsZWFuZWQpXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuUG9wX0NvdW50cnkkYDE5ODUgUG9wYCA8LVxuICBQb3BfQ291bnRyeSRgMTk4NSBQb3BgICU+JVxuICByZWdleFBpcGVzOjpnc3ViKHBhdHRlcm4gPSBcIixcIiwgcmVwbGFjZW1lbnQgPSBcIlwiKVxuICBcblBvcF9Db3VudHJ5JGAxOTkwIFBvcGAgPC1cbiAgUG9wX0NvdW50cnkkYDE5OTAgUG9wYCAlPiVcbiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gXCIsXCIsIHJlcGxhY2VtZW50ID0gXCJcIilcblBvcF9Db3VudHJ5JGAxOTk1IFBvcGAgPC1cbiAgUG9wX0NvdW50cnkkYDE5OTUgUG9wYCAlPiVcbiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gXCIsXCIsIHJlcGxhY2VtZW50ID0gXCJcIilcblBvcF9Db3VudHJ5JGAyMDAwIFBvcGAgPC1cbiAgUG9wX0NvdW50cnkkYDIwMDAgUG9wYCAlPiVcbiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gXCIsXCIsIHJlcGxhY2VtZW50ID0gXCJcIilcblBvcF9Db3VudHJ5JGAyMDA1IFBvcGAgPC1cbiAgUG9wX0NvdW50cnkkYDIwMDUgUG9wYCAlPiVcbiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gXCIsXCIsIHJlcGxhY2VtZW50ID0gXCJcIilcblBvcF9Db3VudHJ5JGAyMDEwIFBvcGAgPC1cbiAgUG9wX0NvdW50cnkkYDIwMTAgUG9wYCAlPiVcbiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gXCIsXCIsIHJlcGxhY2VtZW50ID0gXCJcIilcblBvcF9Db3VudHJ5JGAyMDE1IFBvcGAgPC1cbiAgUG9wX0NvdW50cnkkYDIwMTUgUG9wYCAlPiVcbiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gXCIsXCIsIHJlcGxhY2VtZW50ID0gXCJcIilcblBvcF9Db3VudHJ5X0NsZWFuZWQgPC1cbiAgUG9wX0NvdW50cnkgJT4lXG4gIG11dGF0ZShgMTk4NSBQb3BgID0gYXMubnVtZXJpYyhQb3BfQ291bnRyeSRgMTk4NSBQb3BgKSxcbiAgICAgICAgIGAxOTkwIFBvcGAgPSBhcy5udW1lcmljKFBvcF9Db3VudHJ5JGAxOTkwIFBvcGApLFxuICAgICAgICAgYDE5OTUgUG9wYCA9IGFzLm51bWVyaWMoUG9wX0NvdW50cnkkYDE5OTUgUG9wYCksXG4gICAgICAgICBgMjAwMCBQb3BgID0gYXMubnVtZXJpYyhQb3BfQ291bnRyeSRgMjAwMCBQb3BgKSxcbiAgICAgICAgIGAyMDA1IFBvcGAgPSBhcy5udW1lcmljKFBvcF9Db3VudHJ5JGAyMDA1IFBvcGApLFxuICAgICAgICAgYDIwMTAgUG9wYCA9IGFzLm51bWVyaWMoUG9wX0NvdW50cnkkYDIwMTAgUG9wYCksXG4gICAgICAgICBgMjAxNSBQb3BgID0gYXMubnVtZXJpYyhQb3BfQ291bnRyeSRgMjAxNSBQb3BgKVxuICAgICAgICAgKVxuaGVhZChQb3BfQ291bnRyeV9DbGVhbmVkKVxuYGBgIn0= -->
 <pre class="r"><code>Pop_Country$`1985 Pop` &lt;-
   Pop_Country$`1985 Pop` %&gt;%
   regexPipes::gsub(pattern = &quot;,&quot;, replacement = &quot;&quot;)
@@ -245,27 +249,21 @@ head(Pop_Country)</code></pre>
 Pop_Country$`1990 Pop` &lt;-
   Pop_Country$`1990 Pop` %&gt;%
   regexPipes::gsub(pattern = &quot;,&quot;, replacement = &quot;&quot;)
-
 Pop_Country$`1995 Pop` &lt;-
   Pop_Country$`1995 Pop` %&gt;%
   regexPipes::gsub(pattern = &quot;,&quot;, replacement = &quot;&quot;)
-
 Pop_Country$`2000 Pop` &lt;-
   Pop_Country$`2000 Pop` %&gt;%
   regexPipes::gsub(pattern = &quot;,&quot;, replacement = &quot;&quot;)
-
 Pop_Country$`2005 Pop` &lt;-
   Pop_Country$`2005 Pop` %&gt;%
   regexPipes::gsub(pattern = &quot;,&quot;, replacement = &quot;&quot;)
-
 Pop_Country$`2010 Pop` &lt;-
   Pop_Country$`2010 Pop` %&gt;%
   regexPipes::gsub(pattern = &quot;,&quot;, replacement = &quot;&quot;)
-
 Pop_Country$`2015 Pop` &lt;-
   Pop_Country$`2015 Pop` %&gt;%
   regexPipes::gsub(pattern = &quot;,&quot;, replacement = &quot;&quot;)
-
 Pop_Country_Cleaned &lt;-
   Pop_Country %&gt;%
   mutate(`1985 Pop` = as.numeric(Pop_Country$`1985 Pop`),
@@ -276,44 +274,56 @@ Pop_Country_Cleaned &lt;-
          `2010 Pop` = as.numeric(Pop_Country$`2010 Pop`),
          `2015 Pop` = as.numeric(Pop_Country$`2015 Pop`)
          )
-
 head(Pop_Country_Cleaned)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6OCwibnJvdyI6Nn0sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVRUVXZEUUJEZHByYldpaUo2ODlTellHa1ZRVzhwaW9oZmlFVVJiMnNhYXpIZExXbUtDaUs5ZWZJSGVCTVJXa0c4ZWkxQ1FVVkJGRUZSVWZIb3dWL2d4eVl6YTkwRU5tL2Z2SG1abVNRN083TFFGMTJJRWtJMEVnd0ZpQllVMnlaTjNBS2tpYlM0dUU1SXNFdHNJbUoxaUJWR29UVzFuRjJoTEZkMEtNTlFjOHBhRWhIYW9GblQvcVB0cWJ4Z0JtV3hOTTN6UmhMTGNOdVdOSnhpV1c1Uk45MWwrdmtlY1MrOTBnMTR0NlY3T0Z3R1BvcFlNd2hlNExzb2U0Sit1QWo2L1c3Tnd6Rkkwc2ZSZDdxdCttNit3RmM5QnYyeENud0NmVE9JOVUzVmQvZXArcDQvb042VTlHRzlzM3BaOFQyY1FGNWxIL1RYVHVDVG1KL1dBUzhmMUhwUEJYZ1BsWG5RMzNiUWgvWG0wSGQ5VUZOOEwxZm9Pd0w5ZmZvVjVzTjZjNGkzUGRpbjhqT0VHTTJiUlFJL1FrUit3V0ZlWW82OWdUU1NIQm9jaU0zd1FvTVBKWHhjMGZzU2lZU1ArL1NrVDArQ3J2YldZdk8xdU95dlRTd05Kd2o3aHpBc1dwUkR5R0EwUXgwYVg3YUZYN0J2bjZXWkY1d2NaOEtrdVVjaDVETUhiRitnbzhUY1RqSzl4a3FKcmZZTzlyc1ZQQjFXRzJMNDN6NENOYlVmZkZaSW5naVRaWFBNbE0xYmRNbTA1SWtTSTNzVHh3dDJqamx5RkJFdHhoM3VVSmtYTmJnbEk5NXc1UHNYdFdOWFlma0RBQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["1985 Pop"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["1990 Pop"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["1995 Pop"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["2000 Pop"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["2005 Pop"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["2010 Pop"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["2015 Pop"],"name":[8],"type":["dbl"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"13120","3":"13569","4":"19446","5":"22462","6":"26335","7":"29121","8":"32565","_rn_":"1"},{"1":"Albania","2":"2957","3":"3245","4":"3159","5":"3159","6":"3025","7":"2987","8":"3030","_rn_":"2"},{"1":"Algeria","2":"22009","3":"25191","4":"28322","5":"30639","6":"32918","7":"35950","8":"39543","_rn_":"3"},{"1":"American Samoa","2":"39","3":"48","4":"54","5":"58","6":"57","7":"56","8":"55","_rn_":"4"},{"1":"Andorra","2":"45","3":"53","4":"64","5":"66","6":"77","7":"85","8":"86","_rn_":"5"},{"1":"Angola","2":"8390","3":"9486","4":"11000","5":"12683","6":"14770","7":"17043","8":"19626","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[8]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+</div>
+<div id="loading-emissions-data" class="section level3">
+<h3>Loading Emissions Data</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGFnZV91cmwgPC0gXCJodHRwOi8vZWRnYXIuanJjLmVjLmV1cm9wYS5ldS9vdmVydmlldy5waHA/dj1DTzJ0c19wYzE5OTAtMjAxM1wiXG5YUEFUSCA8LSAnLy8qW0BpZD1cImxheW91dFwiXS9kaXZbM10vZGl2WzJdL2Rpdi9kaXYvZGl2L2Rpdi90YWJsZSdcblxudGFibGVfbGlzdCA8LVxuICBwYWdlX3VybCAlPiVcbiAgcmVhZF9odG1sKCkgJT4lXG4gIGh0bWxfbm9kZXMoeHBhdGggPSBYUEFUSCkgJT4lXG4gIGh0bWxfdGFibGUoZmlsbCA9IFRSVUUpXG5cbkNhcmJvblJhdyA8LVxuICB0YWJsZV9saXN0W1sxXV1cblxuaGVhZChDYXJib25SYXcpXG5gYGAifQ== -->
-<pre class="r"><code>page_url &lt;- &quot;http://edgar.jrc.ec.europa.eu/overview.php?v=CO2ts_pc1990-2013&quot;
-XPATH &lt;- '//*[@id=&quot;layout&quot;]/div[3]/div[2]/div/div/div/div/table'
-
-table_list &lt;-
-  page_url %&gt;%
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFibGVfbGlzdCA8LVxuICBFbWlzc2lvbnNVUkwgJT4lXG4gIHJlYWRfaHRtbCgpICU+JVxuICBodG1sX25vZGVzKHhwYXRoID0gRW1pc3Npb25zWFBBVEgpICU+JVxuICBodG1sX3RhYmxlKGZpbGwgPSBUUlVFKVxuQ2FyYm9uUmF3IDwtXG4gIHRhYmxlX2xpc3RbWzFdXVxuaGVhZChDYXJib25SYXcpXG5gYGAifQ== -->
+<pre class="r"><code>table_list &lt;-
+  EmissionsURL %&gt;%
   read_html() %&gt;%
-  html_nodes(xpath = XPATH) %&gt;%
+  html_nodes(xpath = EmissionsXPATH) %&gt;%
   html_table(fill = TRUE)
-
 CarbonRaw &lt;-
   table_list[[1]]
-
 head(CarbonRaw)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6OSwibnJvdyI6Nn0sInJkZiI6Ikg0c0lBQUFBQUFBQUE0V1UzMDdiTUJURzNaUVV0Uk1JYlhzQVhnRFAveExIbHhXN253Ukk2NjFKUTZsSW5TcEp4WGEzSndlY1lqdE9zTVpGbXU4YzI3L3puZFBXTno5WFpMRmFBQUFpTUkwbklKcHFlUkxwandrNEFmUHUvUWVBNlRjdHV1QkNQek96OFBXNk9xaTIvdnU3cXN2MTVWM1Z5dEtzQVBQK3NuellQRXExYlZxcFRPcDBXZDdyak96RFRWRzc4SHk1MDFFdTFlV3QzRlZ5VlBBN0ZnTGRWYXE1L2tWKzVITFBJRW41cUdTTUlPYklCaGhtU1dJREF0TUU5OXNJU1FQOFpNREhCSDNrSXliNklNVnB6K2VNL1pkUEVCcjZ4eXdOOEtsSEVRSjcvbEhtOFRNUzRBLzlKNWdHK0lUMjgyRVo4dnducE45R01mN0l4MFAvUEF2TmgzanpaOVFGRktMTTY0eW1LTURIQTM3R1ArTW4vY2dweEFoNWZCNllEeVpEdm1DZitSZWk1eE5CUFg1by9wZ08rSUtHdnQrQmY3ZEQ4eW5uUGwrTS9vbXhrcnVpTVVYbkpobXRzRlBFS2VvVWN5cHhLbldLTzVVNU5TNDdyNnRuYUV1ZmRWditIUnZTZlkvODVhVnNyRCtiWEt4bEsrRkRyYy9yNkdWMDVMVGF0MXM5TVEzdHJwaDRkSGhTanhJWEI5VTVXVi9sandmMWRLVi9UN3JDY2YzOU9UUHZtYWZuN3pXalY4T0tEV3RXcU0xV0ZkWjhLZThMZTRHZDY1YVBIY045dlZXdGJVVm5HOWg2RjkwaXIwcWJPVFlIWHQ0QVV6eHZyMUVGQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["X1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["X2"],"name":[2],"type":["chr"],"align":["left"]},{"label":["X3"],"name":[3],"type":["chr"],"align":["left"]},{"label":["X4"],"name":[4],"type":["chr"],"align":["left"]},{"label":["X5"],"name":[5],"type":["chr"],"align":["left"]},{"label":["X6"],"name":[6],"type":["chr"],"align":["left"]},{"label":["X7"],"name":[7],"type":["chr"],"align":["left"]},{"label":["X8"],"name":[8],"type":["chr"],"align":["left"]},{"label":["X9"],"name":[9],"type":["chr"],"align":["left"]}],"data":[{"1":"CountryWorld Total","2":"1990TonsCO2/cap4.267","3":"1995TonsCO2/cap4.120","4":"2000TonsCO2/cap4.146","5":"2005TonsCO2/cap4.513","6":"2010TonsCO2/cap4.780","7":"2011TonsCO2/cap4.870","8":"2012TonsCO2/cap4.894","9":"2013TonsCO2/cap4.936","_rn_":"1"},{"1":"","2":"","3":"","4":"","5":"","6":"","7":"","8":"","9":"","_rn_":"2"},{"1":"Afghanistan","2":"0.170","3":"0.049","4":"0.034","5":"0.023","6":"0.020","7":"0.020","8":"0.020","9":"0.020","_rn_":"3"},{"1":"Albania","2":"1.855","3":"0.616","4":"0.991","5":"1.480","6":"1.430","7":"1.544","8":"1.499","9":"1.536","_rn_":"4"},{"1":"Algeria","2":"2.651","3":"2.744","4":"2.608","5":"2.752","6":"3.084","7":"3.100","8":"3.293","9":"3.377","_rn_":"5"},{"1":"American Samoa","2":"0.226","3":"0.226","4":"0.282","5":"0.311","6":"0.360","7":"0.372","8":"0.382","9":"0.389","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[9]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+</div>
+<div id="cleaning-emissions-data" class="section level3">
+<h3>Cleaning Emissions Data</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbmFtZXMoQ2FyYm9uUmF3KSA8LVxuICBhcy5jaGFyYWN0ZXIodW5saXN0KENhcmJvblJhd1sxLF0pKVxuXG5DYXJib25SYXcyIDwtXG4gIENhcmJvblJhd1stMSwgXVxuXG5DYXJib25SYXczIDwtXG4gIENhcmJvblJhdzJbLTEsIF1cblxuQ2FyYm9uUmF3NCA8LVxuICBDYXJib25SYXczICU+JVxuICByZW5hbWUoYDE5OTBgID0gYDE5OTBUb25zQ08yL2NhcDQuMjY3YCxcbiAgICAgICAgIGAxOTk1YCA9IGAxOTk1VG9uc0NPMi9jYXA0LjEyMGAsXG4gICAgICAgICBgMjAwMGAgPSBgMjAwMFRvbnNDTzIvY2FwNC4xNDZgLFxuICAgICAgICAgYDIwMDVgID0gYDIwMDVUb25zQ08yL2NhcDQuNTEzYCxcbiAgICAgICAgIGAyMDEwYCA9IGAyMDEwVG9uc0NPMi9jYXA0Ljc4MGAsXG4gICAgICAgICBgMjAxMWAgPSBgMjAxMVRvbnNDTzIvY2FwNC44NzBgLFxuICAgICAgICAgYDIwMTJgID0gYDIwMTJUb25zQ08yL2NhcDQuODk0YCxcbiAgICAgICAgIGAyMDEzYCA9IGAyMDEzVG9uc0NPMi9jYXA0LjkzNmApXG5gYGAifQ== -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29sbmFtZXMoQ2FyYm9uUmF3KSA8LVxuICBhcy5jaGFyYWN0ZXIodW5saXN0KENhcmJvblJhd1sxLF0pKVxuQ2FyYm9uUmF3MiA8LVxuICBDYXJib25SYXdbLTEsIF1cbkNhcmJvblJhdzMgPC1cbiAgQ2FyYm9uUmF3MlstMSwgXVxuQ2FyYm9uUmF3NCA8LVxuICBDYXJib25SYXczICU+JVxuICAjTWFraW5nIG5hbWVzIG1vcmUgZWFzeSB0byB3cmFuZ2xlXG4gIHJlbmFtZShgMTk5MGAgPSBgMTk5MFRvbnNDTzIvY2FwNC4yNjdgLFxuICAgICAgICAgYDE5OTVgID0gYDE5OTVUb25zQ08yL2NhcDQuMTIwYCxcbiAgICAgICAgIGAyMDAwYCA9IGAyMDAwVG9uc0NPMi9jYXA0LjE0NmAsXG4gICAgICAgICBgMjAwNWAgPSBgMjAwNVRvbnNDTzIvY2FwNC41MTNgLFxuICAgICAgICAgYDIwMTBgID0gYDIwMTBUb25zQ08yL2NhcDQuNzgwYCxcbiAgICAgICAgIGAyMDExYCA9IGAyMDExVG9uc0NPMi9jYXA0Ljg3MGAsXG4gICAgICAgICBgMjAxMmAgPSBgMjAxMlRvbnNDTzIvY2FwNC44OTRgLFxuICAgICAgICAgYDIwMTNgID0gYDIwMTNUb25zQ08yL2NhcDQuOTM2YClcbmhlYWQoQ2FyYm9uUmF3NClcbmBgYCJ9 -->
 <pre class="r"><code>colnames(CarbonRaw) &lt;-
   as.character(unlist(CarbonRaw[1,]))
-
 CarbonRaw2 &lt;-
   CarbonRaw[-1, ]
-
 CarbonRaw3 &lt;-
   CarbonRaw2[-1, ]
-
 CarbonRaw4 &lt;-
   CarbonRaw3 %&gt;%
+  #Making names more easy to wrangle
   rename(`1990` = `1990TonsCO2/cap4.267`,
          `1995` = `1995TonsCO2/cap4.120`,
          `2000` = `2000TonsCO2/cap4.146`,
@@ -321,39 +331,48 @@ CarbonRaw4 &lt;-
          `2010` = `2010TonsCO2/cap4.780`,
          `2011` = `2011TonsCO2/cap4.870`,
          `2012` = `2012TonsCO2/cap4.894`,
-         `2013` = `2013TonsCO2/cap4.936`)</code></pre>
+         `2013` = `2013TonsCO2/cap4.936`)
+head(CarbonRaw4)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6OSwibnJvdyI6Nn0sInJkZiI6Ikg0c0lBQUFBQUFBQUE0V1UyM0tiTUJDR1pYeXEzVWttVTcrQVh5QWFIUkJJbDdSOWdxUXp6YTFzQ0dHS1JRYkR0SDM1TklJZ3RLWHU1RUptLzlYcTArb1grTzdyQTlzK2JCRkNBWm92WnlpWTIzQVIySjhaV3FCTjkveUYwSHhuZzA3YzJMRWFKajRtai9tVE5zVzUwV1pJclpQeVlEUGF5enlyUjNtZG5LdzZhck8vMTZmS1pWZUp5YXZTcVYxaW1pSnY5VjZiZFA5WjE0YzIxWk45bHdUVG1EaEJzUlRDQ1lZalFYMFpZNUV2STlFb1JBLzRoMHBDNVVWRUkwK053L0IvVkRMT2hGaFJlb0hLd1ZxbEtPaVZTRUNWekZNcEZaN0t4U1VxNDc0OGxBVDBLcGd2NHhUWW9TTGlxVkYweVFFR2ZBMzVLRGdtRXB5Q2U1Q2xDdTU5SmVIRlhnRlZlQ3M1cGdTQWVBd2NJSnpCMjVMdjlhcVVwekxGQVZYK1JWV2V5dXpGdk5Ncmp6eVZ4ekdrS2tpVm9GY1pUejZncGRHbjdEeHN0Um1Tbjc1VXJXbnEzOStydWt6MzM2cEdsOFBNZ2lwRlFPemVoQVVqbzF0ZERQSVU1TWNMNzJJR1lqNXBhMU5YUDdGcjdhcDN3WDdvWFhIWDg2RFhkbnlZbnVkWTZyTTdqMHR1VTkxby9GaGJubFV2a3lYcjZya3BLbU1YQmJ1QkRoZlA2a25pcGpWZForbnQ4YWsxUDI2bDZIYm81OS9HMWZCY2dYanp0bWZ3WjJBdDNmOUxadkxDWks3NVVoOHlaL1cxdGFCM0FEL1hoV25jVVd6MmpCdHdKZHRqVmJwTWZ6ajA4Z3BCaktCak9BVUFBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["CountryWorld Total"],"name":[1],"type":["chr"],"align":["left"]},{"label":["1990"],"name":[2],"type":["chr"],"align":["left"]},{"label":["1995"],"name":[3],"type":["chr"],"align":["left"]},{"label":["2000"],"name":[4],"type":["chr"],"align":["left"]},{"label":["2005"],"name":[5],"type":["chr"],"align":["left"]},{"label":["2010"],"name":[6],"type":["chr"],"align":["left"]},{"label":["2011"],"name":[7],"type":["chr"],"align":["left"]},{"label":["2012"],"name":[8],"type":["chr"],"align":["left"]},{"label":["2013"],"name":[9],"type":["chr"],"align":["left"]}],"data":[{"1":"Afghanistan","2":"0.170","3":"0.049","4":"0.034","5":"0.023","6":"0.020","7":"0.020","8":"0.020","9":"0.020","_rn_":"3"},{"1":"Albania","2":"1.855","3":"0.616","4":"0.991","5":"1.480","6":"1.430","7":"1.544","8":"1.499","9":"1.536","_rn_":"4"},{"1":"Algeria","2":"2.651","3":"2.744","4":"2.608","5":"2.752","6":"3.084","7":"3.100","8":"3.293","9":"3.377","_rn_":"5"},{"1":"American Samoa","2":"0.226","3":"0.226","4":"0.282","5":"0.311","6":"0.360","7":"0.372","8":"0.382","9":"0.389","_rn_":"6"},{"1":"Angola","2":"1.066","3":"1.004","4":"1.115","5":"0.960","6":"0.953","7":"1.032","8":"1.039","9":"1.038","_rn_":"7"},{"1":"Antigua and Barbuda","2":"5.170","3":"4.911","4":"4.351","5":"4.660","6":"5.041","7":"5.178","8":"5.234","9":"5.187","_rn_":"8"}],"options":{"columns":{"min":{},"max":[10],"total":[9]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChDYXJib25SYXc0KVxuYGBgIn0= -->
-<pre class="r"><code>head(CarbonRaw4)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQ2FyYm9uQ2xlYW5lZCA8LVxuICBDYXJib25SYXc0ICU+JVxuICB0cmFuc211dGUoYENvdW50cnlgID0gYENvdW50cnlXb3JsZCBUb3RhbGAsXG4gICAgICAgICBgMTk5MCBFbWlzc2lvbnNgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAxOTkwYCksXG4gICAgICAgICBgMTk5NSBFbWlzc2lvbnNgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAxOTk1YCksXG4gICAgICAgICBgMjAwMCBFbWlzc2lvbnNgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAyMDAwYCksXG4gICAgICAgICBgMjAwNSBFbWlzc2lvbnNgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAyMDA1YCksXG4gICAgICAgICBgMjAxMCBFbWlzc2lvbnNgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAyMDEwYClcbiAgICAgICAgICkgXG5cbmhlYWQoQ2FyYm9uQ2xlYW5lZClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQ2FyYm9uQ2xlYW5lZCA8LVxuICBDYXJib25SYXc0ICU+JVxuICAjIE1ha2luZyBFbWlzc2lvbnMgYSBkYmwgdmFyaWFibGVcbiAgdHJhbnNtdXRlKGBDb3VudHJ5YCA9IGBDb3VudHJ5V29ybGQgVG90YWxgLFxuICAgICAgICAgYDE5OTBFbWlzc2lvbnNQZXJDYXBgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAxOTkwYCksXG4gICAgICAgICBgMTk5NUVtaXNzaW9uc1BlckNhcGAgPSBhcy5udW1lcmljKENhcmJvblJhdzQkYDE5OTVgKSxcbiAgICAgICAgIGAyMDAwRW1pc3Npb25zUGVyQ2FwYCA9IGFzLm51bWVyaWMoQ2FyYm9uUmF3NCRgMjAwMGApLFxuICAgICAgICAgYDIwMDVFbWlzc2lvbnNQZXJDYXBgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAyMDA1YCksXG4gICAgICAgICBgMjAxMEVtaXNzaW9uc1BlckNhcGAgPSBhcy5udW1lcmljKENhcmJvblJhdzQkYDIwMTBgKVxuICAgICAgICAgKSBcbmhlYWQoQ2FyYm9uQ2xlYW5lZClcbmBgYCJ9 -->
 <pre class="r"><code>CarbonCleaned &lt;-
   CarbonRaw4 %&gt;%
+  # Making Emissions a dbl variable
   transmute(`Country` = `CountryWorld Total`,
-         `1990 Emissions` = as.numeric(CarbonRaw4$`1990`),
-         `1995 Emissions` = as.numeric(CarbonRaw4$`1995`),
-         `2000 Emissions` = as.numeric(CarbonRaw4$`2000`),
-         `2005 Emissions` = as.numeric(CarbonRaw4$`2005`),
-         `2010 Emissions` = as.numeric(CarbonRaw4$`2010`)
+         `1990EmissionsPerCap` = as.numeric(CarbonRaw4$`1990`),
+         `1995EmissionsPerCap` = as.numeric(CarbonRaw4$`1995`),
+         `2000EmissionsPerCap` = as.numeric(CarbonRaw4$`2000`),
+         `2005EmissionsPerCap` = as.numeric(CarbonRaw4$`2005`),
+         `2010EmissionsPerCap` = as.numeric(CarbonRaw4$`2010`)
          ) 
-
 head(CarbonCleaned)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6NiwibnJvdyI6Nn0sInJkZiI6Ikg0c0lBQUFBQUFBQUF3dHlpVERpaXVCaVlHQmdZbUJtWldSZ1lnWXlXWmlBQkNNREN3TW5pSzVnWUdBV0JqTFlnRmdBVEVNa3VCM1Qwak1TOHpLTFN4THpvRUxzampsSlFKRkVCRGM5dFFqTzVYUE1CZktTRS9NVWdoTno4MkdpYkk1NTZmazVNSjZ3WTE1SlpucHBva0ppWG9xQ1UySlJVbWxLSWtnclNLSDkwVVA5TVJwZkQ5di9YU2RTOWRCOW5RT3JxWDNOMjRrWjltZUFSTkVHUmZ1UGZHRXNFcE5MSFVRZzhuQjlLOFhhdFpsNHZPd2ZiM05kZU9wQXN3UHJaeERqSUZ6ZkI0RWszMHNmVnprSUw3bXJMelYvSDF6ZlFxQ3N3cEU1OXUraCtsakEwdVgybDNnOGQ4V1oydHQvdk01bFc3RDR1b05nZWs2Mzg5Ukd1TDdwdmY3M3JWT2k3TDlEM2NrR2RGWEpuaXo3eTgvQjZ1emY3UWg4M1NxM3cwRm9NY2lBSlhCOVUwQ3FSYXJ0djRHb3FvY09IR3M0RE5WZVZ0cERyT0d5ZjFmMzg3YlNoYWNPSXBxL2dTYTVvRVVVYTE1aWJtb3hXaVN4TytlWDVwVVVWY0tDMTlEUzBzQTFON080T0RNL3J6Z2d0Y2c1c1FCSnloU0hsSkdCQVM1ZFFDbmN1Z3d4ZEtFNm1iTW92MXdQNW14ZVVDSnNZQUFETm5TL0plY2tGc1A4QmhQa1Nra3NTZFJMS3dMcUIvTCtvV2xoenk4b0FWa01OQlNVZWxuUk5ETVdvUWtJbE9hQlhKS2ltNXhSbXBldGEyRUdzZ0VzRDhHOFVKb05sUTJ5aytrLzFDeFdXSnBPelV2UHpFdUZPVDRuTVNrMUI1WUpnRjRHKzFpdm9DZ3pyd1RtRmFCb3NWNUpma2tpVEIxWGNuNE9UQVRzT1laL0FFeVVJZ0tzQXdBQSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["1990EmissionsPerCap"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["1995EmissionsPerCap"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["2000EmissionsPerCap"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["2005EmissionsPerCap"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["2010EmissionsPerCap"],"name":[6],"type":["dbl"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"0.170","3":"0.049","4":"0.034","5":"0.023","6":"0.020","_rn_":"1"},{"1":"Albania","2":"1.855","3":"0.616","4":"0.991","5":"1.480","6":"1.430","_rn_":"2"},{"1":"Algeria","2":"2.651","3":"2.744","4":"2.608","5":"2.752","6":"3.084","_rn_":"3"},{"1":"American Samoa","2":"0.226","3":"0.226","4":"0.282","5":"0.311","6":"0.360","_rn_":"4"},{"1":"Angola","2":"1.066","3":"1.004","4":"1.115","5":"0.960","6":"0.953","_rn_":"5"},{"1":"Antigua and Barbuda","2":"5.170","3":"4.911","4":"4.351","5":"4.660","6":"5.041","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[6]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQ2FyYm9uQ2xlYW5lZCRDb3VudHJ5IDwtXG4gIENhcmJvbkNsZWFuZWQkQ291bnRyeSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiS29yZWEsIERlbW9jcmF0aWMgUGVvcGxlJ3MgUmVwdWJsaWMgb2ZcIiwgXCJTb3V0aCBLb3JlYVwiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiS29yZWEsIFJlcHVibGljIG9mXCIsIFwiTm9ydGggS29yZWFcIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIkxhbyBQZW9wbGUncyBEZW1vY3JhdGljIFJlcHVibGljXCIsIFwiTGFvc1wiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiTWFjZWRvbmlhLCB0aGUgZm9ybWVyIFl1Z29zbGF2IFJlcHVibGljIG9mXCIsIFwiTm9ydGggTWFjZWRvbmlhXCIpICU+JVxuICByZWdleFBpcGVzOjpzdWIoXCJMaWJ5YW4gQXJhYiBKYW1haGlyaXlhXCIsIFwiTGlieWFcIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIk1hY2FvXCIsIFwiTWFjYXVcIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIk1vbGRvdmEsIFJlcHVibGljIG9mXCIsIFwiTW9sZG92YVwiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiUnVzc2lhbiBGZWRlcmF0aW9uXCIsIFwiUnVzc2lhXCIpICU+JVxuICByZWdleFBpcGVzOjpzdWIoXCJDb25nb190aGUgRGVtb2NyYXRpYyBSZXB1YmxpYyBvZiB0aGVcIiwgXCJEZW1vY3JhdGljIFJlcHVibGljIG9mIHRoZSBDb25nb1wiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiQ29uZ29cIiwgXCJSZXB1YmxpYyBvZiB0aGUgQ29uZ29cIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIkRlbW9jcmF0aWMgUmVwdWJsaWMgb2YgdGhlIFJlcHVibGljIG9mIHRoZSBDb25nb1wiLCBcIkRlbW9jcmF0aWMgUmVwdWJsaWMgb2YgdGhlIENvbmdvXCIpICU+JVxuICByZWdleFBpcGVzOjpzdWIoXCJDb3RlIGQnSXZvaXJlXCIsIFwiSXZvcnkgQ29hc3RcIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIklyYW4sIElzbGFtaWMgUmVwdWJsaWMgb2ZcIiwgXCJJcmFuXCIpICU+JVxuICByZWdleFBpcGVzOjpzdWIoXCJTYW8gVG9tZSBhbmQgUHJpbmNpcGVcIiwgXCJTw6NvIFRvbcOpIGFuZCBQcsOtbmNpcGVcIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIlRhaXdhbl9Qcm92aW5jZSBvZiBDaGluYVwiLCBcIlRhaXdhblwiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiVGFuemFuaWFfVW5pdGVkIFJlcHVibGljIG9mXCIsIFwiVGFuemFuaWFcIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIlN5cmlhbiBBcmFiIFJlcHVibGljXCIsIFwiU3lyaWFcIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIlZpZXQgTmFtXCIsIFwiVmlldG5hbVwiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiVmlyZ2luIElzbGFuZHNfQnJpdGlzaFwiLCBcIkJyaXRpc2ggVmlyZ2luIElzbGFuZHNcIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIlZpcmdpbiBJc2xhbmRzX1VTQVwiLCBcIlVuaXRlZCBTdGF0ZXMgVmlyZ2luIElzbGFuZHNcIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIkJydW5laSBEYXJ1c3NhbGFtXCIsIFwiQnJ1bmVpXCIpXG5cblxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuQ2FyYm9uQ2xlYW5lZCRDb3VudHJ5IDwtXG4gIENhcmJvbkNsZWFuZWQkQ291bnRyeSAlPiVcbiAgIyBSZXBsYWNpbmcgY291bnRyeSBuYW1lcyB0aGF0IGFyZSBpbiBhIGRpZmZlcmVudCBmb3JtIGluIHRoZSBFbWlzc2lvbnMgZGF0YSB0aGFuIHRoZSBQb3AgRGF0YVxuICByZWdleFBpcGVzOjpzdWIoXCJLb3JlYSwgRGVtb2NyYXRpYyBQZW9wbGUncyBSZXB1YmxpYyBvZlwiLCBcIlNvdXRoIEtvcmVhXCIpICU+JVxuICByZWdleFBpcGVzOjpzdWIoXCJLb3JlYSwgUmVwdWJsaWMgb2ZcIiwgXCJOb3J0aCBLb3JlYVwiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiTGFvIFBlb3BsZSdzIERlbW9jcmF0aWMgUmVwdWJsaWNcIiwgXCJMYW9zXCIpICU+JVxuICByZWdleFBpcGVzOjpzdWIoXCJNYWNlZG9uaWEsIHRoZSBmb3JtZXIgWXVnb3NsYXYgUmVwdWJsaWMgb2ZcIiwgXCJOb3J0aCBNYWNlZG9uaWFcIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIkxpYnlhbiBBcmFiIEphbWFoaXJpeWFcIiwgXCJMaWJ5YVwiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiTWFjYW9cIiwgXCJNYWNhdVwiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiTW9sZG92YSwgUmVwdWJsaWMgb2ZcIiwgXCJNb2xkb3ZhXCIpICU+JVxuICByZWdleFBpcGVzOjpzdWIoXCJSdXNzaWFuIEZlZGVyYXRpb25cIiwgXCJSdXNzaWFcIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIkNvbmdvX3RoZSBEZW1vY3JhdGljIFJlcHVibGljIG9mIHRoZVwiLCBcIkRlbW9jcmF0aWMgUmVwdWJsaWMgb2YgdGhlIENvbmdvXCIpICU+JVxuICByZWdleFBpcGVzOjpzdWIoXCJDb25nb1wiLCBcIlJlcHVibGljIG9mIHRoZSBDb25nb1wiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiRGVtb2NyYXRpYyBSZXB1YmxpYyBvZiB0aGUgUmVwdWJsaWMgb2YgdGhlIENvbmdvXCIsIFwiRGVtb2NyYXRpYyBSZXB1YmxpYyBvZiB0aGUgQ29uZ29cIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIkNvdGUgZCdJdm9pcmVcIiwgXCJJdm9yeSBDb2FzdFwiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiSXJhbiwgSXNsYW1pYyBSZXB1YmxpYyBvZlwiLCBcIklyYW5cIikgJT4lXG4gIHJlZ2V4UGlwZXM6OnN1YihcIlNhbyBUb21lIGFuZCBQcmluY2lwZVwiLCBcIlPDo28gVG9tw6kgYW5kIFByw61uY2lwZVwiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiVGFpd2FuX1Byb3ZpbmNlIG9mIENoaW5hXCIsIFwiVGFpd2FuXCIpICU+JVxuICByZWdleFBpcGVzOjpzdWIoXCJUYW56YW5pYV9Vbml0ZWQgUmVwdWJsaWMgb2ZcIiwgXCJUYW56YW5pYVwiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiU3lyaWFuIEFyYWIgUmVwdWJsaWNcIiwgXCJTeXJpYVwiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiVmlldCBOYW1cIiwgXCJWaWV0bmFtXCIpICU+JVxuICByZWdleFBpcGVzOjpzdWIoXCJWaXJnaW4gSXNsYW5kc19Ccml0aXNoXCIsIFwiQnJpdGlzaCBWaXJnaW4gSXNsYW5kc1wiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiVmlyZ2luIElzbGFuZHNfVVNBXCIsIFwiVW5pdGVkIFN0YXRlcyBWaXJnaW4gSXNsYW5kc1wiKSAlPiVcbiAgcmVnZXhQaXBlczo6c3ViKFwiQnJ1bmVpIERhcnVzc2FsYW1cIiwgXCJCcnVuZWlcIilcbmBgYCJ9 -->
 <pre class="r"><code>CarbonCleaned$Country &lt;-
   CarbonCleaned$Country %&gt;%
+  # Replacing country names that are in a different form in the Emissions data than the Pop Data
   regexPipes::sub(&quot;Korea, Democratic People's Republic of&quot;, &quot;South Korea&quot;) %&gt;%
   regexPipes::sub(&quot;Korea, Republic of&quot;, &quot;North Korea&quot;) %&gt;%
   regexPipes::sub(&quot;Lao People's Democratic Republic&quot;, &quot;Laos&quot;) %&gt;%
@@ -374,11 +393,13 @@ head(CarbonCleaned)</code></pre>
   regexPipes::sub(&quot;Viet Nam&quot;, &quot;Vietnam&quot;) %&gt;%
   regexPipes::sub(&quot;Virgin Islands_British&quot;, &quot;British Virgin Islands&quot;) %&gt;%
   regexPipes::sub(&quot;Virgin Islands_USA&quot;, &quot;United States Virgin Islands&quot;) %&gt;%
-  regexPipes::sub(&quot;Brunei Darussalam&quot;, &quot;Brunei&quot;)
-</code></pre>
+  regexPipes::sub(&quot;Brunei Darussalam&quot;, &quot;Brunei&quot;)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+</div>
+<div id="joining-data" class="section level3">
+<h3>Joining Data</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSm9pbmVkVGFibGU8LVxuICBDYXJib25DbGVhbmVkICU+JVxuICBsZWZ0X2pvaW4oUG9wX0NvdW50cnlfQ2xlYW5lZCwgYnkgPSBcIkNvdW50cnlcIilcbmBgYCJ9 -->
@@ -393,44 +414,45 @@ head(CarbonCleaned)</code></pre>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2xpbXBzZShKb2luZWRUYWJsZSlcbmBgYCJ9 -->
 <pre class="r"><code>glimpse(JoinedTable)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiT2JzZXJ2YXRpb25zOiAyMDlcblZhcmlhYmxlczogMTNcbiQgQ291bnRyeSAgICAgICAgICA8Y2hyPiBcIkFmZ2hhbmlzdGFuXCIsIFwiQWxiYW5pYVwiLCBcIkFsZ2VyaWFcIiwgXCJBbWVyaWNhbiBTYW1vYVwiLCBcIkFuZ29sYVwiLCBcIkFudGlndS4uLlxuJCBgMTk5MCBFbWlzc2lvbnNgIDxkYmw+IDAuMTcwLCAxLjg1NSwgMi42NTEsIDAuMjI2LCAxLjA2NiwgNS4xNzAsIDMuMjc1LCA1LjkwMiwgOS45MTIsIDE2LjA0NSwgOC4uLlxuJCBgMTk5NSBFbWlzc2lvbnNgIDxkYmw+IDAuMDQ5LCAwLjYxNiwgMi43NDQsIDAuMjI2LCAxLjAwNCwgNC45MTEsIDMuNDczLCAxLjE0MywgOC43MjksIDE2LjI4NywgOC4uLlxuJCBgMjAwMCBFbWlzc2lvbnNgIDxkYmw+IDAuMDM0LCAwLjk5MSwgMi42MDgsIDAuMjgyLCAxLjExNSwgNC4zNTEsIDQuMDM0LCAxLjIxMiwgMi43NDUsIDE4LjUxNiwgOC4uLlxuJCBgMjAwNSBFbWlzc2lvbnNgIDxkYmw+IDAuMDIzLCAxLjQ4MCwgMi43NTIsIDAuMzExLCAwLjk2MCwgNC42NjAsIDQuMDg4LCAxLjQ5MSwgMi42MTUsIDIwLjE4OCwgMS4uLlxuJCBgMjAxMCBFbWlzc2lvbnNgIDxkYmw+IDAuMDIwLCAxLjQzMCwgMy4wODQsIDAuMzYwLCAwLjk1MywgNS4wNDEsIDQuMjUzLCAyLjE0OSwgMy44MjgsIDE5LjM1NCwgOS4uLlxuJCBgMTk4NSBQb3BgICAgICAgIDxkYmw+IDEzMTIwLCAyOTU3LCAyMjAwOSwgMzksIDgzOTAsIDY1LCAzMDY3MiwgMzQ2NSwgNjIsIDE1Njk2LCA3NTYwLCA2ODQ2LCAyMi4uLlxuJCBgMTk5MCBQb3BgICAgICAgIDxkYmw+IDEzNTY5LCAzMjQ1LCAyNTE5MSwgNDgsIDk0ODYsIDY1LCAzMzAzNiwgMzUzMCwgNjQsIDE2OTU3LCA3NzIzLCA3NDk4LCAyNC4uLlxuJCBgMTk5NSBQb3BgICAgICAgIDxkYmw+IDE5NDQ2LCAzMTU5LCAyODMyMiwgNTQsIDExMDAwLCA2OSwgMzUyNzQsIDMxMzEsIDgwLCAxNzk3NiwgODA0OCwgODA1MSwgMi4uLlxuJCBgMjAwMCBQb3BgICAgICAgIDxkYmw+IDIyNDYyLCAzMTU5LCAzMDYzOSwgNTgsIDEyNjgzLCA3NiwgMzczMzYsIDMxMDEsIDkwLCAxOTA1NCwgODExNCwgODQ2NCwgMi4uLlxuJCBgMjAwNSBQb3BgICAgICAgIDxkYmw+IDI2MzM1LCAzMDI1LCAzMjkxOCwgNTcsIDE0NzcwLCA4MiwgMzkxODIsIDMwODUsIDk3LCAyMDIzMywgODMxNSwgODgyNiwgMi4uLlxuJCBgMjAxMCBQb3BgICAgICAgIDxkYmw+IDI5MTIxLCAyOTg3LCAzNTk1MCwgNTYsIDE3MDQzLCA4NywgNDEzNDQsIDMwNzIsIDEwNSwgMjE1MTYsIDg0NDgsIDkzMDIsIC4uLlxuJCBgMjAxNSBQb3BgICAgICAgIDxkYmw+IDMyNTY1LCAzMDMwLCAzOTU0MywgNTUsIDE5NjI2LCA5MywgNDM0MzIsIDMwNTcsIDExMywgMjI3NTIsIDg2NjYsIDk3ODEsIC4uLlxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiT2JzZXJ2YXRpb25zOiAyMDlcblZhcmlhYmxlczogMTNcbiQgQ291bnRyeSAgICAgICAgICAgICAgIDxjaHI+IFwiQWZnaGFuaXN0YW5cIiwgXCJBbGJhLi4uXG4kIGAxOTkwRW1pc3Npb25zUGVyQ2FwYCA8ZGJsPiAwLjE3MCwgMS44NTUsIDIuNjUxLC4uLlxuJCBgMTk5NUVtaXNzaW9uc1BlckNhcGAgPGRibD4gMC4wNDksIDAuNjE2LCAyLjc0NCwuLi5cbiQgYDIwMDBFbWlzc2lvbnNQZXJDYXBgIDxkYmw+IDAuMDM0LCAwLjk5MSwgMi42MDgsLi4uXG4kIGAyMDA1RW1pc3Npb25zUGVyQ2FwYCA8ZGJsPiAwLjAyMywgMS40ODAsIDIuNzUyLC4uLlxuJCBgMjAxMEVtaXNzaW9uc1BlckNhcGAgPGRibD4gMC4wMjAsIDEuNDMwLCAzLjA4NCwuLi5cbiQgYDE5ODUgUG9wYCAgICAgICAgICAgIDxkYmw+IDEzMTIwLCAyOTU3LCAyMjAwOSwgLi4uXG4kIGAxOTkwIFBvcGAgICAgICAgICAgICA8ZGJsPiAxMzU2OSwgMzI0NSwgMjUxOTEsIC4uLlxuJCBgMTk5NSBQb3BgICAgICAgICAgICAgPGRibD4gMTk0NDYsIDMxNTksIDI4MzIyLCAuLi5cbiQgYDIwMDAgUG9wYCAgICAgICAgICAgIDxkYmw+IDIyNDYyLCAzMTU5LCAzMDYzOSwgLi4uXG4kIGAyMDA1IFBvcGAgICAgICAgICAgICA8ZGJsPiAyNjMzNSwgMzAyNSwgMzI5MTgsIC4uLlxuJCBgMjAxMCBQb3BgICAgICAgICAgICAgPGRibD4gMjkxMjEsIDI5ODcsIDM1OTUwLCAuLi5cbiQgYDIwMTUgUG9wYCAgICAgICAgICAgIDxkYmw+IDMyNTY1LCAzMDMwLCAzOTU0MywgLi4uXG4ifQ== -->
 <pre><code>Observations: 209
 Variables: 13
-$ Country          &lt;chr&gt; &quot;Afghanistan&quot;, &quot;Albania&quot;, &quot;Algeria&quot;, &quot;American Samoa&quot;, &quot;Angola&quot;, &quot;Antigu...
-$ `1990 Emissions` &lt;dbl&gt; 0.170, 1.855, 2.651, 0.226, 1.066, 5.170, 3.275, 5.902, 9.912, 16.045, 8...
-$ `1995 Emissions` &lt;dbl&gt; 0.049, 0.616, 2.744, 0.226, 1.004, 4.911, 3.473, 1.143, 8.729, 16.287, 8...
-$ `2000 Emissions` &lt;dbl&gt; 0.034, 0.991, 2.608, 0.282, 1.115, 4.351, 4.034, 1.212, 2.745, 18.516, 8...
-$ `2005 Emissions` &lt;dbl&gt; 0.023, 1.480, 2.752, 0.311, 0.960, 4.660, 4.088, 1.491, 2.615, 20.188, 1...
-$ `2010 Emissions` &lt;dbl&gt; 0.020, 1.430, 3.084, 0.360, 0.953, 5.041, 4.253, 2.149, 3.828, 19.354, 9...
-$ `1985 Pop`       &lt;dbl&gt; 13120, 2957, 22009, 39, 8390, 65, 30672, 3465, 62, 15696, 7560, 6846, 22...
-$ `1990 Pop`       &lt;dbl&gt; 13569, 3245, 25191, 48, 9486, 65, 33036, 3530, 64, 16957, 7723, 7498, 24...
-$ `1995 Pop`       &lt;dbl&gt; 19446, 3159, 28322, 54, 11000, 69, 35274, 3131, 80, 17976, 8048, 8051, 2...
-$ `2000 Pop`       &lt;dbl&gt; 22462, 3159, 30639, 58, 12683, 76, 37336, 3101, 90, 19054, 8114, 8464, 2...
-$ `2005 Pop`       &lt;dbl&gt; 26335, 3025, 32918, 57, 14770, 82, 39182, 3085, 97, 20233, 8315, 8826, 2...
-$ `2010 Pop`       &lt;dbl&gt; 29121, 2987, 35950, 56, 17043, 87, 41344, 3072, 105, 21516, 8448, 9302, ...
-$ `2015 Pop`       &lt;dbl&gt; 32565, 3030, 39543, 55, 19626, 93, 43432, 3057, 113, 22752, 8666, 9781, ...</code></pre>
+$ Country               &lt;chr&gt; &quot;Afghanistan&quot;, &quot;Alba...
+$ `1990EmissionsPerCap` &lt;dbl&gt; 0.170, 1.855, 2.651,...
+$ `1995EmissionsPerCap` &lt;dbl&gt; 0.049, 0.616, 2.744,...
+$ `2000EmissionsPerCap` &lt;dbl&gt; 0.034, 0.991, 2.608,...
+$ `2005EmissionsPerCap` &lt;dbl&gt; 0.023, 1.480, 2.752,...
+$ `2010EmissionsPerCap` &lt;dbl&gt; 0.020, 1.430, 3.084,...
+$ `1985 Pop`            &lt;dbl&gt; 13120, 2957, 22009, ...
+$ `1990 Pop`            &lt;dbl&gt; 13569, 3245, 25191, ...
+$ `1995 Pop`            &lt;dbl&gt; 19446, 3159, 28322, ...
+$ `2000 Pop`            &lt;dbl&gt; 22462, 3159, 30639, ...
+$ `2005 Pop`            &lt;dbl&gt; 26335, 3025, 32918, ...
+$ `2010 Pop`            &lt;dbl&gt; 29121, 2987, 35950, ...
+$ `2015 Pop`            &lt;dbl&gt; 32565, 3030, 39543, ...</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSm9pbmVkVGFibGUyIDwtXG4gIEpvaW5lZFRhYmxlICU+JVxuICBtdXRhdGUoSm9pbmVkVGFibGUkYDE5ODUgUG9wYCAqIDEwMDAsXG4gICAgICAgICBKb2luZWRUYWJsZSRgMTk5MCBQb3BgICogMTAwMCxcbiAgICAgICAgIEpvaW5lZFRhYmxlJGAxOTk1IFBvcGAgKiAxMDAwLFxuICAgICAgICAgSm9pbmVkVGFibGUkYDIwMDAgUG9wYCAqIDEwMDAsXG4gICAgICAgICBKb2luZWRUYWJsZSRgMjAwNSBQb3BgICogMTAwMCxcbiAgICAgICAgIEpvaW5lZFRhYmxlJGAyMDEwIFBvcGAgKiAxMDAwLFxuICAgICAgICAgSm9pbmVkVGFibGUkYDIwMTUgUG9wYCAqIDEwMDApICU+JVxuICBzZWxlY3QoLWAxOTg1IFBvcGAsIC1gMTk5MCBQb3BgLCAtYDE5OTUgUG9wYCwgLWAyMDAwIFBvcGAsIC1gMjAwNSBQb3BgLCAtYDIwMTAgUG9wYCwgLWAyMDE1IFBvcGApXG5oZWFkKEpvaW5lZFRhYmxlMilcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSm9pbmVkVGFibGUyIDwtXG4gIEpvaW5lZFRhYmxlICU+JVxuICAjIFJlbmFtaW5nIHZhcmlhYmxlIGFuZCBtYWtpbmcgbnVtYmVycyB0cnVlXG4gIG11dGF0ZShgMTk4NVBvcGAgPSBKb2luZWRUYWJsZSRgMTk4NSBQb3BgICogMTAwMCxcbiAgICAgICAgIGAxOTkwUG9wYCA9IEpvaW5lZFRhYmxlJGAxOTkwIFBvcGAgKiAxMDAwLFxuICAgICAgICAgYDE5OTVQb3BgID0gSm9pbmVkVGFibGUkYDE5OTUgUG9wYCAqIDEwMDAsXG4gICAgICAgICBgMjAwMFBvcGAgPSBKb2luZWRUYWJsZSRgMjAwMCBQb3BgICogMTAwMCxcbiAgICAgICAgIGAyMDA1UG9wYCA9IEpvaW5lZFRhYmxlJGAyMDA1IFBvcGAgKiAxMDAwLFxuICAgICAgICAgYDIwMTBQb3BgID0gSm9pbmVkVGFibGUkYDIwMTAgUG9wYCAqIDEwMDAsXG4gICAgICAgICBgMjAxNVBvcGAgPSBKb2luZWRUYWJsZSRgMjAxNSBQb3BgICogMTAwMCkgJT4lXG4gIHNlbGVjdCgtYDE5ODUgUG9wYCwgLWAxOTkwIFBvcGAsIC1gMTk5NSBQb3BgLCAtYDIwMDAgUG9wYCwgLWAyMDA1IFBvcGAsIC1gMjAxMCBQb3BgLCAtYDIwMTUgUG9wYClcbmhlYWQoSm9pbmVkVGFibGUyKVxuYGBgIn0= -->
 <pre class="r"><code>JoinedTable2 &lt;-
   JoinedTable %&gt;%
-  mutate(JoinedTable$`1985 Pop` * 1000,
-         JoinedTable$`1990 Pop` * 1000,
-         JoinedTable$`1995 Pop` * 1000,
-         JoinedTable$`2000 Pop` * 1000,
-         JoinedTable$`2005 Pop` * 1000,
-         JoinedTable$`2010 Pop` * 1000,
-         JoinedTable$`2015 Pop` * 1000) %&gt;%
+  # Renaming variable and making numbers true
+  mutate(`1985Pop` = JoinedTable$`1985 Pop` * 1000,
+         `1990Pop` = JoinedTable$`1990 Pop` * 1000,
+         `1995Pop` = JoinedTable$`1995 Pop` * 1000,
+         `2000Pop` = JoinedTable$`2000 Pop` * 1000,
+         `2005Pop` = JoinedTable$`2005 Pop` * 1000,
+         `2010Pop` = JoinedTable$`2010 Pop` * 1000,
+         `2015Pop` = JoinedTable$`2015 Pop` * 1000) %&gt;%
   select(-`1985 Pop`, -`1990 Pop`, -`1995 Pop`, -`2000 Pop`, -`2005 Pop`, -`2010 Pop`, -`2015 Pop`)
 head(JoinedTable2)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTMsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFCZ3R5aVREaWl1QmlZR0JnWW1CbVpXUmdZZ1l5V1ppQUJDTURDd01uaUs1Z1lHQVdCako0Z1ZnQWlObWdFdHlPYWVrWmlYbVp4U1dKZVZBaGRzZWNKS0JJSW9LYm5sb0U1L0k1NWdKNXlZbDVDc0dKdWZrd1VUYkh2UFQ4SEJoUDJER3ZKRE85TkZFaE1TOUZ3U214S0trMEpSR2tGYVRRL3VpaC9oaU5yNGZ0LzY0VHFYcm92czZCMWRTKzV1M0VEUHN6UUtKb2c2TDlSNzR3Rm9uSnBRNGlFSG00dnBWaTdkcE1QRjcyajdlNUxqeDFvTm1COVRPSWNSQ3U3NE5Ba3UrbGo2c2NoSmZjMVplYXZ3K3VieUZRVnVISUhQdjNVSDBzWU9seSswczhucnZpVE8zdFAxN25zaTFZZk4xQk1EMm4yM2xxSTF6ZjlGNy8rOVlwVWZiZm9lNWtBN3FxWkUrVy9lWG5ZSFgyNzNZRXZtNlYyK0VndEJoa3dCSzR2aWtnMVNMVjl0OUFWTlZEQjQ0MUhJWnFMeXZ0SWRadzJiK3IrM2xiNmNKVEJ4SE4zMENUWEdENkhEUFpISUEwZzZOYmZ3cVlMdm5yMVFDa0hSNXpNNEQ1Q1F5Z3NHQndlTCtYQVFxZytoN1dndVU5RGo0QjB4VnNxbUI5endzZytwTEVyMkhWVjlUZEQ5RW4rUVpNVnpQMWd0Vzlpb1BvUy9rdEFlWi91TkdBb3E4MCt6R0t2bG9MUzdCOWI0SWcraklNN29QMWZlcER0YTlTdGhDa3p0RmR4QVNzcmo1bFBsamQ2NnNRZlRuYXI4RDhMNnlvK3FxUHpnUHJjenY1QjZ5dVVTVVhiTi9yQ0lpK0FvZkhZUDVYVzFSMzF2TVZRT3lUL1FGVzEzU2I3UURZZjdjaCtvcTJONEx0KzdZRnFnOGx3N0RtSmVhbUZqTkFNZ3N2TENzNDU1Zm1sUlJWd3JLQ29hV2xnWUpyYm1aeGNXWitYakdTcUNtbXFKR0JBUmExUUZHc2FnMHgxY3A2NVdmbXBhYUVKQ2JscEtva0dGcGFtQ29FNUJja0tHZ3BHQUtOeHFFSTZENGlGQkUyQ2V4NkloUVJZNUloTVNZWm9wcUVHam1jUmZubGVyQUlBcFZvVE5Bb1pFT1B4ZVNjeEdKWUxNSUV1VklTU3hMMTBvcUErb0c4ZjJoYTJQTUxTc0NoenNBRUtpOVowVFF6RnFFSjhKZm1nVnlTb3B1Y1VacVhyV3NJc2dBc0RjRzhVSm9OaWMwTHNaTHBQOVFvVmxnaG1wcVhEZ3dFbU50ekVwTlNjMkJKQXVoanNJZjFDb295ODBwZ1BnR0tGdXVWNUpja3d0UnhKZWZud0VUQWZtUDRCd0JqR1liOUhRWUFBQT09In0= -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTMsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBd3R5aVREaWl1QmlZR0JnWW1CbVpXUmdZZ1l5V1ppQUJDTURDd01uaUs1Z1lHQVdCako0Z1ZnQWlObWdFdHlPYWVrWmlYbVp4U1dKZVZBaGRzZWNKS0JJSW9LYm5sb0U1L0k1NWdKNXlZbDVDc0dKdWZrd1VUYkh2UFQ4SEJoUDJER3ZKRE85TkZFaE1TOUZ3U214S0trMEpSR2tGYVRRL3VpaC9oaU5yNGZ0LzY0VHFYcm92czZCMWRTKzV1M0VEUHN6UUtKb2c2TDlSNzR3Rm9uSnBRNGlFSG00dnBWaTdkcE1QRjcyajdlNUxqeDFvTm1COVRPSWNSQ3U3NE5Ba3UrbGo2c2NoSmZjMVplYXZ3K3VieUZRVnVISUhQdjNVSDBzWU9seSswczhucnZpVE8zdFAxN25zaTFZZk4xQk1EMm4yM2xxSTF6ZjlGNy8rOVlwVWZiZm9lNWtBN3FxWkUrVy9lWG5ZSFgyNzNZRXZtNlYyK0VndEJoa3dCSzR2aWtnMVNMVjl0OUFWTlZEQjQ0MUhJWnFMeXZ0SWRadzJiK3IrM2xiNmNKVEJ4SE4zMENUWEdENkhEUFpISUEwZzZOYmZ3cVlMdm5yMVFDa0hSNXpNNEQ1Q1F5Z3NHQndlTCtYQVFxZytoN1dndVU5RGo0QjB4VnNxbUI5endzZytwTEVyMkhWVjlUZEQ5RW4rUVpNVnpQMWd0Vzlpb1BvUy9rdEFlWi91TkdBb3E4MCt6R0t2bG9MUzdCOWI0SWcraklNN29QMWZlcER0YTlTdGhDa3p0RmR4QVNzcmo1bFBsamQ2NnNRZlRuYXI4RDhMNnlvK3FxUHpnUHJjenY1QjZ5dVVTVVhiTi9yQ0lpK0FvZkhZUDVYVzFSMzF2TVZRT3lUL1FGVzEzU2I3UURZZjdjaCtvcTJONEx0KzdZRnFnOGx3N0RtSmVhbUZqTkFNZ3N2TENzNDU1Zm1sUlJWd3BLNW9hV2xnV3R1Wm5GeFpuNWVjVUJxa1hOaUFaS1VLUTRwSXdNRFhMcUFVcmgxR2VMUXhXNW9hV0Vha0kvRXRUUkE1U0xMZ214SDVhTEtHcUxLR29KbFVjT0dzeWkvWEE4V1BxQUNoUWthZ216b2daaWNrMWdNQzBTWUlGZEtZa21pWGxvUlVEK1E5dzlOQzN0K1FRbkloMEJEUWNVVks1cG14aUkwQVlIU1BKQkxVblNUTTByenNuVXREVUEyZ09VaG1CZEtzeUd4ZVNGMk12Mkhtc1VLSzhSUzg5SXo4MUpoanM5SlRFck5nWlY2UUMrRGZheFhVSlNaVndMekNsQzBXSzhrdnlRUnBvNHJPVDhISmdMMkhNTS9BQ2xKcExlZEJRQUEifQ== -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["1990 Emissions"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["1995 Emissions"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["2000 Emissions"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["2005 Emissions"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["2010 Emissions"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["JoinedTable$`1985 Pop` * 1000"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["JoinedTable$`1990 Pop` * 1000"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["JoinedTable$`1995 Pop` * 1000"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["JoinedTable$`2000 Pop` * 1000"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["JoinedTable$`2005 Pop` * 1000"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["JoinedTable$`2010 Pop` * 1000"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["JoinedTable$`2015 Pop` * 1000"],"name":[13],"type":["dbl"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"0.170","3":"0.049","4":"0.034","5":"0.023","6":"0.020","7":"13120000","8":"13569000","9":"19446000","10":"22462000","11":"26335000","12":"29121000","13":"32565000","_rn_":"1"},{"1":"Albania","2":"1.855","3":"0.616","4":"0.991","5":"1.480","6":"1.430","7":"2957000","8":"3245000","9":"3159000","10":"3159000","11":"3025000","12":"2987000","13":"3030000","_rn_":"2"},{"1":"Algeria","2":"2.651","3":"2.744","4":"2.608","5":"2.752","6":"3.084","7":"22009000","8":"25191000","9":"28322000","10":"30639000","11":"32918000","12":"35950000","13":"39543000","_rn_":"3"},{"1":"American Samoa","2":"0.226","3":"0.226","4":"0.282","5":"0.311","6":"0.360","7":"39000","8":"48000","9":"54000","10":"58000","11":"57000","12":"56000","13":"55000","_rn_":"4"},{"1":"Angola","2":"1.066","3":"1.004","4":"1.115","5":"0.960","6":"0.953","7":"8390000","8":"9486000","9":"11000000","10":"12683000","11":"14770000","12":"17043000","13":"19626000","_rn_":"5"},{"1":"Antigua and Barbuda","2":"5.170","3":"4.911","4":"4.351","5":"4.660","6":"5.041","7":"65000","8":"65000","9":"69000","10":"76000","11":"82000","12":"87000","13":"93000","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[13]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["1990EmissionsPerCap"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["1995EmissionsPerCap"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["2000EmissionsPerCap"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["2005EmissionsPerCap"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["2010EmissionsPerCap"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["1985Pop"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["1990Pop"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["1995Pop"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["2000Pop"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["2005Pop"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["2010Pop"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["2015Pop"],"name":[13],"type":["dbl"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"0.170","3":"0.049","4":"0.034","5":"0.023","6":"0.020","7":"13120000","8":"13569000","9":"19446000","10":"22462000","11":"26335000","12":"29121000","13":"32565000","_rn_":"1"},{"1":"Albania","2":"1.855","3":"0.616","4":"0.991","5":"1.480","6":"1.430","7":"2957000","8":"3245000","9":"3159000","10":"3159000","11":"3025000","12":"2987000","13":"3030000","_rn_":"2"},{"1":"Algeria","2":"2.651","3":"2.744","4":"2.608","5":"2.752","6":"3.084","7":"22009000","8":"25191000","9":"28322000","10":"30639000","11":"32918000","12":"35950000","13":"39543000","_rn_":"3"},{"1":"American Samoa","2":"0.226","3":"0.226","4":"0.282","5":"0.311","6":"0.360","7":"39000","8":"48000","9":"54000","10":"58000","11":"57000","12":"56000","13":"55000","_rn_":"4"},{"1":"Angola","2":"1.066","3":"1.004","4":"1.115","5":"0.960","6":"0.953","7":"8390000","8":"9486000","9":"11000000","10":"12683000","11":"14770000","12":"17043000","13":"19626000","_rn_":"5"},{"1":"Antigua and Barbuda","2":"5.170","3":"4.911","4":"4.351","5":"4.660","6":"5.041","7":"65000","8":"65000","9":"69000","10":"76000","11":"82000","12":"87000","13":"93000","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[13]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
@@ -438,20 +460,82 @@ head(JoinedTable2)</code></pre>
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuSm9pbmVkVGFibGUzIDwtIFxuICBKb2luZWRUYWJsZTIgJT4lXG4gIHJlbmFtZShgMTk4NSBQb3BgID0gSm9pbmVkVGFibGUkYDE5ODUgUG9wYCAqIDEwMDApXG5gYGAifQ== -->
-<pre class="r"><code>JoinedTable3 &lt;- 
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuR2xvYmFsTnVtYmVycyA8LVxuICBKb2luZWRUYWJsZTIgJT4lXG4gIG11dGF0ZShcbiAgICBgMTk5MFRvdGFsRW1pc3Npb25zYCA9IGAxOTkwRW1pc3Npb25zUGVyQ2FwYCAqIGAxOTkwUG9wYCxcbiAgICBgMTk5NVRvdGFsRW1pc3Npb25zYCA9IGAxOTk1RW1pc3Npb25zUGVyQ2FwYCAqIGAxOTk1UG9wYCxcbiAgICBgMjAwMFRvdGFsRW1pc3Npb25zYCA9IGAyMDAwRW1pc3Npb25zUGVyQ2FwYCAqIGAyMDAwUG9wYCxcbiAgICBgMjAwNVRvdGFsRW1pc3Npb25zYCA9IGAyMDA1RW1pc3Npb25zUGVyQ2FwYCAqIGAyMDA1UG9wYCxcbiAgICBgMjAxMFRvdGFsRW1pc3Npb25zYCA9IGAyMDEwRW1pc3Npb25zUGVyQ2FwYCAqIGAyMDEwUG9wYClcbmhlYWQoR2xvYmFsTnVtYmVycylcbmBgYCJ9 -->
+<pre class="r"><code>GlobalNumbers &lt;-
   JoinedTable2 %&gt;%
-  rename(`1985 Pop` = JoinedTable$`1985 Pop` * 1000)</code></pre>
+  mutate(
+    `1990TotalEmissions` = `1990EmissionsPerCap` * `1990Pop`,
+    `1995TotalEmissions` = `1995EmissionsPerCap` * `1995Pop`,
+    `2000TotalEmissions` = `2000EmissionsPerCap` * `2000Pop`,
+    `2005TotalEmissions` = `2005EmissionsPerCap` * `2005Pop`,
+    `2010TotalEmissions` = `2010EmissionsPerCap` * `2010Pop`)
+head(GlobalNumbers)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3I6IENvbHVtbiBwb3NpdGlvbnMgbXVzdCBiZSBzY2FsYXJcblx1MDAxYls5MG1DYWxsIGBybGFuZzo6bGFzdF9lcnJvcigpYCB0byBzZWUgYSBiYWNrdHJhY2VcdTAwMWJbMzltXG4ifQ== -->
-<pre><code>Error: Column positions must be scalar
-[90mCall `rlang::last_error()` to see a backtrace[39m</code></pre>
-<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MTgsIm5yb3ciOjZ9LCJyZGYiOiJINHNJQUFBQUFBQUFBM1dWQzJnVFNSakhwMm1TYW1wTFRaZlQ4MUNpZUQ3d21rdUtBWU9VM2JWcWZaNjEza2tSRVNmWm1NWnVkdU5tZzYzVjB5b2lJbHA4SVlyNFFPRTRrYUlnbm9nbjljN2VpNFB6bEZPaEhOS3JVclMrNnFQcStZZ3ozK3pHYkRBTGsyKy83Ly85NXZ0bVp6TmJONzIrMGxYdlFnalpVS0dqQU5rS3lhM2RSbjRLa0IwTnByWUpvY0p5Y3VNbW80d01weUVVaXl1aURWaUpKWFdzR0tFaVVRNlJDUDdnUmlOYXhpMFY0OFFMWThXekNNZFZNK29VbGFncW0xNjVxT2l4YUFwN3NDSjVwbUV0bEpJd1JXa2kzL2xUMjlJSnozL20zN1p6YTdwcjJnVkhnRi83WUdjRC95ZjUwVTZONXZ0TEY5dUg3MDRKSE5NejNQZWZiSmxrR3pLSDd6azc0K2dmSFpzRXgxTjZjeW5EUFM0THpiL2FmMElvUC83dmx5TU9YOHh3UjRucXVYeVFmMlJ3ZHBCWDgxZUh6RDYvTE1Eei9UZGNWWWxqTjRTaFVYbGI5ZDdXRExkdis0SmJVNlVsL0F1alR5ZnBTcit3a3IvV0Mzbjh3M01MK3phUE9pZTRqOUVKam1lNFBUU2JhK0VIcUZuVExRdzZPY2cvN200eno4cTQrSWZmdnVvYWMrV093RTE4VFdhYWJuSml6Q2tRaThTWmJSSlkvZTJjRGNRS1BjVUkvT1dJUGdza1BQb1JHWmZCZGE4RGZkYWwyMkNibko4RDE1dGdYR2pZOVk5eTJyWTJ4bjE2SDJ5TGJUdmszVnZHT09uMWNQQWYzOXhnNFZLTlBSWnUzWlFnMUx0Zng3Z0czeTNnbnV5dzFtc2V1WXJtaVRYY1pNaGJMeDJHdkw1L0dDZFB1Z2YrTTRlVmErazhCTnpNMzk5QVh1dllPTlRycTJkY1F1Z0IvM21WdGMvMXBRbFdiK1JMeU52WTVleUE5WFV4VHZ1aEZlb05uTEZ5NHY1dlFGODhJTkY4c2UybXZUZWRUZ3VkUHNhRloyK0ZlYm1OdjFtNEN1NEwwS3RPUTJQaXJpMFk2djE2blhHUnNqMWd1ZmFURm03OFYwMFFyL2xQZ25sM2wzd21VTzZ2L2pTOXhKV3ZTanpBZWE5WXVERnIzY0F0NUpqZHU3OFMxdlAzZ2c3d0c0c1RZSWZWSGJGd28zK1pBUEhhdWZPZzNnSGxHVTBRcnAxaWZTci9mN2VjMmhHWER5SjZnRmdQRW9lQzQ1RWtZb2VJMnp3aXF0V1VvbXZONXQvZkh3ejZac1JqeVdSTVZaSzFFYTBhSjdLa1FCNnAwdWZMUnhFcFArWFBReFg1ZzFNQ3RXcVdHL1JaM1d5VlZyZTZWdFZ2VmYxWnFwdk8vTFdxWXpuVFNKWVMrTGhDNitWVjhqTCtYTWE2TzRNMWRiWFgzS0VTTW16R3UrM00zY2F3akpQbU5wcEJsNFIxN0YyaEVaNTQ3M0tRSWpXaHM1STIraUZ4NU1BRldrNmdMS1hRVHFTS2NFTkthYXdJK21rRjlrYkJLREdzTSt2ZXpXcmEwc1pjRHZQekVsR2lNU1ZpTmkvalVFUTJ2MGRreWJCaWIwS0xLYnE1RkJKTmVuWDZyTXhJV0pYTkNDd092WHNQZGhxNDZEY0hBQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["1990EmissionsPerCap"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["1995EmissionsPerCap"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["2000EmissionsPerCap"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["2005EmissionsPerCap"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["2010EmissionsPerCap"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["1985Pop"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["1990Pop"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["1995Pop"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["2000Pop"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["2005Pop"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["2010Pop"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["2015Pop"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["1990TotalEmissions"],"name":[14],"type":["dbl"],"align":["right"]},{"label":["1995TotalEmissions"],"name":[15],"type":["dbl"],"align":["right"]},{"label":["2000TotalEmissions"],"name":[16],"type":["dbl"],"align":["right"]},{"label":["2005TotalEmissions"],"name":[17],"type":["dbl"],"align":["right"]},{"label":["2010TotalEmissions"],"name":[18],"type":["dbl"],"align":["right"]}],"data":[{"1":"Afghanistan","2":"0.170","3":"0.049","4":"0.034","5":"0.023","6":"0.020","7":"13120000","8":"13569000","9":"19446000","10":"22462000","11":"26335000","12":"29121000","13":"32565000","14":"2306730","15":"952854","16":"763708","17":"605705","18":"582420","_rn_":"1"},{"1":"Albania","2":"1.855","3":"0.616","4":"0.991","5":"1.480","6":"1.430","7":"2957000","8":"3245000","9":"3159000","10":"3159000","11":"3025000","12":"2987000","13":"3030000","14":"6019475","15":"1945944","16":"3130569","17":"4477000","18":"4271410","_rn_":"2"},{"1":"Algeria","2":"2.651","3":"2.744","4":"2.608","5":"2.752","6":"3.084","7":"22009000","8":"25191000","9":"28322000","10":"30639000","11":"32918000","12":"35950000","13":"39543000","14":"66781341","15":"77715568","16":"79906512","17":"90590336","18":"110869800","_rn_":"3"},{"1":"American Samoa","2":"0.226","3":"0.226","4":"0.282","5":"0.311","6":"0.360","7":"39000","8":"48000","9":"54000","10":"58000","11":"57000","12":"56000","13":"55000","14":"10848","15":"12204","16":"16356","17":"17727","18":"20160","_rn_":"4"},{"1":"Angola","2":"1.066","3":"1.004","4":"1.115","5":"0.960","6":"0.953","7":"8390000","8":"9486000","9":"11000000","10":"12683000","11":"14770000","12":"17043000","13":"19626000","14":"10112076","15":"11044000","16":"14141545","17":"14179200","18":"16241979","_rn_":"5"},{"1":"Antigua and Barbuda","2":"5.170","3":"4.911","4":"4.351","5":"4.660","6":"5.041","7":"65000","8":"65000","9":"69000","10":"76000","11":"82000","12":"87000","13":"93000","14":"336050","15":"338859","16":"330676","17":"382120","18":"438567","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[18]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+</div>
+<div id="data-analysis-and-narrative" class="section level2">
+<h2>Data Analysis and Narrative</h2>
+<div id="building-a-model-for-population" class="section level3">
+<h3>Building a model for Population</h3>
+</div>
+<div id="building-a-model-for-emissions" class="section level3">
+<h3>Building a model for Emissions</h3>
+</div>
+<div id="simulating-future-emissions" class="section level3">
+<h3>Simulating Future Emissions</h3>
+</div>
+</div>
+<div id="data-visualizations" class="section level2">
+<h2>Data Visualizations</h2>
+<div id="similar-countries-unsupervised-learning-dendrogram" class="section level3">
+<h3>Similar Countries; Unsupervised Learning – Dendrogram</h3>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuU2ltaWxhcml0eTIwMTAgPC1cbiAgR2xvYmFsTnVtYmVycyAlPiVcbiAgc2VsZWN0KGAyMDEwRW1pc3Npb25zUGVyQ2FwYCwgYDIwMTBQb3BgKSAlPiVcbiAgc2NhbGUoKSAlPiVcbiAgYXMuZGF0YS5mcmFtZSgpXG5oZWFkKFNpbWlsYXJpdHkyMDEwKVxuYGBgIn0= -->
+<pre class="r"><code>Similarity2010 &lt;-
+  GlobalNumbers %&gt;%
+  select(`2010EmissionsPerCap`, `2010Pop`) %&gt;%
+  scale() %&gt;%
+  as.data.frame()
+head(Similarity2010)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbImRhdGEuZnJhbWUiXSwibmNvbCI6MiwibnJvdyI6Nn0sInJkZiI6Ikg0c0lBQUFBQUFBQUF3dHlpVERpaXVCaVlHQmdZbUJtWldSZ1lnWXlXWmlBQkNNREN3TW5pSzVnWUdBV0JpdGdZT0FEWXJiOUQ1MWs5ei9RZjdQL3B1YmwzZmJXcy9hZlNWSXh2MWg5Zi84RHhkeXJreDY5M1g4bitHYU9kMGpTL3NreFVjeTdUakRBOVMwNmVtbVRoa1g1L25QTjd6cDJiVjV2UHlIZjVmYWprK0w3TDJ4WjRYT1BRMnovZ1FYdGQxOEpST3kvc0dIUG5IdEhmTkFjd3BxWG1KdGFER1FJZ0IwREVSUTJNakEwY00zTkxDN096TThyRGtndGNrNHNnRXF4ZzZRQzhndlFqT0VzeWkvWGd4bkZDektxZ1FFTTJORHRTODVKTEliWkJ4UGtTa2tzU2RSTEt3THFCL0wrb1dsaHp5OG9BYmtEYUNnb3hGalJORE1Xb1Fud2wrYUJYSktpbTV4Um1wZXRhd1N5QUN3TndieFFtZzJKelFTeGt1ay8xQ2hXcUZGc3FYbnBtWG1wTUxmbkpDYWw1a0E1ZkVBZmd6MnNWMUNVbVZjQzh3bFF0Rml2Skw4a0VhYU9LemsvQnlZQzlodkRQd0FGZHk5bUh3SUFBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["2010EmissionsPerCap"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["2010Pop"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"-0.53932083","2":"-0.03666552","_rn_":"1"},{"1":"-0.39317792","2":"-0.23840124","_rn_":"2"},{"1":"-0.22174504","2":"0.01604946","_rn_":"3"},{"1":"-0.50408069","2":"-0.26102645","_rn_":"4"},{"1":"-0.44261776","2":"-0.12989901","_rn_":"5"},{"1":"-0.01890698","2":"-0.26078716","_rn_":"6"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="heat-map-of-emissions" class="section level3">
+<h3>Heat map of Emissions</h3>
+<p>Maybe normalize each emission type and then add them together for a compound score?</p>
+</div>
+<div id="how-population-grows" class="section level3">
+<h3>How Population Grows</h3>
+</div>
+<div id="section" class="section level3">
+<h3></h3>
+<!-- rnb-text-end -->
+</div>
+</div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQphdXRob3I6ICJSZW1pbmd0b24gSGFycmlzIGFuZCBDYW1lcm9uIFZpbnNvbiINCmRhdGU6ICJNYXkgMXN0IDIwMTkiDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCnJtKGxpc3QgPSBscygpKQ0KDQpsaWJyYXJ5KG1vc2FpYykNCmxpYnJhcnkodGlkeXIpDQpsaWJyYXJ5KHJlYWRyKQ0KbGlicmFyeSh0aWR5dmVyc2UpDQpsaWJyYXJ5KHJ2ZXN0KQ0KbGlicmFyeShyZWdleFBpcGVzKQ0KYGBgDQoNCmBgYHtyfQ0KcGFnZSA8LSAiaHR0cHM6Ly9lbi53aWtpcGVkaWEub3JnL3dpa2kvTGlzdF9vZl9jb3VudHJpZXNfYnlfcGFzdF9hbmRfZnV0dXJlX3BvcHVsYXRpb24iDQpYUEFUSCA8LSAnLy8qW0BpZD0ibXctY29udGVudC10ZXh0Il0vZGl2L3RhYmxlWzJdJyANCg0KdGFibGVfbGlzdCA8LSANCiAgcGFnZSAlPiUNCiAgcmVhZF9odG1sKCkgJT4lDQogIGh0bWxfbm9kZXMoeHBhdGggPSBYUEFUSCkgJT4lDQogIGh0bWxfdGFibGUoZmlsbCA9IFRSVUUpDQoNClBvcF9Db3VudHJ5IDwtIHRhYmxlX2xpc3RbWzFdXSANCg0KaGVhZChQb3BfQ291bnRyeSkNCmBgYA0KDQpgYGB7cn0NCmluZGV4IDwtIGFzLmNoYXJhY3RlcihjKDEsMiwzLDQsNSw2LDcsOCw5LDEwLDExLDEyLDEzLDE0LDE1KSkNCg0KY29sbmFtZXMoUG9wX0NvdW50cnkpIDwtIGluZGV4DQoNClBvcF9Db3VudHJ5IDwtDQogIFBvcF9Db3VudHJ5ICU+JQ0KICByZW5hbWUoDQogICAgQ291bnRyeSA9IGAxYCwNCiAgICBgMTk4NSBQb3BgID0gYDJgLA0KICAgIGAxOTkwIFBvcGAgPSBgNGAsDQogICAgYDE5OTUgUG9wYCA9IGA2YCwNCiAgICBgMjAwMCBQb3BgID0gYDhgLA0KICAgIGAyMDA1IFBvcGAgPSBgMTBgLA0KICAgIGAyMDEwIFBvcGAgPSBgMTJgLA0KICAgIGAyMDE1IFBvcGAgPSBgMTRgKSAlPiUNCiAgc2VsZWN0KENvdW50cnksIGAxOTg1IFBvcGAsIGAxOTkwIFBvcGAsIGAxOTk1IFBvcGAsIGAyMDAwIFBvcGAsIGAyMDA1IFBvcGAsIGAyMDEwIFBvcGAsIGAyMDE1IFBvcGApDQoNCmhlYWQoUG9wX0NvdW50cnkpDQpgYGANCg0KYGBge3J9DQpQb3BfQ291bnRyeSRgMTk4NSBQb3BgIDwtDQogIFBvcF9Db3VudHJ5JGAxOTg1IFBvcGAgJT4lDQogIHJlZ2V4UGlwZXM6OmdzdWIocGF0dGVybiA9ICIsIiwgcmVwbGFjZW1lbnQgPSAiIikNCiAgDQpQb3BfQ291bnRyeSRgMTk5MCBQb3BgIDwtDQogIFBvcF9Db3VudHJ5JGAxOTkwIFBvcGAgJT4lDQogIHJlZ2V4UGlwZXM6OmdzdWIocGF0dGVybiA9ICIsIiwgcmVwbGFjZW1lbnQgPSAiIikNCg0KUG9wX0NvdW50cnkkYDE5OTUgUG9wYCA8LQ0KICBQb3BfQ291bnRyeSRgMTk5NSBQb3BgICU+JQ0KICByZWdleFBpcGVzOjpnc3ViKHBhdHRlcm4gPSAiLCIsIHJlcGxhY2VtZW50ID0gIiIpDQoNClBvcF9Db3VudHJ5JGAyMDAwIFBvcGAgPC0NCiAgUG9wX0NvdW50cnkkYDIwMDAgUG9wYCAlPiUNCiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gIiwiLCByZXBsYWNlbWVudCA9ICIiKQ0KDQpQb3BfQ291bnRyeSRgMjAwNSBQb3BgIDwtDQogIFBvcF9Db3VudHJ5JGAyMDA1IFBvcGAgJT4lDQogIHJlZ2V4UGlwZXM6OmdzdWIocGF0dGVybiA9ICIsIiwgcmVwbGFjZW1lbnQgPSAiIikNCg0KUG9wX0NvdW50cnkkYDIwMTAgUG9wYCA8LQ0KICBQb3BfQ291bnRyeSRgMjAxMCBQb3BgICU+JQ0KICByZWdleFBpcGVzOjpnc3ViKHBhdHRlcm4gPSAiLCIsIHJlcGxhY2VtZW50ID0gIiIpDQoNClBvcF9Db3VudHJ5JGAyMDE1IFBvcGAgPC0NCiAgUG9wX0NvdW50cnkkYDIwMTUgUG9wYCAlPiUNCiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gIiwiLCByZXBsYWNlbWVudCA9ICIiKQ0KDQpQb3BfQ291bnRyeV9DbGVhbmVkIDwtDQogIFBvcF9Db3VudHJ5ICU+JQ0KICBtdXRhdGUoYDE5ODUgUG9wYCA9IGFzLm51bWVyaWMoUG9wX0NvdW50cnkkYDE5ODUgUG9wYCksDQogICAgICAgICBgMTk5MCBQb3BgID0gYXMubnVtZXJpYyhQb3BfQ291bnRyeSRgMTk5MCBQb3BgKSwNCiAgICAgICAgIGAxOTk1IFBvcGAgPSBhcy5udW1lcmljKFBvcF9Db3VudHJ5JGAxOTk1IFBvcGApLA0KICAgICAgICAgYDIwMDAgUG9wYCA9IGFzLm51bWVyaWMoUG9wX0NvdW50cnkkYDIwMDAgUG9wYCksDQogICAgICAgICBgMjAwNSBQb3BgID0gYXMubnVtZXJpYyhQb3BfQ291bnRyeSRgMjAwNSBQb3BgKSwNCiAgICAgICAgIGAyMDEwIFBvcGAgPSBhcy5udW1lcmljKFBvcF9Db3VudHJ5JGAyMDEwIFBvcGApLA0KICAgICAgICAgYDIwMTUgUG9wYCA9IGFzLm51bWVyaWMoUG9wX0NvdW50cnkkYDIwMTUgUG9wYCkNCiAgICAgICAgICkNCg0KaGVhZChQb3BfQ291bnRyeV9DbGVhbmVkKQ0KYGBgDQoNCmBgYHtyfQ0KcGFnZV91cmwgPC0gImh0dHA6Ly9lZGdhci5qcmMuZWMuZXVyb3BhLmV1L292ZXJ2aWV3LnBocD92PUNPMnRzX3BjMTk5MC0yMDEzIg0KWFBBVEggPC0gJy8vKltAaWQ9ImxheW91dCJdL2RpdlszXS9kaXZbMl0vZGl2L2Rpdi9kaXYvZGl2L3RhYmxlJw0KDQp0YWJsZV9saXN0IDwtDQogIHBhZ2VfdXJsICU+JQ0KICByZWFkX2h0bWwoKSAlPiUNCiAgaHRtbF9ub2Rlcyh4cGF0aCA9IFhQQVRIKSAlPiUNCiAgaHRtbF90YWJsZShmaWxsID0gVFJVRSkNCg0KQ2FyYm9uUmF3IDwtDQogIHRhYmxlX2xpc3RbWzFdXQ0KDQpoZWFkKENhcmJvblJhdykNCmBgYA0KDQpgYGB7cn0NCmNvbG5hbWVzKENhcmJvblJhdykgPC0NCiAgYXMuY2hhcmFjdGVyKHVubGlzdChDYXJib25SYXdbMSxdKSkNCg0KQ2FyYm9uUmF3MiA8LQ0KICBDYXJib25SYXdbLTEsIF0NCg0KQ2FyYm9uUmF3MyA8LQ0KICBDYXJib25SYXcyWy0xLCBdDQoNCkNhcmJvblJhdzQgPC0NCiAgQ2FyYm9uUmF3MyAlPiUNCiAgcmVuYW1lKGAxOTkwYCA9IGAxOTkwVG9uc0NPMi9jYXA0LjI2N2AsDQogICAgICAgICBgMTk5NWAgPSBgMTk5NVRvbnNDTzIvY2FwNC4xMjBgLA0KICAgICAgICAgYDIwMDBgID0gYDIwMDBUb25zQ08yL2NhcDQuMTQ2YCwNCiAgICAgICAgIGAyMDA1YCA9IGAyMDA1VG9uc0NPMi9jYXA0LjUxM2AsDQogICAgICAgICBgMjAxMGAgPSBgMjAxMFRvbnNDTzIvY2FwNC43ODBgLA0KICAgICAgICAgYDIwMTFgID0gYDIwMTFUb25zQ08yL2NhcDQuODcwYCwNCiAgICAgICAgIGAyMDEyYCA9IGAyMDEyVG9uc0NPMi9jYXA0Ljg5NGAsDQogICAgICAgICBgMjAxM2AgPSBgMjAxM1RvbnNDTzIvY2FwNC45MzZgKQ0KYGBgDQoNCmBgYHtyfQ0KaGVhZChDYXJib25SYXc0KQ0KYGBgDQoNCmBgYHtyfQ0KQ2FyYm9uQ2xlYW5lZCA8LQ0KICBDYXJib25SYXc0ICU+JQ0KICB0cmFuc211dGUoYENvdW50cnlgID0gYENvdW50cnlXb3JsZCBUb3RhbGAsDQogICAgICAgICBgMTk5MCBFbWlzc2lvbnNgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAxOTkwYCksDQogICAgICAgICBgMTk5NSBFbWlzc2lvbnNgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAxOTk1YCksDQogICAgICAgICBgMjAwMCBFbWlzc2lvbnNgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAyMDAwYCksDQogICAgICAgICBgMjAwNSBFbWlzc2lvbnNgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAyMDA1YCksDQogICAgICAgICBgMjAxMCBFbWlzc2lvbnNgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAyMDEwYCkNCiAgICAgICAgICkgDQoNCmhlYWQoQ2FyYm9uQ2xlYW5lZCkNCmBgYA0KICANCmBgYHtyfQ0KQ2FyYm9uQ2xlYW5lZCRDb3VudHJ5IDwtDQogIENhcmJvbkNsZWFuZWQkQ291bnRyeSAlPiUNCiAgcmVnZXhQaXBlczo6c3ViKCJLb3JlYSwgRGVtb2NyYXRpYyBQZW9wbGUncyBSZXB1YmxpYyBvZiIsICJTb3V0aCBLb3JlYSIpICU+JQ0KICByZWdleFBpcGVzOjpzdWIoIktvcmVhLCBSZXB1YmxpYyBvZiIsICJOb3J0aCBLb3JlYSIpICU+JQ0KICByZWdleFBpcGVzOjpzdWIoIkxhbyBQZW9wbGUncyBEZW1vY3JhdGljIFJlcHVibGljIiwgIkxhb3MiKSAlPiUNCiAgcmVnZXhQaXBlczo6c3ViKCJNYWNlZG9uaWEsIHRoZSBmb3JtZXIgWXVnb3NsYXYgUmVwdWJsaWMgb2YiLCAiTm9ydGggTWFjZWRvbmlhIikgJT4lDQogIHJlZ2V4UGlwZXM6OnN1YigiTGlieWFuIEFyYWIgSmFtYWhpcml5YSIsICJMaWJ5YSIpICU+JQ0KICByZWdleFBpcGVzOjpzdWIoIk1hY2FvIiwgIk1hY2F1IikgJT4lDQogIHJlZ2V4UGlwZXM6OnN1YigiTW9sZG92YSwgUmVwdWJsaWMgb2YiLCAiTW9sZG92YSIpICU+JQ0KICByZWdleFBpcGVzOjpzdWIoIlJ1c3NpYW4gRmVkZXJhdGlvbiIsICJSdXNzaWEiKSAlPiUNCiAgcmVnZXhQaXBlczo6c3ViKCJDb25nb190aGUgRGVtb2NyYXRpYyBSZXB1YmxpYyBvZiB0aGUiLCAiRGVtb2NyYXRpYyBSZXB1YmxpYyBvZiB0aGUgQ29uZ28iKSAlPiUNCiAgcmVnZXhQaXBlczo6c3ViKCJDb25nbyIsICJSZXB1YmxpYyBvZiB0aGUgQ29uZ28iKSAlPiUNCiAgcmVnZXhQaXBlczo6c3ViKCJEZW1vY3JhdGljIFJlcHVibGljIG9mIHRoZSBSZXB1YmxpYyBvZiB0aGUgQ29uZ28iLCAiRGVtb2NyYXRpYyBSZXB1YmxpYyBvZiB0aGUgQ29uZ28iKSAlPiUNCiAgcmVnZXhQaXBlczo6c3ViKCJDb3RlIGQnSXZvaXJlIiwgIkl2b3J5IENvYXN0IikgJT4lDQogIHJlZ2V4UGlwZXM6OnN1YigiSXJhbiwgSXNsYW1pYyBSZXB1YmxpYyBvZiIsICJJcmFuIikgJT4lDQogIHJlZ2V4UGlwZXM6OnN1YigiU2FvIFRvbWUgYW5kIFByaW5jaXBlIiwgIlPDo28gVG9tw6kgYW5kIFByw61uY2lwZSIpICU+JQ0KICByZWdleFBpcGVzOjpzdWIoIlRhaXdhbl9Qcm92aW5jZSBvZiBDaGluYSIsICJUYWl3YW4iKSAlPiUNCiAgcmVnZXhQaXBlczo6c3ViKCJUYW56YW5pYV9Vbml0ZWQgUmVwdWJsaWMgb2YiLCAiVGFuemFuaWEiKSAlPiUNCiAgcmVnZXhQaXBlczo6c3ViKCJTeXJpYW4gQXJhYiBSZXB1YmxpYyIsICJTeXJpYSIpICU+JQ0KICByZWdleFBpcGVzOjpzdWIoIlZpZXQgTmFtIiwgIlZpZXRuYW0iKSAlPiUNCiAgcmVnZXhQaXBlczo6c3ViKCJWaXJnaW4gSXNsYW5kc19Ccml0aXNoIiwgIkJyaXRpc2ggVmlyZ2luIElzbGFuZHMiKSAlPiUNCiAgcmVnZXhQaXBlczo6c3ViKCJWaXJnaW4gSXNsYW5kc19VU0EiLCAiVW5pdGVkIFN0YXRlcyBWaXJnaW4gSXNsYW5kcyIpICU+JQ0KICByZWdleFBpcGVzOjpzdWIoIkJydW5laSBEYXJ1c3NhbGFtIiwgIkJydW5laSIpDQoNCg0KYGBgDQogIA0KYGBge3J9DQpKb2luZWRUYWJsZTwtDQogIENhcmJvbkNsZWFuZWQgJT4lDQogIGxlZnRfam9pbihQb3BfQ291bnRyeV9DbGVhbmVkLCBieSA9ICJDb3VudHJ5IikNCmBgYA0KDQpgYGB7cn0NCmdsaW1wc2UoSm9pbmVkVGFibGUpDQpgYGANCg0KYGBge3J9DQpKb2luZWRUYWJsZTIgPC0NCiAgSm9pbmVkVGFibGUgJT4lDQogIG11dGF0ZShKb2luZWRUYWJsZSRgMTk4NSBQb3BgICogMTAwMCwNCiAgICAgICAgIEpvaW5lZFRhYmxlJGAxOTkwIFBvcGAgKiAxMDAwLA0KICAgICAgICAgSm9pbmVkVGFibGUkYDE5OTUgUG9wYCAqIDEwMDAsDQogICAgICAgICBKb2luZWRUYWJsZSRgMjAwMCBQb3BgICogMTAwMCwNCiAgICAgICAgIEpvaW5lZFRhYmxlJGAyMDA1IFBvcGAgKiAxMDAwLA0KICAgICAgICAgSm9pbmVkVGFibGUkYDIwMTAgUG9wYCAqIDEwMDAsDQogICAgICAgICBKb2luZWRUYWJsZSRgMjAxNSBQb3BgICogMTAwMCkgJT4lDQogIHNlbGVjdCgtYDE5ODUgUG9wYCwgLWAxOTkwIFBvcGAsIC1gMTk5NSBQb3BgLCAtYDIwMDAgUG9wYCwgLWAyMDA1IFBvcGAsIC1gMjAxMCBQb3BgLCAtYDIwMTUgUG9wYCkNCg0KaGVhZChKb2luZWRUYWJsZTIpDQpgYGANCg0KYGBge3J9DQpKb2luZWRUYWJsZTMgPC0gDQogIEpvaW5lZFRhYmxlMiAlPiUNCiAgcmVuYW1lKGAxOTg1IFBvcGAgPSBKb2luZWRUYWJsZSRgMTk4NSBQb3BgICogMTAwMCkNCmBgYA0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQoNCg0KDQo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKYXV0aG9yOiAiUmVtaW5ndG9uIEhhcnJpcyBhbmQgQ2FtZXJvbiBWaW5zb24iCmRhdGU6ICJNYXkgMXN0IDIwMTkiCm91dHB1dDogaHRtbF9ub3RlYm9vawotLS0KCiMjIEZyb250IE1hdHRlcgoKCmBgYHtyIGluY2x1ZGU9RkFMU0V9CgojIENsZWFuIHdvcmtzcGFjZQoKcm0obGlzdCA9IGxzKCkpCgojIFBhY2thZ2VzIHVzZWQKCmxpYnJhcnkobW9zYWljKQpsaWJyYXJ5KHRpZHlyKQpsaWJyYXJ5KHJlYWRyKQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShydmVzdCkKbGlicmFyeShyZWdleFBpcGVzKQoKIyBJbnB1dHMgJiBzb3VyY2UgZGF0YQoKUG9wVVJMIDwtCiAgImh0dHBzOi8vZW4ud2lraXBlZGlhLm9yZy93aWtpL0xpc3Rfb2ZfY291bnRyaWVzX2J5X3Bhc3RfYW5kX2Z1dHVyZV9wb3B1bGF0aW9uIgoKUG9wWFBBVEg8LQogICcvLypbQGlkPSJtdy1jb250ZW50LXRleHQiXS9kaXYvdGFibGVbMl0nCgoKRW1pc3Npb25zVVJMIDwtCiAgImh0dHA6Ly9lZGdhci5qcmMuZWMuZXVyb3BhLmV1L292ZXJ2aWV3LnBocD92PUNPMnRzX3BjMTk5MC0yMDEzIgoKRW1pc3Npb25zWFBBVEggPC0KICAnLy8qW0BpZD0ibGF5b3V0Il0vZGl2WzNdL2RpdlsyXS9kaXYvZGl2L2Rpdi9kaXYvdGFibGUnCgojIFVzZXIgZGVmaW5lZCBGdW5jdGlvbnMKCmBgYAoKCiMjIERhdGEgV3JhbmdsaW5nCgoKIyMjIExvYWRpbmcgUG9wdWxhdGlvbiBEYXRhIFRhYmxlCgoKYGBge3J9CnRhYmxlX2xpc3QgPC0gCiAgUG9wVVJMICU+JQogIHJlYWRfaHRtbCgpICU+JQogIGh0bWxfbm9kZXMoeHBhdGggPSBQb3BYUEFUSCkgJT4lCiAgaHRtbF90YWJsZShmaWxsID0gVFJVRSkKClBvcF9Db3VudHJ5IDwtIHRhYmxlX2xpc3RbWzFdXSAKCmhlYWQoUG9wX0NvdW50cnkpCmBgYAoKCiMjIyBDbGVhbmluZyBQb3B1bGF0aW9uIERhdGEgVGFibGUKCgpgYGB7cn0KaW5kZXggPC0gYXMuY2hhcmFjdGVyKGMoMSwyLDMsNCw1LDYsNyw4LDksMTAsMTEsMTIsMTMsMTQsMTUpKQoKY29sbmFtZXMoUG9wX0NvdW50cnkpIDwtIGluZGV4CgpQb3BfQ291bnRyeSA8LQogIFBvcF9Db3VudHJ5ICU+JQogIHJlbmFtZSgKICAgIENvdW50cnkgPSBgMWAsCiAgICBgMTk4NSBQb3BgID0gYDJgLAogICAgYDE5OTAgUG9wYCA9IGA0YCwKICAgIGAxOTk1IFBvcGAgPSBgNmAsCiAgICBgMjAwMCBQb3BgID0gYDhgLAogICAgYDIwMDUgUG9wYCA9IGAxMGAsCiAgICBgMjAxMCBQb3BgID0gYDEyYCwKICAgIGAyMDE1IFBvcGAgPSBgMTRgKSAlPiUKICBzZWxlY3QoQ291bnRyeSwgYDE5ODUgUG9wYCwgYDE5OTAgUG9wYCwgYDE5OTUgUG9wYCwgYDIwMDAgUG9wYCwgYDIwMDUgUG9wYCwgYDIwMTAgUG9wYCwgYDIwMTUgUG9wYCkKCmhlYWQoUG9wX0NvdW50cnkpCmBgYAoKYGBge3J9ClBvcF9Db3VudHJ5JGAxOTg1IFBvcGAgPC0KICBQb3BfQ291bnRyeSRgMTk4NSBQb3BgICU+JQogIHJlZ2V4UGlwZXM6OmdzdWIocGF0dGVybiA9ICIsIiwgcmVwbGFjZW1lbnQgPSAiIikKICAKUG9wX0NvdW50cnkkYDE5OTAgUG9wYCA8LQogIFBvcF9Db3VudHJ5JGAxOTkwIFBvcGAgJT4lCiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gIiwiLCByZXBsYWNlbWVudCA9ICIiKQoKUG9wX0NvdW50cnkkYDE5OTUgUG9wYCA8LQogIFBvcF9Db3VudHJ5JGAxOTk1IFBvcGAgJT4lCiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gIiwiLCByZXBsYWNlbWVudCA9ICIiKQoKUG9wX0NvdW50cnkkYDIwMDAgUG9wYCA8LQogIFBvcF9Db3VudHJ5JGAyMDAwIFBvcGAgJT4lCiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gIiwiLCByZXBsYWNlbWVudCA9ICIiKQoKUG9wX0NvdW50cnkkYDIwMDUgUG9wYCA8LQogIFBvcF9Db3VudHJ5JGAyMDA1IFBvcGAgJT4lCiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gIiwiLCByZXBsYWNlbWVudCA9ICIiKQoKUG9wX0NvdW50cnkkYDIwMTAgUG9wYCA8LQogIFBvcF9Db3VudHJ5JGAyMDEwIFBvcGAgJT4lCiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gIiwiLCByZXBsYWNlbWVudCA9ICIiKQoKUG9wX0NvdW50cnkkYDIwMTUgUG9wYCA8LQogIFBvcF9Db3VudHJ5JGAyMDE1IFBvcGAgJT4lCiAgcmVnZXhQaXBlczo6Z3N1YihwYXR0ZXJuID0gIiwiLCByZXBsYWNlbWVudCA9ICIiKQoKUG9wX0NvdW50cnlfQ2xlYW5lZCA8LQogIFBvcF9Db3VudHJ5ICU+JQogIG11dGF0ZShgMTk4NSBQb3BgID0gYXMubnVtZXJpYyhQb3BfQ291bnRyeSRgMTk4NSBQb3BgKSwKICAgICAgICAgYDE5OTAgUG9wYCA9IGFzLm51bWVyaWMoUG9wX0NvdW50cnkkYDE5OTAgUG9wYCksCiAgICAgICAgIGAxOTk1IFBvcGAgPSBhcy5udW1lcmljKFBvcF9Db3VudHJ5JGAxOTk1IFBvcGApLAogICAgICAgICBgMjAwMCBQb3BgID0gYXMubnVtZXJpYyhQb3BfQ291bnRyeSRgMjAwMCBQb3BgKSwKICAgICAgICAgYDIwMDUgUG9wYCA9IGFzLm51bWVyaWMoUG9wX0NvdW50cnkkYDIwMDUgUG9wYCksCiAgICAgICAgIGAyMDEwIFBvcGAgPSBhcy5udW1lcmljKFBvcF9Db3VudHJ5JGAyMDEwIFBvcGApLAogICAgICAgICBgMjAxNSBQb3BgID0gYXMubnVtZXJpYyhQb3BfQ291bnRyeSRgMjAxNSBQb3BgKSkKCmhlYWQoUG9wX0NvdW50cnlfQ2xlYW5lZCkKYGBgCgoKIyMjIExvYWRpbmcgRW1pc3Npb25zIERhdGEKCgpgYGB7cn0KdGFibGVfbGlzdCA8LQogIEVtaXNzaW9uc1VSTCAlPiUKICByZWFkX2h0bWwoKSAlPiUKICBodG1sX25vZGVzKHhwYXRoID0gRW1pc3Npb25zWFBBVEgpICU+JQogIGh0bWxfdGFibGUoZmlsbCA9IFRSVUUpCgpDYXJib25SYXcgPC0KICB0YWJsZV9saXN0W1sxXV0KCmhlYWQoQ2FyYm9uUmF3KQpgYGAKCgojIyMgQ2xlYW5pbmcgRW1pc3Npb25zIERhdGEKCgpgYGB7cn0KY29sbmFtZXMoQ2FyYm9uUmF3KSA8LQogIGFzLmNoYXJhY3Rlcih1bmxpc3QoQ2FyYm9uUmF3WzEsXSkpCgpDYXJib25SYXcyIDwtCiAgQ2FyYm9uUmF3Wy0xLCBdCgpDYXJib25SYXczIDwtCiAgQ2FyYm9uUmF3MlstMSwgXQoKQ2FyYm9uUmF3NCA8LQogIENhcmJvblJhdzMgJT4lCiAgI01ha2luZyBuYW1lcyBtb3JlIGVhc3kgdG8gd3JhbmdsZQogIHJlbmFtZShgMTk5MGAgPSBgMTk5MFRvbnNDTzIvY2FwNC4yNjdgLAogICAgICAgICBgMTk5NWAgPSBgMTk5NVRvbnNDTzIvY2FwNC4xMjBgLAogICAgICAgICBgMjAwMGAgPSBgMjAwMFRvbnNDTzIvY2FwNC4xNDZgLAogICAgICAgICBgMjAwNWAgPSBgMjAwNVRvbnNDTzIvY2FwNC41MTNgLAogICAgICAgICBgMjAxMGAgPSBgMjAxMFRvbnNDTzIvY2FwNC43ODBgLAogICAgICAgICBgMjAxMWAgPSBgMjAxMVRvbnNDTzIvY2FwNC44NzBgLAogICAgICAgICBgMjAxMmAgPSBgMjAxMlRvbnNDTzIvY2FwNC44OTRgLAogICAgICAgICBgMjAxM2AgPSBgMjAxM1RvbnNDTzIvY2FwNC45MzZgKQoKaGVhZChDYXJib25SYXc0KQpgYGAKCmBgYHtyfQpDYXJib25DbGVhbmVkIDwtCiAgQ2FyYm9uUmF3NCAlPiUKICAjIE1ha2luZyBFbWlzc2lvbnMgYSBkYmwgdmFyaWFibGUKICB0cmFuc211dGUoYENvdW50cnlgID0gYENvdW50cnlXb3JsZCBUb3RhbGAsCiAgICAgICAgIGAxOTkwRW1pc3Npb25zUGVyQ2FwYCA9IGFzLm51bWVyaWMoQ2FyYm9uUmF3NCRgMTk5MGApLAogICAgICAgICBgMTk5NUVtaXNzaW9uc1BlckNhcGAgPSBhcy5udW1lcmljKENhcmJvblJhdzQkYDE5OTVgKSwKICAgICAgICAgYDIwMDBFbWlzc2lvbnNQZXJDYXBgID0gYXMubnVtZXJpYyhDYXJib25SYXc0JGAyMDAwYCksCiAgICAgICAgIGAyMDA1RW1pc3Npb25zUGVyQ2FwYCA9IGFzLm51bWVyaWMoQ2FyYm9uUmF3NCRgMjAwNWApLAogICAgICAgICBgMjAxMEVtaXNzaW9uc1BlckNhcGAgPSBhcy5udW1lcmljKENhcmJvblJhdzQkYDIwMTBgKSkgCgpoZWFkKENhcmJvbkNsZWFuZWQpCmBgYAogIApgYGB7cn0KQ2FyYm9uQ2xlYW5lZCRDb3VudHJ5IDwtCiAgQ2FyYm9uQ2xlYW5lZCRDb3VudHJ5ICU+JQogICMgUmVwbGFjaW5nIGNvdW50cnkgbmFtZXMgdGhhdCBhcmUgaW4gYSBkaWZmZXJlbnQgZm9ybSBpbiB0aGUgRW1pc3Npb25zIGRhdGEgdGhhbiB0aGUgUG9wIERhdGEKICByZWdleFBpcGVzOjpzdWIoIktvcmVhLCBEZW1vY3JhdGljIFBlb3BsZSdzIFJlcHVibGljIG9mIiwgIlNvdXRoIEtvcmVhIikgJT4lCiAgcmVnZXhQaXBlczo6c3ViKCJLb3JlYSwgUmVwdWJsaWMgb2YiLCAiTm9ydGggS29yZWEiKSAlPiUKICByZWdleFBpcGVzOjpzdWIoIkxhbyBQZW9wbGUncyBEZW1vY3JhdGljIFJlcHVibGljIiwgIkxhb3MiKSAlPiUKICByZWdleFBpcGVzOjpzdWIoIk1hY2Vkb25pYSwgdGhlIGZvcm1lciBZdWdvc2xhdiBSZXB1YmxpYyBvZiIsICJOb3J0aCBNYWNlZG9uaWEiKSAlPiUKICByZWdleFBpcGVzOjpzdWIoIkxpYnlhbiBBcmFiIEphbWFoaXJpeWEiLCAiTGlieWEiKSAlPiUKICByZWdleFBpcGVzOjpzdWIoIk1hY2FvIiwgIk1hY2F1IikgJT4lCiAgcmVnZXhQaXBlczo6c3ViKCJNb2xkb3ZhLCBSZXB1YmxpYyBvZiIsICJNb2xkb3ZhIikgJT4lCiAgcmVnZXhQaXBlczo6c3ViKCJSdXNzaWFuIEZlZGVyYXRpb24iLCAiUnVzc2lhIikgJT4lCiAgcmVnZXhQaXBlczo6c3ViKCJDb25nb190aGUgRGVtb2NyYXRpYyBSZXB1YmxpYyBvZiB0aGUiLCAiRGVtb2NyYXRpYyBSZXB1YmxpYyBvZiB0aGUgQ29uZ28iKSAlPiUKICByZWdleFBpcGVzOjpzdWIoIkNvbmdvIiwgIlJlcHVibGljIG9mIHRoZSBDb25nbyIpICU+JQogIHJlZ2V4UGlwZXM6OnN1YigiRGVtb2NyYXRpYyBSZXB1YmxpYyBvZiB0aGUgUmVwdWJsaWMgb2YgdGhlIENvbmdvIiwgIkRlbW9jcmF0aWMgUmVwdWJsaWMgb2YgdGhlIENvbmdvIikgJT4lCiAgcmVnZXhQaXBlczo6c3ViKCJDb3RlIGQnSXZvaXJlIiwgIkl2b3J5IENvYXN0IikgJT4lCiAgcmVnZXhQaXBlczo6c3ViKCJJcmFuLCBJc2xhbWljIFJlcHVibGljIG9mIiwgIklyYW4iKSAlPiUKICByZWdleFBpcGVzOjpzdWIoIlNhbyBUb21lIGFuZCBQcmluY2lwZSIsICJTw6NvIFRvbcOpIGFuZCBQcsOtbmNpcGUiKSAlPiUKICByZWdleFBpcGVzOjpzdWIoIlRhaXdhbl9Qcm92aW5jZSBvZiBDaGluYSIsICJUYWl3YW4iKSAlPiUKICByZWdleFBpcGVzOjpzdWIoIlRhbnphbmlhX1VuaXRlZCBSZXB1YmxpYyBvZiIsICJUYW56YW5pYSIpICU+JQogIHJlZ2V4UGlwZXM6OnN1YigiU3lyaWFuIEFyYWIgUmVwdWJsaWMiLCAiU3lyaWEiKSAlPiUKICByZWdleFBpcGVzOjpzdWIoIlZpZXQgTmFtIiwgIlZpZXRuYW0iKSAlPiUKICByZWdleFBpcGVzOjpzdWIoIlZpcmdpbiBJc2xhbmRzX0JyaXRpc2giLCAiQnJpdGlzaCBWaXJnaW4gSXNsYW5kcyIpICU+JQogIHJlZ2V4UGlwZXM6OnN1YigiVmlyZ2luIElzbGFuZHNfVVNBIiwgIlVuaXRlZCBTdGF0ZXMgVmlyZ2luIElzbGFuZHMiKSAlPiUKICByZWdleFBpcGVzOjpzdWIoIkJydW5laSBEYXJ1c3NhbGFtIiwgIkJydW5laSIpCgoKYGBgCgoKIyMjIEpvaW5pbmcgRGF0YQoKCmBgYHtyfQpKb2luZWRUYWJsZTwtCiAgQ2FyYm9uQ2xlYW5lZCAlPiUKICBsZWZ0X2pvaW4oUG9wX0NvdW50cnlfQ2xlYW5lZCwgYnkgPSAiQ291bnRyeSIpCmBgYAoKYGBge3J9CmdsaW1wc2UoSm9pbmVkVGFibGUpCmBgYAoKYGBge3J9CkpvaW5lZFRhYmxlMiA8LQogIEpvaW5lZFRhYmxlICU+JQogICMgUmVuYW1pbmcgdmFyaWFibGUgYW5kIG1ha2luZyBudW1iZXJzIHRydWUKICBtdXRhdGUoYDE5ODVQb3BgID0gSm9pbmVkVGFibGUkYDE5ODUgUG9wYCAqIDEwMDAsCiAgICAgICAgIGAxOTkwUG9wYCA9IEpvaW5lZFRhYmxlJGAxOTkwIFBvcGAgKiAxMDAwLAogICAgICAgICBgMTk5NVBvcGAgPSBKb2luZWRUYWJsZSRgMTk5NSBQb3BgICogMTAwMCwKICAgICAgICAgYDIwMDBQb3BgID0gSm9pbmVkVGFibGUkYDIwMDAgUG9wYCAqIDEwMDAsCiAgICAgICAgIGAyMDA1UG9wYCA9IEpvaW5lZFRhYmxlJGAyMDA1IFBvcGAgKiAxMDAwLAogICAgICAgICBgMjAxMFBvcGAgPSBKb2luZWRUYWJsZSRgMjAxMCBQb3BgICogMTAwMCwKICAgICAgICAgYDIwMTVQb3BgID0gSm9pbmVkVGFibGUkYDIwMTUgUG9wYCAqIDEwMDApICU+JQogIHNlbGVjdCgtYDE5ODUgUG9wYCwgLWAxOTkwIFBvcGAsIC1gMTk5NSBQb3BgLCAtYDIwMDAgUG9wYCwgLWAyMDA1IFBvcGAsIC1gMjAxMCBQb3BgLCAtYDIwMTUgUG9wYCkKCmhlYWQoSm9pbmVkVGFibGUyKQpgYGAKCmBgYHtyfQpHbG9iYWxOdW1iZXJzIDwtCiAgSm9pbmVkVGFibGUyICU+JQogIG11dGF0ZSggIyBmaW5kaW5nIHRvdGFsIGVtbWlzb25zIHNpbmNlIHByZXZpb3VzIHdhcyBwZXIgY2FwCiAgICBgMTk5MFRvdGFsRW1pc3Npb25zYCA9IGAxOTkwRW1pc3Npb25zUGVyQ2FwYCAqIGAxOTkwUG9wYCwKICAgIGAxOTk1VG90YWxFbWlzc2lvbnNgID0gYDE5OTVFbWlzc2lvbnNQZXJDYXBgICogYDE5OTVQb3BgLAogICAgYDIwMDBUb3RhbEVtaXNzaW9uc2AgPSBgMjAwMEVtaXNzaW9uc1BlckNhcGAgKiBgMjAwMFBvcGAsCiAgICBgMjAwNVRvdGFsRW1pc3Npb25zYCA9IGAyMDA1RW1pc3Npb25zUGVyQ2FwYCAqIGAyMDA1UG9wYCwKICAgIGAyMDEwVG90YWxFbWlzc2lvbnNgID0gYDIwMTBFbWlzc2lvbnNQZXJDYXBgICogYDIwMTBQb3BgKQoKaGVhZChHbG9iYWxOdW1iZXJzKQpgYGAKCgojIyBEYXRhIEFuYWx5c2lzIGFuZCBOYXJyYXRpdmUKCgojIyMgQnVpbGRpbmcgYSBtb2RlbCBmb3IgUG9wdWxhdGlvbgoKCgojIyMgQnVpbGRpbmcgYSBtb2RlbCBmb3IgRW1pc3Npb25zCgoKCiMjIyBTaW11bGF0aW5nIEZ1dHVyZSBFbWlzc2lvbnMKCgoKIyMgRGF0YSBWaXN1YWxpemF0aW9ucwoKCiMjIyBTaW1pbGFyIENvdW50cmllczsgVW5zdXBlcnZpc2VkIExlYXJuaW5nIC0tIERlbmRyb2dyYW0KCmBgYHtyfQpTaW1pbGFyaXR5MjAxMCA8LQogIEdsb2JhbE51bWJlcnMgJT4lCiAgc2VsZWN0KGAyMDEwRW1pc3Npb25zUGVyQ2FwYCwgYDIwMTBQb3BgKSAlPiUKICBzY2FsZSgpICU+JQogIGFzLmRhdGEuZnJhbWUoKQoKaGVhZChTaW1pbGFyaXR5MjAxMCkKYGBgCgpgYGB7cn0KCmBgYAoKCiMjIyBIZWF0IG1hcCBvZiBFbWlzc2lvbnMKCk1heWJlIG5vcm1hbGl6ZSBlYWNoIGVtaXNzaW9uIHR5cGUgYW5kIHRoZW4gYWRkIHRoZW0gdG9nZXRoZXIgZm9yIGEgY29tcG91bmQgc2NvcmU/CgoKCiMjIyBIb3cgUG9wdWxhdGlvbiBHcm93cwoKCgojIyMgCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCg==</div>
 
 
 
