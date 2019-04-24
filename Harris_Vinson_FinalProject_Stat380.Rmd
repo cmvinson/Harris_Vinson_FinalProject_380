@@ -248,9 +248,20 @@ head(JoinedTable2)
 ```
 
 ```{r}
+# Combined Serbia and Montenegro numbers since both were separated in the original Population data table
+JoinedTable2[165, 7] <- 8281000
+JoinedTable2[165, 8] <- 8371000
+JoinedTable2[165, 9] <- 8363000
+JoinedTable2[165, 10] <- 8338000
+JoinedTable2[165, 11] <- 8203000
+JoinedTable2[165, 12] <- 8012000
+JoinedTable2[165, 13] <- 7825000
+```
+
+```{r}
 GlobalNumbers <-
   JoinedTable2 %>%
-  mutate( # finding total emmisons since previous was per cap
+  mutate( # finding total emmisions since previous was per cap
     `1990TotalEmissions` = `1990EmissionsPerCap` * `1990Pop`,
     `1995TotalEmissions` = `1995EmissionsPerCap` * `1995Pop`,
     `2000TotalEmissions` = `2000EmissionsPerCap` * `2000Pop`,
@@ -260,6 +271,10 @@ GlobalNumbers <-
 head(GlobalNumbers)
 ```
 
+```{r}
+GlobalNumbers <-
+  na.omit(GlobalNumbers)
+```
 
 ## Data Analysis and Narrative
 
