@@ -13,6 +13,7 @@ library(tidyr)
 library(readr)
 library(tidyverse)
 library(rvest)
+library(regexPipes)
 ```
 
 ```{r}
@@ -112,16 +113,52 @@ head(CarbonRaw4)
 ```{r}
 CarbonCleaned <-
   CarbonRaw4 %>%
-  transmute(`1990 Emissions` = as.numeric(CarbonRaw4$`1990`),
+  transmute(`Country` = `CountryWorld Total`,
+         `1990 Emissions` = as.numeric(CarbonRaw4$`1990`),
          `1995 Emissions` = as.numeric(CarbonRaw4$`1995`),
          `2000 Emissions` = as.numeric(CarbonRaw4$`2000`),
          `2005 Emissions` = as.numeric(CarbonRaw4$`2005`),
          `2010 Emissions` = as.numeric(CarbonRaw4$`2010`)
-         )
+         ) 
 
 head(CarbonCleaned)
 ```
+%>%
+  regexPipes::sub("Korea, Democratic People's Republic of", "South Korea")
+  
+```{r}
+CarbonCleaned$Country <-
+  CarbonCleaned$Country %>%
+  regexPipes::sub("Korea, Democratic People's Republic of", "South Korea") %>%
+  regexPipes::sub("Korea, Republic of", "North Korea") %>%
+  regexPipes::sub("Lao People's Democratic Republic", "Laos") %>%
+  regexPipes::sub("Macedonia, the former Yugoslav Republic of", "North Macedonia") %>%
+  regexPipes::sub("Libyan Arab Jamahiriya", "Libya") %>%
+  regexPipes::sub("Macao", "Macau") %>%
+  regexPipes::sub("Moldova, Republic of", "Moldova") %>%
+  regexPipes::sub("Russian Federation", "Russia") %>%
+  regexPipes::sub("Congo_the Democratic Republic of the", "Democratic Republic of the Congo") %>%
+  regexPipes::sub("Congo", "Republic of the Congo") %>%
+  regexPipes::sub("Democratic Republic of the Republic of the Congo", "Democratic Republic of the Congo") %>%
+  regexPipes::sub("Cote d'Ivoire", "Ivory Coast") %>%
+  regexPipes::sub("Iran, Islamic Republic of", "Iran") %>%
+  regexPipes::sub("Sao Tome and Principe", "São Tomé and Príncipe") %>%
+  regexPipes::sub("Taiwan_Province of China", "Taiwan") %>%
+  regexPipes::sub("Tanzania_United Republic of", "Tanzania") %>%
+  regexPipes::sub("Syrian Arab Republic", "Syria") %>%
+  regexPipes::sub("Viet Nam", "Vietnam") %>%
+  regexPipes::sub("Virgin Islands_British", "British Virgin Islands") %>%
+  regexPipes::sub("Virgin Islands_USA", "United States Virgin Islands") %>%
+  regexPipes::sub("Brunei Darussalam", "Brunei")
 
+
+```
+  
+```{r}
+JoinedTable<-
+  CarbonCleaned %>%
+  left_join(Pop_Country, by = "Country")
+```
 
 
 
