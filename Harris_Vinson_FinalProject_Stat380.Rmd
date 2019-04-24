@@ -189,7 +189,26 @@ JoinedTable<-
 glimpse(JoinedTable)
 ```
 
+```{r}
+JoinedTable2 <-
+  JoinedTable %>%
+  mutate(JoinedTable$`1985 Pop` * 1000,
+         JoinedTable$`1990 Pop` * 1000,
+         JoinedTable$`1995 Pop` * 1000,
+         JoinedTable$`2000 Pop` * 1000,
+         JoinedTable$`2005 Pop` * 1000,
+         JoinedTable$`2010 Pop` * 1000,
+         JoinedTable$`2015 Pop` * 1000) %>%
+  select(-`1985 Pop`, -`1990 Pop`, -`1995 Pop`, -`2000 Pop`, -`2005 Pop`, -`2010 Pop`, -`2015 Pop`)
 
+head(JoinedTable2)
+```
+
+```{r}
+JoinedTable3 <- 
+  JoinedTable2 %>%
+  rename(`1985 Pop` = JoinedTable$`1985 Pop` * 1000)
+```
 
 
 
