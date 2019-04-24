@@ -53,6 +53,34 @@ head(Pop_Country)
 ```
 
 ```{r}
+Pop_Country$`1985 Pop` <-
+  Pop_Country$`1985 Pop` %>%
+  regexPipes::gsub(pattern = ",", replacement = "")
+  
+Pop_Country$`1990 Pop` <-
+  Pop_Country$`1990 Pop` %>%
+  regexPipes::gsub(pattern = ",", replacement = "")
+
+Pop_Country$`1995 Pop` <-
+  Pop_Country$`1995 Pop` %>%
+  regexPipes::gsub(pattern = ",", replacement = "")
+
+Pop_Country$`2000 Pop` <-
+  Pop_Country$`2000 Pop` %>%
+  regexPipes::gsub(pattern = ",", replacement = "")
+
+Pop_Country$`2005 Pop` <-
+  Pop_Country$`2005 Pop` %>%
+  regexPipes::gsub(pattern = ",", replacement = "")
+
+Pop_Country$`2010 Pop` <-
+  Pop_Country$`2010 Pop` %>%
+  regexPipes::gsub(pattern = ",", replacement = "")
+
+Pop_Country$`2015 Pop` <-
+  Pop_Country$`2015 Pop` %>%
+  regexPipes::gsub(pattern = ",", replacement = "")
+
 Pop_Country_Cleaned <-
   Pop_Country %>%
   mutate(`1985 Pop` = as.numeric(Pop_Country$`1985 Pop`),
@@ -66,7 +94,6 @@ Pop_Country_Cleaned <-
 
 head(Pop_Country_Cleaned)
 ```
-
 
 ```{r}
 page_url <- "http://edgar.jrc.ec.europa.eu/overview.php?v=CO2ts_pc1990-2013"
@@ -157,9 +184,12 @@ CarbonCleaned$Country <-
 ```{r}
 JoinedTable<-
   CarbonCleaned %>%
-  left_join(Pop_Country, by = "Country")
+  left_join(Pop_Country_Cleaned, by = "Country")
 ```
 
+```{r}
+glimpse(JoinedTable)
+```
 
 
 
