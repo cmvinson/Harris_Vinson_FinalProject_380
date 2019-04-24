@@ -52,6 +52,7 @@ Pop_Country <-
 head(Pop_Country)
 ```
 
+<<<<<<< HEAD
 ```{r}
 Pop_Country$`1985 Pop` <-
   Pop_Country$`1985 Pop` %>%
@@ -94,6 +95,8 @@ Pop_Country_Cleaned <-
 
 head(Pop_Country_Cleaned)
 ```
+=======
+>>>>>>> 18e0f10c9858d0c1dd6ba9d5022a4330ae113fe0
 
 ```{r}
 page_url <- "http://edgar.jrc.ec.europa.eu/overview.php?v=CO2ts_pc1990-2013"
@@ -190,48 +193,6 @@ JoinedTable<-
 ```{r}
 glimpse(JoinedTable)
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
