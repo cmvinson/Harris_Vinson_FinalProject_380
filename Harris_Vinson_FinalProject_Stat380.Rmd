@@ -51,6 +51,21 @@ Pop_Country <-
 head(Pop_Country)
 ```
 
+```{r}
+Pop_Country_Cleaned <-
+  Pop_Country %>%
+  mutate(`1985 Pop` = as.numeric(Pop_Country$`1985 Pop`),
+         `1990 Pop` = as.numeric(Pop_Country$`1990 Pop`),
+         `1995 Pop` = as.numeric(Pop_Country$`1995 Pop`),
+         `2000 Pop` = as.numeric(Pop_Country$`2000 Pop`),
+         `2005 Pop` = as.numeric(Pop_Country$`2005 Pop`),
+         `2010 Pop` = as.numeric(Pop_Country$`2010 Pop`),
+         `2015 Pop` = as.numeric(Pop_Country$`2015 Pop`)
+         )
+
+head(Pop_Country_Cleaned)
+```
+
 
 ```{r}
 page_url <- "http://edgar.jrc.ec.europa.eu/overview.php?v=CO2ts_pc1990-2013"
