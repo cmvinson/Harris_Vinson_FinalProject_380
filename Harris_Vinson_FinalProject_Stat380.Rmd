@@ -22,6 +22,7 @@ library(readr)
 library(tidyverse)
 library(rvest)
 library(regexPipes)
+library(growthrates)
 
 # Inputs & source data
 
@@ -291,8 +292,16 @@ Similarity2010 <-
 head(Similarity2010)
 ```
 
-```{r}
+```{r fig.height=12, fig.width=18}
+Distance2010 <-
+  dist(Similarity2010)
 
+Dendro2010 <-
+  Distance2010 %>%
+  hclust(method = "complete")
+
+Dendro2010 %>%
+  plot(labels = GlobalNumbers$Country)
 ```
 
 
@@ -300,7 +309,30 @@ head(Similarity2010)
 
 Maybe normalize each emission type and then add them together for a compound score?
 
+```{r}
+HeatMapData <-
+  GlobalNumbers %>%
+  select(-Country) %>%
+  na.omit() %>%
+  scale() %>%
+  as.data.frame() %>%
+  transmute(`1990` = `1990EmissionsPerCap` + (0.5 * `1990TotalEmissions`),
+            `1995` = `1995EmissionsPerCap` + (0.5 * `1995TotalEmissions`),
+            `2000` = `2000EmissionsPerCap` + (0.5 * `2000TotalEmissions`),
+            `2005` = `2005EmissionsPerCap` + (0.5 * `2005TotalEmissions`),
+            `2010` = `2010EmissionsPerCap` + (0.5 * `2010TotalEmissions`))
 
+Top30Heat <-
+  HeatMapData %>%
+  cbind(GlobalNumbers$Country) %>%
+  top_n(n = 30, wt = `2010`)
+```
+
+
+```{r}
+EmissionsHeatmap <-
+  heatmap(x = as.matrix(Top30Heat), Rowv = NA, Colv = NA, labRow = GlobalNumbers$Country)
+```
 
 ### How Population Grows
 
