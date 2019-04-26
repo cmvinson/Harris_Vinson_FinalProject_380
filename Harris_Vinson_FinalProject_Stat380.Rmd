@@ -283,6 +283,24 @@ GlobalNumbers <-
 
 ### Building a model for Population
 
+```{r}
+NewPop<-
+  GlobalNumbers[, c(1, 7:13)]
+
+NewPop2 <-
+  t(NewPop)
+
+CountryNames <-
+  NewPop2[1,]
+
+NewPop3 <-
+  as.data.frame(NewPop2)
+
+NewPop4 <-
+  NewPop3[2:8, ]
+
+
+```
 
 
 ### Building a model for Emissions
