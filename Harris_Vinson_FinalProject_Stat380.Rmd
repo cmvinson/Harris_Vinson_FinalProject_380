@@ -24,6 +24,7 @@ library(rvest)
 library(regexPipes)
 library(growthrates)
 
+
 # Inputs & source data
 
 PopURL <-
@@ -348,7 +349,6 @@ Top30HeatMatrix <-
   select(-Country) %>%
   as.matrix()
 ```
-
 
 ```{r}
 EmissionsHeatmap <-
