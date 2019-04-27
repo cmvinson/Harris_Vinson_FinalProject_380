@@ -481,16 +481,52 @@ head(CountryMax)
 ```
 
 ```{r}
+# no data for these points concerning carrying capacity, so using maximum documented population during time period of population data as carrying capacity
+ModelPopTable4[4, 4] <- 58000
+ModelPopTable4[61, 4] <- 51000
+ModelPopTable4[71, 4] <- 30000
+ModelPopTable4[73, 4] <- 58000
+ModelPopTable4[75, 4] <- 162000
+ModelPopTable4[82, 4] <- 7142000
+ModelPopTable4[84, 4] <- 332000
+ModelPopTable4[97, 4] <- 106000
+ModelPopTable4[110, 4] <- 593000
+ModelPopTable4[115, 4] <- 396000
+ModelPopTable4[128, 4] <- 11000
+ModelPopTable4[131, 4] <- 272000
+ModelPopTable4[146, 4] <- 3822000
+ModelPopTable4[151, 4] <- 52000
+ModelPopTable4[153, 4] <- 7000
+ModelPopTable4[154, 4] <- 109000
+ModelPopTable4[156, 4] <- 195000
+ModelPopTable4[160, 4] <- 93000
+ModelPopTable4[176, 4] <- 23416000
+ModelPopTable4[187, 4] <- 11000
+ModelPopTable4[195, 4] <- 273000
+ModelPopTable4[198, 4] <- 34000
+ModelPopTable4[199, 4] <- 109000
+ModelPopTable4[200, 4] <- 571000
+```
+
+###
+```{r}
+ModelPopTable4$InitialPop <- ModelPopTable4$InitialPop / 1000000
+ModelPopTable4$Rate <- ModelPopTable4$Rate / 1000000
+ModelPopTable4$CarryingCap <- ModelPopTable4$CarryingCap / 1000000
+```
+
+###
+
+```{r}
 FuturePop <- function(Year, x) {
-  KeyValues <-
-    as.numeric(ModelPopTable4[x, 2:4])
+  KeyValues <- ModelPopTable4[1, 2:4]
   
-  KeyValues[3] / (1 + exp(KeyValues[1] - (KeyValues[2] * Year)))
+  KeyValues[3] / (1 + exp(KeyValues[1] - (KeyValues[2] * 20)))
 }
 ```
 
 ```{r}
-FuturePop(33, 137)
+FuturePop(10, 1)
 ```
 
 ```{r}
