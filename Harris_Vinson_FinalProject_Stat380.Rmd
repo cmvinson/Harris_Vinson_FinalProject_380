@@ -228,10 +228,34 @@ TotalBiocapRaw <-
 ```
 
 ```{r}
+TotalBiocapV1 <-
+  TotalBiocapRaw %>%
+  select(Country.Name, Total) %>%
+  rename(
+    Country = Country.Name,
+    TotalBioCap = Total
+  )
+```
+
+```{r}
+TotalBiocapV1$Country <- as.character(TotalBiocapV1$Country)
+TotalBiocapV1[76, 2] <- 58661671.8495966
+TotalBiocapV1[90, 1] <- "North Korea"
+TotalBiocapV1[92, 1] <- "South Korea"
+TotalBiocapV1[90, 2] <- 14489062.7042875
+TotalBiocapV1[92, 2] <- 33985103.3058803
+TotalBiocapV1[161, 2] <- 56760871.8701572
+TotalBiocapV1[178, 2] <- 80340362.408074
+TotalBiocapV1[184, 2] <- 199469941.479419
+```
+
+
+```{r}
 BiocapPerCapRaw <-
   read.csv(file = "BiocapacityperCap.csv")
 ```
 
+<<<<<<< HEAD
 ```{r}
 BiocapPerCapV1 <- # Some countries will need to be altered manually
   BiocapPerCapRaw %>%
@@ -256,6 +280,8 @@ BiocapPerCapV1[184, 2] <- 2.53339548470155
 
 head(BiocapPerCapV1)
 ```
+=======
+>>>>>>> c312c652966df7647902a664f53390467c6695c1
 
 
 ### Joining Data
