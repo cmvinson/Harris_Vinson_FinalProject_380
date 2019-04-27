@@ -466,20 +466,27 @@ sum(is.na(ModelPopTable4$CarryingCap))
 ```
 
 ```{r}
-NewPop4[] <- lapply(NewPop4, function(x) as.numeric(as.character(x)))
-
-colMax <- function(data) sapply(data, max, na.rm = TRUE)
-
-MaxPop <- colMax(NewPop4)
-
+FuturePop <- function(Year, x) {
+  KeyValues <-
+    as.numeric(ModelPopTable4[x, 2:4])
+  
+  KeyValues[3] / (1 + exp(KeyValues[1] - (KeyValues[2] * Year)))
+}
 ```
 
 ```{r}
-CountryMax <- 
-  cbind(CountryNames, MaxPop) %>%
-  as.data.frame()
+FuturePop(33, 137)
+```
 
-head(CountryMax)
+```{r}
+UniqueValues <-
+  as.numeric(ModelPopTable4[1, 2:4])
+
+print(UniqueValues[2])
+```
+
+```{r}
+322 / (1 + exp(1 - (.27 * 30)))
 ```
 
 ### Building a model for Emissions
