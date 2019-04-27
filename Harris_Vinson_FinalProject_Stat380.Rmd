@@ -368,7 +368,7 @@ GlobalNumbers <-
 ## Data Analysis and Narrative
 
 
-### Building a model for Population
+### The World at Capacity
 
 ```{r}
 NewPop<-
@@ -508,40 +508,24 @@ ModelPopTable4[199, 4] <- 109000
 ModelPopTable4[200, 4] <- 571000
 ```
 
-###
 ```{r}
-ModelPopTable4$InitialPop <- ModelPopTable4$InitialPop / 1000000
-ModelPopTable4$Rate <- ModelPopTable4$Rate / 1000000
-ModelPopTable4$CarryingCap <- ModelPopTable4$CarryingCap / 1000000
+sum(ModelPopTable4$CarryingCap)
+sum(NewPop$`2015Pop`)
 ```
 
-###
+
+### Building a model for Emissions Per Cap
 
 ```{r}
-FuturePop <- function(Year, x) {
-  KeyValues <- ModelPopTable4[1, 2:4]
-  
-  KeyValues[3] / (1 + exp(KeyValues[1] - (KeyValues[2] * 20)))
-}
+EmissionsperCapData <-
+  GlobalNumbers %>%
+  select(1:6) %>%
+  rename(`1990` = `1990EmissionsPerCap`,
+         `1995` = `1995EmissionsPerCap`,
+         `2000` = `2000EmissionsPerCap`,
+         `2005` = `2005EmissionsPerCap`,
+         `2010` = `2010EmissionsPerCap`)
 ```
-
-```{r}
-FuturePop(10, 1)
-```
-
-```{r}
-UniqueValues <-
-  as.numeric(ModelPopTable4[1, 2:4])
-
-print(UniqueValues[2])
-```
-
-```{r}
-322 / (1 + exp(1 - (.27 * 30)))
-```
-
-### Building a model for Emissions
- 
 
 
 ### Simulating Future Emissions
