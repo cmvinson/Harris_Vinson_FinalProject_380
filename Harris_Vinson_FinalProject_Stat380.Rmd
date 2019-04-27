@@ -306,11 +306,6 @@ CarryingCapacitiesClean <-
   CarryingCapacities[1:187, ]
 ```
 
-```{r}
-sum(CarryingCapacitiesClean$CarryingCap)
-sum(JoinedTable2$`2015Pop`, na.rm = TRUE)
-```
-
 
 ### Joining Data
 
@@ -401,12 +396,52 @@ RatesofChange <-
 ```
 
 ```{r}
+ModelPopTable <- 
+  cbind(GlobalNumbers$Country) %>%
+  as.data.frame() %>%
+  rename(
+    Country = V1)
 
+ModelPopTable$Country <- as.character(ModelPopTable$Country)
 ```
 
+```{r}
+GlobalInitialPop <-
+  GlobalNumbers %>%
+  select(Country, `1985Pop`) %>%
+  rename(
+    InitialPop = `1985Pop`
+  )
+```
+
+```{r}
+ModelPopTable2 <-
+  ModelPopTable %>%
+  right_join(GlobalInitialPop, by = "Country")
+```
+
+```{r}
+RatesofChange2 <-
+  RatesofChange %>%
+  select(Country, Rate)
+
+ModelPopTable3 <-
+  ModelPopTable2 %>%
+  right_join(RatesofChange2, by = "Country")
+```
+
+```{r}
+CarryingCapacitiesClean2 <-
+  CarryingCapacities %>%
+  select(Country, CarryingCap)
+
+ModelPopTable4 <- 
+  ModelPopTable3 %>%
+  left_join(CarryingCapacitiesClean2, by = "Country")
+```
 
 ### Building a model for Emissions
-
+ 
 
 
 ### Simulating Future Emissions
