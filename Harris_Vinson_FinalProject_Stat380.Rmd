@@ -551,7 +551,7 @@ HeatMapData <-
   na.omit() %>%
   scale() %>%
   as.data.frame() %>%
-  transmute(`1990` = `1990EmissionsPerCap` + (0.5 * `1990TotalEmissions`),
+  mutate(`1990` = `1990EmissionsPerCap` + (0.5 * `1990TotalEmissions`),
             `1995` = `1995EmissionsPerCap` + (0.5 * `1995TotalEmissions`),
             `2000` = `2000EmissionsPerCap` + (0.5 * `2000TotalEmissions`),
             `2005` = `2005EmissionsPerCap` + (0.5 * `2005TotalEmissions`),
@@ -561,11 +561,16 @@ Top30Heat <-
   HeatMapData %>%
   cbind(GlobalNumbers$Country) %>%
   rename(Country = `GlobalNumbers$Country`) %>%
-  top_n(n = 30, wt = `2010`)
+  top_n(n = 30, wt = `2010TotalEmissions`)
 
 Top30HeatMatrix <-
   Top30Heat %>%
-  select(-Country) %>%
+  select(`1990EmissionsPerCap`, `1995EmissionsPerCap`,`2000EmissionsPerCap`, `2005EmissionsPerCap`, `2010EmissionsPerCap`) %>%
+  rename(Cap1990 = `1990EmissionsPerCap`,
+         Cap1995 = `1995EmissionsPerCap`,
+         Cap2000 = `2000EmissionsPerCap`,
+         Cap2005 = `2005EmissionsPerCap`,
+         Cap2010 = `2010EmissionsPerCap`) %>%
   as.matrix()
 ```
 
