@@ -301,7 +301,14 @@ CarryingNumbersRaw <-
 CarryingCapacities <-
   CarryingNumbersRaw %>%
   mutate(CarryingCap = CarryingNumbersRaw$TotalBioCap / CarryingNumbersRaw$BiocapPerCap)
-  
+
+CarryingCapacitiesClean <-
+  CarryingCapacities[1:187, ]
+```
+
+```{r}
+sum(CarryingCapacitiesClean$CarryingCap)
+sum(JoinedTable2$`2015Pop`, na.rm = TRUE)
 ```
 
 
@@ -384,6 +391,16 @@ NewPop3 <-
 NewPop4 <-
   NewPop3[2:8, ]
 
+
+```
+
+```{r}
+RatesofChange <-
+  NewPop %>%
+  mutate(Rate = (NewPop$`2015Pop` - NewPop$`1985Pop`)/30)
+```
+
+```{r}
 
 ```
 
