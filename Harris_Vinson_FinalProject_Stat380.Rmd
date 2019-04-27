@@ -466,6 +466,21 @@ sum(is.na(ModelPopTable4$CarryingCap))
 ```
 
 ```{r}
+NewPop4[] <- lapply(NewPop4, function(x) as.numeric(as.character(x)))
+i = 1
+colMax <- function(data) sapply(data, max, na.rm = TRUE)
+max(NewPop4$i)
+MaxPop <- colMax(NewPop4)
+```
+
+```{r}
+CountryMax <- 
+  cbind(CountryNames, MaxPop) %>%
+  as.data.frame()
+head(CountryMax)
+```
+
+```{r}
 FuturePop <- function(Year, x) {
   KeyValues <-
     as.numeric(ModelPopTable4[x, 2:4])
