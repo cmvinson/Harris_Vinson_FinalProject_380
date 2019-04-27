@@ -435,9 +435,42 @@ CarryingCapacitiesClean2 <-
   CarryingCapacities %>%
   select(Country, CarryingCap)
 
+CarryingCapacitiesClean2[177, 1] <- "Samoa"
+CarryingCapacitiesClean2[22, 1] <- "Brunei"
+CarryingCapacitiesClean2[28, 1] <- "Cape Verde"
+CarryingCapacitiesClean2[179, 1] <- "Democratic Republic of the Congo"
+CarryingCapacitiesClean2[36, 1] <- "Republic of the Congo"
+CarryingCapacitiesClean2[81, 1] <- "Ivory Coast"
+CarryingCapacitiesClean2[93, 1] <- "Laos"
+CarryingCapacitiesClean2[97, 1] <- "Libya"
+CarryingCapacitiesClean2[116, 1] <- "North Macedonia"
+CarryingCapacitiesClean2[139, 1] <- "Russia"
+CarryingCapacitiesClean2[170, 1] <- "United States"
+CarryingCapacitiesClean2[175, 1] <- "Vietnam"
+CarryingCapacitiesClean2[156, 1] <- "Syria"
+CarryingCapacitiesClean2[153, 1] <- "Swaziland"
+
+
+```
+
+```{r}
 ModelPopTable4 <- 
   ModelPopTable3 %>%
   left_join(CarryingCapacitiesClean2, by = "Country")
+
+ModelPopTable4[159, 4] <- 628615 + 8820080
+```
+
+```{r}
+sum(is.na(ModelPopTable4$CarryingCap))
+```
+
+```{r}
+
+i = 1
+
+max(NewPop4$i)
+
 ```
 
 ### Building a model for Emissions
