@@ -220,6 +220,18 @@ CarbonCleaned$Country <-
 ```
 
 
+### Cleaning Carrying Capacity
+
+```{r}
+TotalBiocapRaw <-
+  read.csv(file = "Biocapacity.csv")
+```
+
+```{r}
+BiocapPerCapRaw <-
+  read.csv(file = "BiocapacityperCap.csv")
+```
+
 ### Joining Data
 
 
