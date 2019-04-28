@@ -524,7 +524,8 @@ EmissionsperCapData <-
          `1995` = `1995EmissionsPerCap`,
          `2000` = `2000EmissionsPerCap`,
          `2005` = `2005EmissionsPerCap`,
-         `2010` = `2010EmissionsPerCap`)
+         `2010` = `2010EmissionsPerCap`) %>%
+  mutate(CountryID = c(1:203))
 ```
 
 
