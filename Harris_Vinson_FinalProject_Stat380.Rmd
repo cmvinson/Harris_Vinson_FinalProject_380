@@ -24,6 +24,7 @@ library(rvest)
 library(regexPipes)
 library(growthrates)
 library(magicfor)
+library(wordcloud)
 
 # Inputs & source data
 
@@ -808,7 +809,7 @@ EmissionsHeatmap <-
 ```{r}
 # Remington
 P <-
-EmissionsTotalNarrow %>%
+  EmissionsTotalNarrow %>%
   ggplot(aes(x = year, y = emissions, group = year)) +
   geom_boxplot() +
   scale_y_log10() 
@@ -816,12 +817,51 @@ EmissionsTotalNarrow %>%
 P
 ```
 
+```{r}
+Future2023 <- 
+  as.data.frame(FutureEmissions) %>%
+  mutate(year = 2023) %>%
+  rename(emissions = FutureEmissions)
+```
 
+```{r}
+Q <-
+  Future2023 %>%
+  ggplot(aes(x = year, y = emissions)) +
+  geom_boxplot() +
+  scale_y_log10()
 
+Q
+```
 
+```{r}
+PQ <-
+  EmissionsTotalNarrow %>%
+  ggplot(aes(x = year, y = emissions, group = year)) +
+  geom_boxplot() +
+  geom_boxplot(aes(x = year, y = emissions), , data = Future2023) +
+  scale_y_log10()
 
+PQ
+```
 
+```{r}
+Future2023 <-
+  Future2023 %>%
+  cbind(CountryNames)
 
+```
+
+```{r}
+longCountry<-
+  Future2023 %>%
+  select(CountryNames, emissions)
+```
+
+```{r}
+set.seed(1234)
+wordcloud::wordcloud(words = longCountry$CountryNames, freq = longCountry$emissions)
+```
 
 
 
