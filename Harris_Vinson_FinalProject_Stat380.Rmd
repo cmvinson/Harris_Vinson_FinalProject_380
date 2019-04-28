@@ -23,7 +23,7 @@ library(tidyverse)
 library(rvest)
 library(regexPipes)
 library(growthrates)
-
+library(magicfor)
 
 # Inputs & source data
 
@@ -534,8 +534,82 @@ EmissionsNarrow <-
   gather(year, emissions, 2:6) %>%
   arrange(Country)
 
-head()
+EmissionsNarrow$year <- as.numeric(EmissionsNarrow$year)
+
+head(EmissionsNarrow)
 ```
+
+```{r}
+magic_for(print, silent = TRUE)
+
+  for(i in 1:203) {
+
+CountryMods <-
+  lm(emissions ~ year, data = EmissionsNarrow %>%
+     filter(CountryID == i))
+
+print(CountryMods[1])
+  }
+
+OurNewData <-
+  magic_result_as_dataframe()
+
+OurNewData$`CountryMods[1]` <-
+  as.character(OurNewData$`CountryMods[1]`)
+
+head(OurNewData)
+```
+
+```{r}
+SplitOur<-
+  strsplit(x = OurNewData$`CountryMods[1]`, split = ", ") %>%
+  as.data.frame() %>%
+  t() %>%
+  as.data.frame()
+
+SplitOur$V1 <-
+  as.character(SplitOur$V1)
+
+SplitOur$V2 <-
+  as.character(SplitOur$V2)
+
+JustStrings <-
+  cbind(SplitOur$V1, SplitOur$V2) %>%
+  as.data.frame()
+
+JustStrings$V1 <-
+  JustStrings$V1 %>%
+  gsub(pattern = "list\\(coefficients = c\\(`\\(Intercept\\)` = ", replacement = "")
+
+JustStrings$V2 <-
+  JustStrings$V2 %>%
+  gsub(pattern = "year = ", replacement = "")
+
+JustStrings$V2 <-
+  JustStrings$V2 %>%
+  gsub(pattern = "\\)\\)", replacement = "")
+
+JustStrings <-
+  JustStrings %>%
+  rename(Intercept = V1, Year = V2)
+
+JustStrings$Intercept <-
+  as.numeric(JustStrings$Intercept)
+
+JustStrings$Year <-
+  as.numeric(JustStrings$Year)
+
+OurCoeff <-
+  JustStrings %>%
+  cbind(CountryNames)
+
+OurCoeff$CountryNames <-
+  as.character(OurCoeff$CountryNames)
+
+head(OurCoeff)
+```
+
+
 
 ### Simulating Future Emissions
 
