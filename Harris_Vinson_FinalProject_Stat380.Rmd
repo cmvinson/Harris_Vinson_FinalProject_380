@@ -420,7 +420,43 @@ GlobalNumbers <-
   na.omit(GlobalNumbers)
 ```
 
+<<<<<<< HEAD
 This was just us finally removing the six countries that we could not get to work out with both.  This was defintely one of our hardest decisions to make but ultimately due to the size 
+=======
+```{r}
+EmissionsTotalData <-
+  GlobalNumbers %>%
+  select(1, 14:18) %>%
+  rename(`1990` = `1990TotalEmissions`,
+         `1995` = `1995TotalEmissions`,
+         `2000` = `2000TotalEmissions`,
+         `2005` = `2005TotalEmissions`,
+         `2010` = `2010TotalEmissions`) %>%
+  mutate(CountryID = c(1:203))
+```
+
+```{r}
+EmissionsTotalNarrow <-
+  EmissionsTotalData %>%
+  gather(year, emissions, 2:6) %>%
+  arrange(Country)
+
+EmissionsTotalNarrow$year <- as.numeric(EmissionsTotalNarrow$year)
+
+head(EmissionsTotalNarrow)
+```
+
+```{r}
+P <-
+EmissionsTotalNarrow %>%
+  ggplot(aes(x = year, y = emissions, group = year)) +
+  geom_boxplot() +
+  scale_y_log10() 
+
+P
+```
+
+>>>>>>> 0ed070b0255d4d76a05b3603b3feec634a62e5f1
 
 ## Data Analysis and Narrative
 
