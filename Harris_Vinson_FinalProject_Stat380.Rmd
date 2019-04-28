@@ -528,6 +528,12 @@ EmissionsperCapData <-
   mutate(CountryID = c(1:203))
 ```
 
+```{r}
+EmissionsNarrow <-
+  EmissionsperCapData %>%
+  gather(year, emissions, 2:6) %>%
+  arrange(Country)
+```
 
 ### Simulating Future Emissions
 
