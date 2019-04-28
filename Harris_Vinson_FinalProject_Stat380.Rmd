@@ -420,10 +420,11 @@ GlobalNumbers <-
   na.omit(GlobalNumbers)
 ```
 
-<<<<<<< HEAD
+
 This was just us finally removing the six countries that we could not get to work out with both.  This was defintely one of our hardest decisions to make but ultimately due to the size 
-=======
+
 ```{r}
+# Remington
 EmissionsTotalData <-
   GlobalNumbers %>%
   select(1, 14:18) %>%
@@ -436,6 +437,7 @@ EmissionsTotalData <-
 ```
 
 ```{r}
+# Remington
 EmissionsTotalNarrow <-
   EmissionsTotalData %>%
   gather(year, emissions, 2:6) %>%
@@ -446,19 +448,7 @@ EmissionsTotalNarrow$year <- as.numeric(EmissionsTotalNarrow$year)
 head(EmissionsTotalNarrow)
 ```
 
-```{r}
-P <-
-EmissionsTotalNarrow %>%
-  ggplot(aes(x = year, y = emissions, group = year)) +
-  geom_boxplot() +
-  scale_y_log10() 
 
-P
-```
-
->>>>>>> 0ed070b0255d4d76a05b3603b3feec634a62e5f1
-
-## Data Analysis and Narrative
 
 
 ### The World at Capacity
@@ -811,11 +801,22 @@ EmissionsHeatmap <-
   heatmap(x = Top30HeatMatrix, Rowv = NA, Colv = NA, labRow = Top30Heat$Country)
 ```
 
-### How Population Grows
+
+### How Emissions Grow
 
 
+```{r}
+# Remington
+P <-
+EmissionsTotalNarrow %>%
+  ggplot(aes(x = year, y = emissions, group = year)) +
+  geom_boxplot() +
+  scale_y_log10() 
 
-### 
+P
+```
+
+
 
 
 
