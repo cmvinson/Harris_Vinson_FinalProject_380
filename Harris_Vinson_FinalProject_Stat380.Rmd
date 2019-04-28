@@ -533,6 +533,8 @@ EmissionsNarrow <-
   EmissionsperCapData %>%
   gather(year, emissions, 2:6) %>%
   arrange(Country)
+
+head()
 ```
 
 ### Simulating Future Emissions
@@ -547,10 +549,16 @@ EmissionsNarrow <-
 ```{r}
 Similarity2010 <-
   GlobalNumbers %>%
+  top_n(50, `2010TotalEmissions`) %>%
   select(`2010EmissionsPerCap`, `2010Pop`) %>%
   scale() %>%
   as.data.frame()
 
+Top50Labels <-
+  GlobalNumbers %>%
+  top_n(50, `2010TotalEmissions`) %>%
+  select(Country, `2010EmissionsPerCap`, `2010Pop`)
+  
 head(Similarity2010)
 ```
 
@@ -563,7 +571,7 @@ Dendro2010 <-
   hclust(method = "complete")
 
 Dendro2010 %>%
-  plot(labels = GlobalNumbers$Country)
+  plot(labels = Top50Labels$Country)
 ```
 
 
