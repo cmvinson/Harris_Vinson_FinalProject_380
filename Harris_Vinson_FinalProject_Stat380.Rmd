@@ -68,6 +68,7 @@ head(Pop_Country)
 
 
 ```{r}
+# Remington
 index <- as.character(c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15))
 
 colnames(Pop_Country) <- index
@@ -88,7 +89,10 @@ Pop_Country <-
 head(Pop_Country)
 ```
 
+At this point we needed to remove the % columns so that the data would be in a form that is useful to us.  In order to do this Remmy Renamed the Variables that would be needed and then simply selected those.  This was out first step to wrangling the data for Population.
+
 ```{r}
+# Remington
 Pop_Country$`1985 Pop` <-
   Pop_Country$`1985 Pop` %>%
   regexPipes::gsub(pattern = ",", replacement = "")
@@ -130,11 +134,14 @@ Pop_Country_Cleaned <-
 head(Pop_Country_Cleaned)
 ```
 
+Furthermore we now needed the population figures to be recognized as numerics, but in order to do this we needed to remove the commas from the population numbers, which were currently character variables.  Remmy removed the commas using gsub and then converted the variables to numerics.  This was the first occurence of using regex in our project, it would come back later in a big way.
+
 
 ### Loading Emissions Data
 
 
 ```{r}
+# Cameron
 table_list <-
   EmissionsURL %>%
   read_html() %>%
@@ -152,6 +159,7 @@ head(CarbonRaw)
 
 
 ```{r}
+# Cameron
 colnames(CarbonRaw) <-
   as.character(unlist(CarbonRaw[1,]))
 
@@ -176,7 +184,10 @@ CarbonRaw4 <-
 head(CarbonRaw4)
 ```
 
+This was some basic cleaning to just make sure that the data was tidy, but there were still further steps to make it usable for our analysis.
+
 ```{r}
+# Cameron
 CarbonCleaned <-
   CarbonRaw4 %>%
   # Making Emissions a dbl variable
@@ -189,8 +200,11 @@ CarbonCleaned <-
 
 head(CarbonCleaned)
 ```
-  
+
+All of the numbers needed to be converted to numerics in order to be utilized appropriately.
+
 ```{r}
+# Cameron
 CarbonCleaned$Country <-
   CarbonCleaned$Country %>%
   # Replacing country names that are in a different form in the Emissions data than the Pop Data
@@ -219,15 +233,36 @@ CarbonCleaned$Country <-
 
 ```
 
+This was the most major usage of regex throughout the project.  Because of naming inconsistencies between our two sources of data thus far, we needed to manually replace certain names of countries that we knew were the same, but not recognized by the computer as such.  Althought this chunk says it was done by Cameron, this was certainly a team effort as we looked through the data tables and researched what alternative names of countries were as well as going back and forth between sources to see what was still missing after each.
 
-### Cleaning Carrying Capacity
+Additionally this was where we introduced a new package called regexPipes which allowed for the flow of one regex exporession after another and allowed us to continually manipulate the table one country after the next.  This was very hepful for using regular expressions hand in hand with the tidyverse sublanguage.
+
+
+### Loading Carrying Capacity Tables
+
 
 ```{r}
+# Remington
 TotalBiocapRaw <-
   read.csv(file = "Biocapacity.csv")
 ```
 
 ```{r}
+# Cameron
+BiocapPerCapRaw <-
+  read.csv(file = "BiocapacityperCap.csv")
+```
+
+Instead of modeling Population, which we tried in vain to do, we decided instead to try and explore what our emissions would look like if the Earth were at it maximum population, also known as carrying capacity.  We pivoted to this route by finding Data that gave us the total Biocapacity of countries and the Biocapacity per capita.  Dividing the toal by the per capita actually gave us what the maximum population would look like for each country.  This souns wrong but it is due to the nature of what "per capita" meant in the context of this data.
+
+In this case the per capita wasn't actually the current population, but rather then max number of people, which is why doing the divisuion allowed us to find the carrying capacity.  This was due to the weird way the data was presented by our source, but it eventually will serve a purpose for us that you will see later.
+
+
+### Cleaning Carrying Capacity Tables
+
+
+```{r}
+# Remington
 TotalBiocapV1 <-
   TotalBiocapRaw %>%
   select(Country.Name, Total) %>%
@@ -238,6 +273,7 @@ TotalBiocapV1 <-
 ```
 
 ```{r}
+# Remington
 TotalBiocapV1$Country <- as.character(TotalBiocapV1$Country)
 TotalBiocapV1[76, 2] <- 58661671.8495966
 TotalBiocapV1[90, 1] <- "North Korea"
@@ -250,19 +286,17 @@ TotalBiocapV1[184, 1] <- "Democratic Republic of Congo"
 TotalBiocapV1[184, 2] <- 199469941.479419
 ```
 
+Because much of the issue that came with this data, at least intially, had to do with the numbers being "pushed over" we went and manually plugged in the number that were altered.  This was rather easy to do as we stillhad the original data and could just plug in the appropriate numbers where needed.  And the countries needed not yet to be joined to the countries in the previous data, but rather to each other.  Becuase of this the country names did not need to be adjusted drastically yet.
+
 ```{r}
+# Remington
 TotalBiocapV2 <-
   TotalBiocapV1 %>%
   na.omit()
 ```
 
 ```{r}
-BiocapPerCapRaw <-
-  read.csv(file = "BiocapacityperCap.csv")
-```
-
-
-```{r}
+# Cameron
 BiocapPerCapV1 <- # Some countries will need to be altered manually
   BiocapPerCapRaw %>%
   select(Country.Name, Total) %>%
@@ -273,6 +307,7 @@ BiocapPerCapV1$Country <-
 ```
 
 ```{r}
+# Cameron
 BiocapPerCapV1[76, 2] <- 0.73073708156185
 BiocapPerCapV1[90, 1] <- "North Korea"
 BiocapPerCapV1[90, 2] <- 0.571141605267523
@@ -284,20 +319,26 @@ BiocapPerCapV1[184, 1] <- "Democratic Republic of Congo"
 BiocapPerCapV1[184, 2] <- 2.53339548470155
 ```
 
+This is the same adjustment as the data table for Total Biocapacity.  Some countries were "pushed over" and we addressed this in the same way.
+
 ```{r}
+# Cameron
 BiocapPerCapV2 <-
   BiocapPerCapV1 %>%
   na.omit()
 ```
 
-
 ```{r}
+# Cameron
 CarryingNumbersRaw <-
   TotalBiocapV2 %>%
   inner_join(BiocapPerCapV2, by = "Country")
 ```
 
+Now we combined the two source for a calculation so that later we could find the carrying capacities
+
 ```{r}
+# Cameron
 CarryingCapacities <-
   CarryingNumbersRaw %>%
   mutate(CarryingCap = CarryingNumbersRaw$TotalBioCap / CarryingNumbersRaw$BiocapPerCap)
@@ -306,21 +347,26 @@ CarryingCapacitiesClean <-
   CarryingCapacities[1:187, ]
 ```
 
+In addition to countries this data broke down the carrying capacities of continents and regions, we only needed the countries which is why we selected "just" the first 187 rows, the rest were not helpful to our analysis
 
 ### Joining Data
 
 
 ```{r}
+# Remington
 JoinedTable<-
   CarbonCleaned %>%
   left_join(Pop_Country_Cleaned, by = "Country")
 ```
+
+Here we joined the first two data csources in order to find the total emissions.  So we would have Emissions per capita and the population for the same years.
 
 ```{r}
 glimpse(JoinedTable)
 ```
 
 ```{r}
+# Cameron
 JoinedTable2 <-
   JoinedTable %>%
   # Renaming variable and making numbers true
@@ -336,7 +382,10 @@ JoinedTable2 <-
 head(JoinedTable2)
 ```
 
+Here we needed to adjust the population in order to make the total emissions accurate.  The population was in thousands of people so to address this we just multiplied by a thousand.  Not exactly earth shaking but an important step nonetheless.
+
 ```{r}
+# Remington
 # Combined Serbia and Montenegro numbers since both were separated in the original Population data table
 JoinedTable2[165, 7] <- 8281000
 JoinedTable2[165, 8] <- 8371000
@@ -347,7 +396,10 @@ JoinedTable2[165, 12] <- 8012000
 JoinedTable2[165, 13] <- 7825000
 ```
 
+Her we addressed one specific nuissance that we couyldn't earlier.  Serbia and Montenegro were listed as seperate countries in one data table but together in another.  Remmy went and calculated the number combined by hand and manually put them into the new table that we formed.  There was probably a more "programmy" way of doing things but this came to mind first and was easy enough.
+
 ```{r}
+# Cameron
 GlobalNumbers <-
   JoinedTable2 %>%
   mutate( # finding total emmisions since previous was per cap
@@ -360,10 +412,15 @@ GlobalNumbers <-
 head(GlobalNumbers)
 ```
 
+Now for the part we have been working towards! We found the total emissions and will use this in a visualization at the end of the project.  This is the end goal in understanding how emissions have changed over time and where we may be when the earth is at capacity.
+
 ```{r}
+# Remington
 GlobalNumbers <-
   na.omit(GlobalNumbers)
 ```
+
+This was just us finally removing the six countries that we could not get to work out with both.  This was defintely one of our hardest decisions to make but ultimately due to the size 
 
 ## Data Analysis and Narrative
 
@@ -371,6 +428,7 @@ GlobalNumbers <-
 ### The World at Capacity
 
 ```{r}
+# Cameron
 NewPop<-
   GlobalNumbers[, c(1, 7:13)]
 
@@ -385,17 +443,17 @@ NewPop3 <-
 
 NewPop4 <-
   NewPop3[2:8, ]
-
-
 ```
 
 ```{r}
+# Remington
 RatesofChange <-
   NewPop %>%
   mutate(Rate = (NewPop$`2015Pop` - NewPop$`1985Pop`)/30)
 ```
 
 ```{r}
+# Remington
 ModelPopTable <- 
   cbind(GlobalNumbers$Country) %>%
   as.data.frame() %>%
@@ -406,6 +464,7 @@ ModelPopTable$Country <- as.character(ModelPopTable$Country)
 ```
 
 ```{r}
+# Remington
 GlobalInitialPop <-
   GlobalNumbers %>%
   select(Country, `1985Pop`) %>%
@@ -415,12 +474,14 @@ GlobalInitialPop <-
 ```
 
 ```{r}
+# Remington
 ModelPopTable2 <-
   ModelPopTable %>%
   right_join(GlobalInitialPop, by = "Country")
 ```
 
 ```{r}
+# Remington
 RatesofChange2 <-
   RatesofChange %>%
   select(Country, Rate)
@@ -431,6 +492,7 @@ ModelPopTable3 <-
 ```
 
 ```{r}
+# Remington
 CarryingCapacitiesClean2 <-
   CarryingCapacities %>%
   select(Country, CarryingCap)
@@ -454,6 +516,7 @@ CarryingCapacitiesClean2[153, 1] <- "Swaziland"
 ```
 
 ```{r}
+# Remington
 ModelPopTable4 <- 
   ModelPopTable3 %>%
   left_join(CarryingCapacitiesClean2, by = "Country")
@@ -462,10 +525,12 @@ ModelPopTable4[159, 4] <- 628615 + 8820080
 ```
 
 ```{r}
+# Remington
 sum(is.na(ModelPopTable4$CarryingCap))
 ```
 
 ```{r}
+# Remington
 NewPop4[] <- lapply(NewPop4, function(x) as.numeric(as.character(x)))
 i = 1
 colMax <- function(data) sapply(data, max, na.rm = TRUE)
@@ -474,6 +539,7 @@ MaxPop <- colMax(NewPop4)
 ```
 
 ```{r}
+# Remington
 CountryMax <- 
   cbind(CountryNames, MaxPop) %>%
   as.data.frame()
@@ -481,6 +547,7 @@ head(CountryMax)
 ```
 
 ```{r}
+# Cameron
 # no data for these points concerning carrying capacity, so using maximum documented population during time period of population data as carrying capacity
 ModelPopTable4[4, 4] <- 58000
 ModelPopTable4[61, 4] <- 51000
@@ -509,6 +576,7 @@ ModelPopTable4[200, 4] <- 571000
 ```
 
 ```{r}
+# Cameron
 sum(ModelPopTable4$CarryingCap)
 sum(NewPop$`2015Pop`)
 ```
@@ -517,6 +585,7 @@ sum(NewPop$`2015Pop`)
 ### Building a model for Emissions Per Cap
 
 ```{r}
+# Remington
 EmissionsperCapData <-
   GlobalNumbers %>%
   select(1:6) %>%
@@ -529,6 +598,7 @@ EmissionsperCapData <-
 ```
 
 ```{r}
+# Cameron
 EmissionsNarrow <-
   EmissionsperCapData %>%
   gather(year, emissions, 2:6) %>%
@@ -540,6 +610,7 @@ head(EmissionsNarrow)
 ```
 
 ```{r}
+# Cameron
 magic_for(print, silent = TRUE)
 
   for(i in 1:203) {
@@ -561,6 +632,7 @@ head(OurNewData)
 ```
 
 ```{r}
+# Cameron
 SplitOur<-
   strsplit(x = OurNewData$`CountryMods[1]`, split = ", ") %>%
   as.data.frame() %>%
@@ -609,6 +681,17 @@ OurCoeff$CountryNames <-
 head(OurCoeff)
 ```
 
+```{r}
+# Cameron
+Predictions <-
+  OurCoeff$Intercept + (OurCoeff$Year * 2023)
+
+FutureEmissions <-
+  Predictions * ModelPopTable4$CarryingCap
+
+sum(FutureEmissions)
+sum(GlobalNumbers$`2010TotalEmissions`)
+```
 
 
 ### Simulating Future Emissions
@@ -621,6 +704,7 @@ head(OurCoeff)
 ### Similar Countries; Unsupervised Learning -- Dendrogram
 
 ```{r}
+# Cameron
 Similarity2010 <-
   GlobalNumbers %>%
   top_n(50, `2010TotalEmissions`) %>%
@@ -637,6 +721,7 @@ head(Similarity2010)
 ```
 
 ```{r fig.height=12, fig.width=18}
+# Cameron
 Distance2010 <-
   dist(Similarity2010)
 
@@ -654,6 +739,7 @@ Dendro2010 %>%
 Maybe normalize each emission type and then add them together for a compound score?
 
 ```{r}
+# Cameron
 HeatMapData <-
   GlobalNumbers %>%
   select(-Country) %>%
@@ -684,6 +770,7 @@ Top30HeatMatrix <-
 ```
 
 ```{r}
+# Cameron
 EmissionsHeatmap <-
   heatmap(x = Top30HeatMatrix, Rowv = NA, Colv = NA, labRow = Top30Heat$Country)
 ```
