@@ -365,6 +365,40 @@ GlobalNumbers <-
   na.omit(GlobalNumbers)
 ```
 
+```{r}
+EmissionsTotalData <-
+  GlobalNumbers %>%
+  select(1, 14:18) %>%
+  rename(`1990` = `1990TotalEmissions`,
+         `1995` = `1995TotalEmissions`,
+         `2000` = `2000TotalEmissions`,
+         `2005` = `2005TotalEmissions`,
+         `2010` = `2010TotalEmissions`) %>%
+  mutate(CountryID = c(1:203))
+```
+
+```{r}
+EmissionsTotalNarrow <-
+  EmissionsTotalData %>%
+  gather(year, emissions, 2:6) %>%
+  arrange(Country)
+
+EmissionsTotalNarrow$year <- as.numeric(EmissionsTotalNarrow$year)
+
+head(EmissionsTotalNarrow)
+```
+
+```{r}
+P <-
+EmissionsTotalNarrow %>%
+  ggplot(aes(x = year, y = emissions, group = year)) +
+  geom_boxplot() +
+  scale_y_log10() 
+
+P
+```
+
+
 ## Data Analysis and Narrative
 
 
