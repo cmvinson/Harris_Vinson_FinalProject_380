@@ -420,8 +420,7 @@ GlobalNumbers <-
   na.omit(GlobalNumbers)
 ```
 
-
-This was just us finally removing the six countries that we could not get to work out with both.  This was defintely one of our hardest decisions to make but ultimately due to the size 
+This was just us finally removing the six countries that we could not get to work out with both.  This was defintely one of our hardest decisions to make but ultimately due to the lack of size and overall impact of those countries, we decided to drop them as we didn't expect them to have a significant impact in the scope of the world.
 
 ```{r}
 # Remington
@@ -436,6 +435,8 @@ EmissionsTotalData <-
   mutate(CountryID = c(1:203))
 ```
 
+We wanted data with just the total emissions so we made this table here, not much else to remark on.
+
 ```{r}
 # Remington
 EmissionsTotalNarrow <-
@@ -448,7 +449,7 @@ EmissionsTotalNarrow$year <- as.numeric(EmissionsTotalNarrow$year)
 head(EmissionsTotalNarrow)
 ```
 
-
+This was critical because in order to make the model later for how per capita Emission has chaged we needed the data in this narrow format.  How exactly this is used will be more clear later but essentially we wanted each country to be able to have a time variable and a emissions value associated with it.
 
 
 ### The World at Capacity
@@ -470,6 +471,8 @@ NewPop3 <-
 NewPop4 <-
   NewPop3[2:8, ]
 ```
+
+We wound up not using `NewPop4` like we thought we would initially but the first iteration  was important to finding the rate of change that wew werre going to use to calculate population growth.  Like we remarked on earlier this wound up not being a path we would pursue but didn't want to delete this code since it may be used later.
 
 ```{r}
 # Remington
@@ -517,6 +520,8 @@ ModelPopTable3 <-
   right_join(RatesofChange2, by = "Country")
 ```
 
+All of this wrangling wound up not helping us as it was going to be used for a model fopr population, but since we chose to model in a different mannern it wasn't used, but again we wanted to keep it in here to show what our process was.
+
 ```{r}
 # Remington
 CarryingCapacitiesClean2 <-
@@ -540,6 +545,8 @@ CarryingCapacitiesClean2[153, 1] <- "Swaziland"
 
 
 ```
+
+It was at this point that we needed to update some of the country names in the carrying capacity table in anticipation of joining it with some of our other data.
 
 ```{r}
 # Remington
@@ -573,7 +580,7 @@ head(CountryMax)
 ```
 
 ```{r}
-# Cameron
+# Remington
 # no data for these points concerning carrying capacity, so using maximum documented population during time period of population data as carrying capacity
 ModelPopTable4[4, 4] <- 58000
 ModelPopTable4[61, 4] <- 51000
@@ -601,6 +608,8 @@ ModelPopTable4[199, 4] <- 109000
 ModelPopTable4[200, 4] <- 571000
 ```
 
+In the two chunks above we needed to find a way to have an appropriate carrying capacity for the countries of which there was no data.  So we decided that we wanted to be conservative in our estimates so that in  best case 
+
 ```{r}
 # Cameron
 sum(ModelPopTable4$CarryingCap)
@@ -609,6 +618,7 @@ sum(NewPop$`2015Pop`)
 
 
 ### Building a model for Emissions Per Cap
+
 
 ```{r}
 # Remington
@@ -623,6 +633,8 @@ EmissionsperCapData <-
   mutate(CountryID = c(1:203))
 ```
 
+Here is where we finally get into some good analysis.  We start by selecting just the Country, and the Emissions per capita.  Then we added a variable called CountryID that was essentially what the index of the country is.  Because we knew we would be gathering we wanted to preserve this index.
+
 ```{r}
 # Cameron
 EmissionsNarrow <-
@@ -634,6 +646,8 @@ EmissionsNarrow$year <- as.numeric(EmissionsNarrow$year)
 
 head(EmissionsNarrow)
 ```
+
+Like stated above we were going to gather in order to build an appropriate model.  We need to have a time variable instead of having time be represented in the variable itself.  This is why we gathered
 
 ```{r}
 # Cameron
@@ -656,6 +670,8 @@ OurNewData$`CountryMods[1]` <-
 
 head(OurNewData)
 ```
+
+Now for the very fun part.  We wrote a loop and extracted the intercept and slope for each country by using a new package we found called magic_for.  This made it much easier to extract these values however as you will see this was far from a simple thing.
 
 ```{r}
 # Cameron
@@ -707,6 +723,10 @@ OurCoeff$CountryNames <-
 head(OurCoeff)
 ```
 
+This was all of the regex used to isolate just the numbers we wanted, although the code speaks for itself there are a few things that are key to call attention to.  First we made the table above into character strings and then split it so that the numbers, although still characters, would be in seperate columns.  Then we just used a series of gsubs to isolate the number, and then converted back to numerics.  This now gave us the vaues from the moidel which we will use to find future total emissions by country.
+
+One small issue that occurred was that some countries had a decrease in emissions over time, so once 2023 rolled around they actually had negative total emissions.  but these were very small countries and emissions totals in the scope of the world so we still felt the model did a nice job going even that far into the future.
+
 ```{r}
 # Cameron
 Predictions <-
@@ -719,9 +739,7 @@ sum(FutureEmissions)
 sum(GlobalNumbers$`2010TotalEmissions`)
 ```
 
-
-### Simulating Future Emissions
-
+Here is where the values of the model are combined with the data to give us the final numbers.  printed are the total emissions from 2010 and our projections for total emissions in 2023 if nothing changes.
 
 
 ## Data Visualizations
