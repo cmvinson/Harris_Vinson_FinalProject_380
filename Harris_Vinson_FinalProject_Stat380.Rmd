@@ -243,7 +243,6 @@ CarbonCleaned$Country <-
   regexPipes::sub("Virgin Islands_USA", "United States Virgin Islands") %>%
   regexPipes::sub("Brunei Darussalam", "Brunei")
 
-
 ```
 
 This was the most major usage of regex throughout the project.  Because of naming inconsistencies between our two sources of data thus far, we needed to manually replace certain names of countries that we knew were the same, but not recognized by the computer as such.  Althought this chunk says it was done by Cameron, this was certainly a team effort as we looked through the data tables and researched what alternative names of countries were as well as going back and forth between sources to see what was still missing after each.
@@ -447,7 +446,7 @@ EmissionsTotalData <-
          `2000` = `2000TotalEmissions`,
          `2005` = `2005TotalEmissions`,
          `2010` = `2010TotalEmissions`) %>%
-  mutate(CountryID = c(1:203))
+  mutate(CountryID = c(1:202))
 ```
 
 We wanted data with just the total emissions so we made this table here, not much else to remark on.
@@ -649,7 +648,7 @@ EmissionsperCapData <-
          `2000` = `2000EmissionsPerCap`,
          `2005` = `2005EmissionsPerCap`,
          `2010` = `2010EmissionsPerCap`) %>%
-  mutate(CountryID = c(1:203))
+  mutate(CountryID = c(1:202))
 ```
 
 Here is where we finally get into some good analysis.  We start by selecting just the Country, and the Emissions per capita.  Then we added a variable called CountryID that was essentially what the index of the country is. Because we knew we would be gathering we wanted to preserve this index.
@@ -672,7 +671,7 @@ Like stated above, we were going to gather in order to build an appropriate mode
 # Cameron
 magic_for(print, silent = TRUE)
 
-  for(i in 1:203) {
+  for(i in 1:202) {
 
 CountryMods <-
   lm(emissions ~ year, data = EmissionsNarrow %>%
@@ -908,12 +907,13 @@ Future2023 <-
 # Remington
 longCountry<-
   Future2023 %>%
-  select(CountryNames, emissions)
+  select(CountryNames, emissions) %>%
+  na.omit()
 ```
 
 ```{r}
 # Remington
-set.seed(1237)
+set.seed(1234)
 wordcloud::wordcloud(words = longCountry$CountryNames, freq = longCountry$emissions)
 ```
 
@@ -932,7 +932,8 @@ Emissions2023 <-
 AllEmissions <-
   Emissions2023 %>%
   left_join(EmissionsTotalData, by = "Country") %>%
-  select(-CountryID)
+  select(-CountryID) %>%
+  na.omit()
 
 FinalNumbers <-
   c(sum(AllEmissions$`1990`),
