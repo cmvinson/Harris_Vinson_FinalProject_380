@@ -754,7 +754,7 @@ FutureEmissions <-
   Predictions * ModelPopTable4$CarryingCap
 
 sum(GlobalNumbers$`2010TotalEmissions`)
-sum(FutureEmissions)
+sum(FutureEmissions, na.rm = T)
 ```
 
 Here is where the values of the model are combined with the data to give us the final numbers. Printed are the total emissions from 2010 and our projections for total emissions in 2023 if nothing changes.
