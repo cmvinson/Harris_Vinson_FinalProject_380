@@ -41,9 +41,21 @@ EmissionsURL <-
 EmissionsXPATH <-
   '//*[@id="layout"]/div[3]/div[2]/div/div/div/div/table'
 
+TotalBiocapRaw <-
+  read.csv(file = "Biocapacity.csv")
+
+BiocapPerCapRaw <-
+  read.csv(file = "BiocapacityperCap.csv")
+
 # User defined Functions
 
 ```
+
+
+### Our Purpose
+
+
+We felt that before jumping right into our code we made it clear first how our project tackles social good.  The topic we chose to take on was carbon emissions.  We felt that this was clearly social good as it is a problem that will be a concern that transcends borders and religion, and really will affect all people.  However, many people are still resistant to accepting this reality.  Our hope in tackling this project is that we will provide visualizations and compelling evidence that maybe makes these doubter see the problem in a different light than before.  Furthermore for those that do recognize this issue, but arent sure how it can even be addressed, we hoped to piint out where the blame mostly lies, even though all countries contribute to the problem.  Without further ado, here is our final project, of which we are very proud.
 
 
 ## Data Wrangling
@@ -350,6 +362,7 @@ CarryingCapacitiesClean <-
 
 In addition to countries this data broke down the carrying capacities of continents and regions, we only needed the countries which is why we selected "just" the first 187 rows, the rest were not helpful to our analysis
 
+
 ### Joining Data
 
 
@@ -453,7 +466,11 @@ head(EmissionsTotalNarrow)
 This was critical because in order to make the model later for how per capita Emission has chaged we needed the data in this narrow format.  How exactly this is used will be more clear later but essentially we wanted each country to be able to have a time variable and a emissions value associated with it.
 
 
+## Analysis
+
+
 ### The World at Capacity
+
 
 ```{r}
 # Cameron
@@ -736,17 +753,18 @@ Predictions <-
 FutureEmissions <-
   Predictions * ModelPopTable4$CarryingCap
 
-sum(FutureEmissions)
 sum(GlobalNumbers$`2010TotalEmissions`)
+sum(FutureEmissions)
 ```
 
-Here is where the values of the model are combined with the data to give us the final numbers.  printed are the total emissions from 2010 and our projections for total emissions in 2023 if nothing changes.
+Here is where the values of the model are combined with the data to give us the final numbers.  Printed are the total emissions from 2010 and our projections for total emissions in 2023 if nothing changes.
 
 
 ## Data Visualizations
 
 
 ### Similar Countries; Unsupervised Learning -- Dendrogram
+
 
 ```{r}
 # Cameron
@@ -765,7 +783,7 @@ Top50Labels <-
 head(Similarity2010)
 ```
 
-```{r fig.height=12, fig.width=18}
+```{r fig.height=8, fig.width=12}
 # Cameron
 Distance2010 <-
   dist(Similarity2010)
@@ -778,8 +796,11 @@ Dendro2010 %>%
   plot(labels = Top50Labels$Country)
 ```
 
+This is a dendrogram of the top 50 countries in terms of total emissions in 2010.  This helps us glean some important points.  Namely that India and China are very unique, and that maybe solving our emissions problem starts with them.  Furthermore we see that the United States is very unique and doesn't play nice with many other countries.  However Kuwait and Qatar are the most dissimilar from any other country as their first meeting is each other and bove any other first meeting point.
+
 
 ### Heat map of Emissions
+
 
 Maybe normalize each emission type and then add them together for a compound score?
 
@@ -820,6 +841,8 @@ EmissionsHeatmap <-
   heatmap(x = Top30HeatMatrix, Rowv = NA, Colv = NA, labRow = Top30Heat$Country)
 ```
 
+This Heatmap shows us a couple things.  The first being how the top 30 countries have changed relative to each other over time in terms of Emissions per Capita.  Red being worse.  Clearly the Unitred states has gotten worse on a per capita basis to its peers.  It is important to note that the "heat" is unique to year and each year is independent of the other in terms of the rankings.
+
 
 ### How Emissions Grow
 
@@ -836,6 +859,7 @@ P
 ```
 
 ```{r}
+# Remington
 Future2023 <- 
   as.data.frame(FutureEmissions) %>%
   mutate(year = 2023) %>%
@@ -843,6 +867,7 @@ Future2023 <-
 ```
 
 ```{r}
+# Remington
 Q <-
   Future2023 %>%
   ggplot(aes(x = year, y = emissions)) +
@@ -853,6 +878,7 @@ Q
 ```
 
 ```{r}
+# Remington
 PQ <-
   EmissionsTotalNarrow %>%
   ggplot(aes(x = year, y = emissions, group = year)) +
@@ -863,7 +889,14 @@ PQ <-
 PQ
 ```
 
+Even though the last boxplot is weirdly thin, it still drives home the primary point of our analysis, emissions are growing and will continue to grow, unless we do something.  Even though it seems like just marginal increases the y axis is actually logarithmic which means those seemingly small increases are actually rather significant.
+
+
+### Visualizing Countries Emissions with Words
+
+
 ```{r}
+# Remington
 Future2023 <-
   Future2023 %>%
   cbind(CountryNames)
@@ -871,64 +904,64 @@ Future2023 <-
 ```
 
 ```{r}
+# Remington
 longCountry<-
   Future2023 %>%
   select(CountryNames, emissions)
 ```
 
 ```{r}
-set.seed(1234)
+# Remington
+set.seed(1237)
 wordcloud::wordcloud(words = longCountry$CountryNames, freq = longCountry$emissions)
 ```
 
+This is a visualization that we think helped capture just how much of our current emissions come from just a few countries.  China, USA, India, Russia, and a few other clearly stand out from the rest and those are the countries that will have to be held in check in ordet to prevent emissions from reaching dangerous levels.
 
 
+### Simple Scatterplot of Emission over time
 
+```{r}
+# Cameron
+Emissions2023 <-
+  Future2023 %>%
+  select(emissions, CountryNames) %>%
+  rename(`2023` = emissions, Country = CountryNames)
 
+AllEmissions <-
+  Emissions2023 %>%
+  left_join(EmissionsTotalData, by = "Country") %>%
+  select(-CountryID)
 
+FinalNumbers <-
+  c(sum(AllEmissions$`1990`),
+    sum(AllEmissions$`1995`),
+    sum(AllEmissions$`2000`),
+    sum(AllEmissions$`2005`),
+    sum(AllEmissions$`2010`),
+    sum(AllEmissions$`2023`))
 
+FinalNumbers <-
+  as.data.frame(FinalNumbers)
 
+Years <-
+  c(1990, 1995, 2000, 2005, 2010, 2023)
 
+Years <-
+  as.data.frame(Years)
 
+FinalTable <-
+  cbind(Years$Years, FinalNumbers$FinalNumbers) %>%
+  as.data.frame() %>%
+  rename(Year = V1, EmissionsTotal = V2)
+```
 
+```{r}
+FinalTable %>%
+  ggplot(aes(x = Year, y = EmissionsTotal)) +
+  geom_point() +
+  geom_smooth(method = lm) +
+  ggtitle("Emissions through the Years")
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+This is maybe a clearer picture of how worldwide emissions are trending in total.  While the boxplot showed the distributions of countries through the years, this shows how just the totals are and makes it more clear that it is clearly increasing, and at an alarming rate.
